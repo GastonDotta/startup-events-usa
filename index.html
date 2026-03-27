@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Startup Events USA — Apr–Jun 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:           #070707;
+      --bg-card:      #101010;
+      --bg-hover:     #161616;
+      --bg-modal:     #0E0E0E;
+      --accent:       #E7FE4E;
+      --accent-dim:   rgba(231,254,78,0.12);
+      --accent-glow:  rgba(231,254,78,0.06);
+      --text:         #FFFFFF;
+      --text-sec:     rgba(255,255,255,0.55);
+      --text-muted:   rgba(255,255,255,0.28);
+      --border:       rgba(255,255,255,0.07);
+      --border-mid:   rgba(255,255,255,0.12);
+      --r:            3px;
+      --f-display:    'Bebas Neue', sans-serif;
+      --f-mono:       'IBM Plex Mono', monospace;
+      --f-sans:       'IBM Plex Sans', sans-serif;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--f-sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content:'';
+      position:fixed; inset:0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity:0.028;
+      pointer-events:none;
+      z-index:9999;
+    }
+
+    /* ── HEADER ─────────────────────────────── */
+    .header {
+      padding: 36px 48px 0;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 200;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-eyebrow {
+      font-family: var(--f-mono);
+      font-size: 10px;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .brand-title {
+      font-family: var(--f-display);
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      color: var(--text);
+    }
+
+    .brand-title em {
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    .header-meta {
+      display: flex;
+      gap: 32px;
+      padding-bottom: 4px;
+    }
+
+    .meta-stat {
+      text-align: right;
+    }
+
+    .meta-num {
+      font-family: var(--f-display);
+      font-size: 36px;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .meta-label {
+      font-family: var(--f-mono);
+      font-size: 9px;
+      color: var(--text-muted);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
+
+    /* ── FILTER BAR ─────────────────────────── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .f-label {
+      font-family: var(--f-mono);
+      font-size: 9px;
+      color: var(--text-muted);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-right: 2px;
+      white-space: nowrap;
+    }
+
+    .f-sep {
+      width: 1px;
+      height: 18px;
+      background: var(--border-mid);
+      margin: 0 6px;
+      flex-shrink: 0;
+    }
+
+    .pill {
+      font-family: var(--f-mono);
+      font-size: 10px;
+      padding: 4px 11px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: transparent;
+      color: var(--text-sec);
+      cursor: pointer;
+      transition: all 0.12s;
+      white-space: nowrap;
+      letter-spacing: 0.05em;
+      line-height: 1.4;
+    }
+
+    .pill:hover { border-color: rgba(255,255,255,0.26); color: var(--text); }
+    .pill.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
+
+    .view-toggle {
+      display: flex;
+      gap: 1px;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 2px;
+      background: transparent;
+    }
+
+    .v-btn {
+      font-family: var(--f-mono);
+      font-size: 9px;
+      padding: 5px 10px;
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.12s;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .v-btn.active { background: var(--bg-hover); color: var(--text); }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      left: 9px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .search-wrap input {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      color: var(--text);
+      font-family: var(--f-mono);
+      font-size: 11px;
+      padding: 7px 10px 7px 30px;
+      outline: none;
+      width: 190px;
+      transition: border-color 0.12s;
+    }
+
+    .search-wrap input:focus { border-color: rgba(255,255,255,0.22); }
+    .search-wrap input::placeholder { color: var(--text-muted); }
+
+    .add-btn {
+      margin-left: auto;
+      font-family: var(--f-mono);
+      font-size: 10px;
+      padding: 8px 16px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: var(--r);
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.14s;
+      white-space: nowrap;
+    }
+
+    .add-btn:hover { background: #fff; transform: translateY(-1px); }
+
+    /* ── RESULTS BAR ────────────────────────── */
+    .results-bar {
+      padding: 0 48px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--f-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .results-bar strong { color: var(--accent); font-weight: 600; }
+
+    /* ── LEGEND ─────────────────────────────── */
+    .legend {
+      padding: 0 48px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .legend::-webkit-scrollbar { display: none; }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.12s;
+    }
+
+    .legend-item:hover { opacity: 1; }
+    .legend-item.active { opacity: 1; }
+
+    .legend-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .legend-label {
+      font-family: var(--f-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── MAIN ───────────────────────────────── */
+    .main { padding: 0 48px 80px; }
+
+    /* ── AGENDA VIEW ────────────────────────── */
+    .agenda-view {}
+    .agenda-view.hidden { display: none; }
+
+    .month-section { margin-top: 40px; }
+
+    .month-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .month-name {
+      font-family: var(--f-display);
+      font-size: 13px;
+      letter-spacing: 0.25em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .month-count {
+      font-family: var(--f-mono);
+      font-size: 9px;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+    }
+
+    .month-rule { flex: 1; height: 1px; background: var(--border); }
+
+    .date-group {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      margin-bottom: 1px;
+    }
+
+    .date-col {
+      padding: 16px 12px 16px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+      position: sticky;
+      top: 128px;
+      align-self: start;
+    }
+
+    .date-num {
+      font-family: var(--f-display);
+      font-size: 40px;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .date-wd {
+      font-family: var(--f-mono);
+      font-size: 8px;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .events-col {
+      border-left: 1px solid var(--border);
+      padding: 8px 0 8px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    /* ── EVENT CARD ─────────────────────────── */
+    .event-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 12px 16px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
+      animation: fadeUp 0.25s ease both;
+      cursor: default;
+    }
+
+    .event-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--cc, var(--accent));
+      opacity: 0.65;
+      transition: opacity 0.15s;
+    }
+
+    .event-card:hover {
+      background: var(--bg-hover);
+      border-color: var(--border-mid);
+      transform: translateX(2px);
+    }
+
+    .event-card:hover::before { opacity: 1; }
+
+    .ev-body { min-width: 0; }
+
+    .ev-name {
+      font-family: var(--f-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.35;
+      margin-bottom: 5px;
+    }
+
+    .ev-meta {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .ev-city {
+      font-family: var(--f-mono);
+      font-size: 10px;
+      color: var(--text-sec);
+    }
+
+    .ev-series {
+      font-family: var(--f-mono);
+      font-size: 9px;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.05);
+      padding: 2px 6px;
+      border-radius: 2px;
+      letter-spacing: 0.04em;
+    }
+
+    .ev-side {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .cat-pill {
+      font-family: var(--f-mono);
+      font-size: 8px;
+      padding: 3px 7px;
+      border-radius: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+      background: var(--cc-bg, rgba(231,254,78,0.1));
+      color: var(--cc, var(--accent));
+    }
+
+    .ev-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cost-tag {
+      font-family: var(--f-mono);
+      font-size: 9px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .cost-tag.free { color: #69F0AE; }
+    .cost-tag.paid { color: #EF9A9A; }
+
+    .reg-link {
+      font-family: var(--f-mono);
+      font-size: 9px;
+      padding: 4px 9px;
+      border: 1px solid rgba(231,254,78,0.25);
+      border-radius: var(--r);
+      color: var(--accent);
+      background: transparent;
+      text-decoration: none;
+      transition: background 0.12s;
+      white-space: nowrap;
+    }
+
+    .reg-link:hover { background: var(--accent-dim); }
+
+    /* ── CALENDAR VIEW ──────────────────────── */
+    .cal-view { display: none; }
+    .cal-view.visible { display: block; }
+
+    .cal-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 0 16px;
+    }
+
+    .cal-month-title {
+      font-family: var(--f-display);
+      font-size: 28px;
+      letter-spacing: 0.04em;
+      color: var(--text);
+    }
+
+    .cal-arrows { display: flex; gap: 6px; }
+
+    .cal-arr {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      background: transparent;
+      color: var(--text-sec);
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.12s;
+    }
+
+    .cal-arr:hover { border-color: var(--accent); color: var(--accent); }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+
+    .cal-wday {
+      background: var(--bg);
+      padding: 8px;
+      text-align: center;
+      font-family: var(--f-mono);
+      font-size: 8px;
+      color: var(--text-muted);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .cal-day {
+      background: var(--bg-card);
+      padding: 8px;
+      min-height: 90px;
+      transition: background 0.12s;
+      cursor: default;
+    }
+
+    .cal-day.clickable { cursor: pointer; }
+    .cal-day.clickable:hover { background: var(--bg-hover); }
+    .cal-day.empty { background: rgba(0,0,0,0.4); cursor: default; }
+
+    .cal-day-num {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .cal-day.has-events .cal-day-num { color: var(--text); }
+
+    .cal-day-dots {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .cal-dot {
+      font-family: var(--f-mono);
+      font-size: 9px;
+      padding: 2px 5px;
+      border-radius: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cal-more {
+      font-family: var(--f-mono);
+      font-size: 9px;
+      color: var(--text-muted);
+      padding-top: 1px;
+    }
+
+    /* ── SIDE PANEL ─────────────────────────── */
+    .side-panel {
+      position: fixed;
+      right: 0; top: 0; bottom: 0;
+      width: 360px;
+      background: #0C0C0C;
+      border-left: 1px solid var(--border-mid);
+      padding: 28px 24px;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+      z-index: 400;
+    }
+
+    .side-panel.open { transform: translateX(0); }
+
+    .side-close {
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 26px; height: 26px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.12s;
+    }
+
+    .side-close:hover { border-color: var(--text-sec); color: var(--text); }
+
+    .side-date-num {
+      font-family: var(--f-display);
+      font-size: 56px;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .side-date-label {
+      font-family: var(--f-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-top: 2px;
+      margin-bottom: 20px;
+    }
+
+    /* ── MODAL ──────────────────────────────── */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(6px);
+      z-index: 500;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--bg-modal);
+      border: 1px solid rgba(255,255,255,0.11);
+      border-radius: 6px;
+      padding: 36px;
+      width: 540px;
+      max-width: 92vw;
+      max-height: 88vh;
+      overflow-y: auto;
+      transform: translateY(18px);
+      transition: transform 0.2s;
+    }
+
+    .overlay.open .modal { transform: translateY(0); }
+
+    .modal-hd {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 28px;
+    }
+
+    .modal-title {
+      font-family: var(--f-display);
+      font-size: 26px;
+      letter-spacing: 0.04em;
+      color: var(--text);
+    }
+
+    .modal-title em { color: var(--accent); font-style: normal; }
+
+    .modal-close {
+      width: 26px; height: 26px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer; font-size: 14px;
+      transition: all 0.12s;
+    }
+
+    .modal-close:hover { color: var(--text); border-color: var(--border-mid); }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .f-field { display: flex; flex-direction: column; gap: 5px; }
+    .f-field.span2 { grid-column: 1 / -1; }
+
+    .f-field label {
+      font-family: var(--f-mono);
+      font-size: 9px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .f-field input,
+    .f-field select {
+      background: var(--bg);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: var(--r);
+      color: var(--text);
+      font-family: var(--f-sans);
+      font-size: 13px;
+      padding: 9px 11px;
+      outline: none;
+      transition: border-color 0.12s;
+    }
+
+    .f-field input:focus,
+    .f-field select:focus { border-color: rgba(231,254,78,0.4); }
+
+    .f-field input::placeholder { color: var(--text-muted); }
+    select option { background: #111; color: #fff; }
+
+    .form-submit {
+      grid-column: 1 / -1;
+      margin-top: 6px;
+      padding: 13px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: var(--r);
+      font-family: var(--f-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.14s;
+    }
+
+    .form-submit:hover { background: #fff; }
+
+    /* ── EMPTY STATE ────────────────────────── */
+    .empty {
+      padding: 64px 0;
+      text-align: center;
+      font-family: var(--f-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── TOAST ──────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: var(--accent);
+      color: #000;
+      font-family: var(--f-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 11px 18px;
+      border-radius: var(--r);
+      z-index: 600;
+      transform: translateY(60px);
+      opacity: 0;
+      transition: all 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── ANIMATION ──────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(6px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ─────────────────────────── */
+    @media (max-width: 760px) {
+      .header { padding: 20px 20px 0; }
+      .main   { padding: 0 20px 60px; }
+      .results-bar { padding: 0 20px; }
+      .legend { padding: 0 20px; }
+      .header-meta { display: none; }
+      .brand-title { font-size: 32px; }
+      .date-group { grid-template-columns: 54px 1fr; }
+      .date-num { font-size: 30px; }
+      .ev-name { font-size: 12px; }
+      .search-wrap input { width: 140px; }
+      .modal { padding: 24px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .side-panel { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ──────────────────────────────── -->
+<header class="header">
+  <div class="header-top">
+    <div class="brand">
+      <span class="brand-eyebrow">// USA Ecosystem Map · Apr–Jun 2026</span>
+      <h1 class="brand-title">STARTUP EVENTS&nbsp;<em>USA</em></h1>
+    </div>
+    <div class="header-meta" id="headerMeta">
+      <div class="meta-stat">
+        <div class="meta-num" id="totalCount">65</div>
+        <div class="meta-label">Eventos</div>
+      </div>
+      <div class="meta-stat">
+        <div class="meta-num">7</div>
+        <div class="meta-label">Ciudades</div>
+      </div>
+      <div class="meta-stat">
+        <div class="meta-num">10</div>
+        <div class="meta-label">Categorías</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <span class="f-label">Mes</span>
+    <div id="monthPills">
+      <button class="pill active" data-f="month" data-v="ALL">TODOS</button>
+      <button class="pill" data-f="month" data-v="2026-04">ABR</button>
+      <button class="pill" data-f="month" data-v="2026-05">MAY</button>
+      <button class="pill" data-f="month" data-v="2026-06">JUN</button>
+    </div>
+
+    <div class="f-sep"></div>
+    <span class="f-label">Ciudad</span>
+    <div id="regionPills">
+      <button class="pill active" data-f="region" data-v="ALL">TODAS</button>
+      <button class="pill" data-f="region" data-v="SF">SF</button>
+      <button class="pill" data-f="region" data-v="NYC">NYC</button>
+      <button class="pill" data-f="region" data-v="Boston">BOSTON</button>
+      <button class="pill" data-f="region" data-v="Miami">MIAMI</button>
+      <button class="pill" data-f="region" data-v="DC">DC</button>
+    </div>
+
+    <div class="f-sep"></div>
+    <span class="f-label">Costo</span>
+    <div id="costPills">
+      <button class="pill active" data-f="cost" data-v="ALL">TODOS</button>
+      <button class="pill" data-f="cost" data-v="Gratuito">FREE</button>
+      <button class="pill" data-f="cost" data-v="Pago">PAID</button>
+    </div>
+
+    <div class="f-sep"></div>
+    <div class="view-toggle">
+      <button class="v-btn active" id="btnList">≡ LISTA</button>
+      <button class="v-btn" id="btnCal">⊞ CAL</button>
+    </div>
+
+    <div class="search-wrap">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Buscar evento...">
+    </div>
+
+    <button class="add-btn" id="openModal">+ ADD EVENT</button>
+  </div>
+</header>
+
+<!-- ── RESULTS BAR ───────────────────────────── -->
+<div class="results-bar">
+  Mostrando&nbsp;<strong id="visibleCount">65</strong>&nbsp;eventos · APR — JUN 2026
+</div>
+
+<!-- ── LEGEND ────────────────────────────────── -->
+<div class="legend" id="catLegend"></div>
+
+<!-- ── MAIN ──────────────────────────────────── -->
+<main class="main">
+  <div class="agenda-view" id="agendaView"></div>
+  <div class="cal-view" id="calView">
+    <div class="cal-nav">
+      <button class="cal-arr" id="calPrev">←</button>
+      <span class="cal-month-title" id="calTitle"></span>
+      <button class="cal-arr" id="calNext">→</button>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+</main>
+
+<!-- ── SIDE PANEL (calendar day detail) ──────── -->
+<div class="side-panel" id="sidePanel">
+  <button class="side-close" id="sideClose">✕</button>
+  <div class="side-date-num" id="sideDayNum"></div>
+  <div class="side-date-label" id="sideDayLabel"></div>
+  <div id="sideEvents"></div>
+</div>
+
+<!-- ── ADD EVENT MODAL ───────────────────────── -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-title">ADD <em>EVENT</em></div>
+      <button class="modal-close" id="closeModal">✕</button>
+    </div>
+    <form id="addForm" class="form-grid">
+      <div class="f-field span2">
+        <label>Nombre del Evento *</label>
+        <input type="text" name="name" required placeholder="Ej: AI Founders Mixer NYC">
+      </div>
+      <div class="f-field">
+        <label>Fecha Inicio *</label>
+        <input type="date" name="date" required>
+      </div>
+      <div class="f-field">
+        <label>Fecha Fin</label>
+        <input type="date" name="end">
+      </div>
+      <div class="f-field">
+        <label>Ciudad *</label>
+        <input type="text" name="city" required placeholder="Ej: New York">
+      </div>
+      <div class="f-field">
+        <label>Estado</label>
+        <input type="text" name="state" placeholder="Ej: New York">
+      </div>
+      <div class="f-field">
+        <label>Región</label>
+        <select name="region">
+          <option value="NYC">NYC</option>
+          <option value="SF">SF / Bay Area</option>
+          <option value="Boston">Boston</option>
+          <option value="Miami">Miami</option>
+          <option value="DC">DC</option>
+          <option value="Dallas TX">Dallas TX</option>
+          <option value="Philly">Philly</option>
+          <option value="Other">Otro</option>
+        </select>
+      </div>
+      <div class="f-field">
+        <label>Categoría</label>
+        <select name="category">
+          <option value="AI / ML">AI / ML</option>
+          <option value="Networking">Networking</option>
+          <option value="Climate Tech">Climate Tech</option>
+          <option value="Fintech">Fintech</option>
+          <option value="Deep Tech">Deep Tech</option>
+          <option value="Pitch / Demo">Pitch / Demo</option>
+          <option value="Startup / General">Startup / General</option>
+          <option value="SaaS / B2B">SaaS / B2B</option>
+          <option value="Bio / Health">Bio / Health</option>
+          <option value="Fashion Tech">Fashion Tech</option>
+        </select>
+      </div>
+      <div class="f-field">
+        <label>Costo</label>
+        <select name="cost">
+          <option value="Gratuito">Gratuito</option>
+          <option value="Pago">Pago</option>
+          <option value="Ver web">Ver web</option>
+          <option value="Mixto">Mixto</option>
+        </select>
+      </div>
+      <div class="f-field span2">
+        <label>Serie / Semana</label>
+        <input type="text" name="series" placeholder="Ej: NYC Tech Week">
+      </div>
+      <div class="f-field span2">
+        <label>Link / Registro</label>
+        <input type="url" name="link" placeholder="https://...">
+      </div>
+      <button type="submit" class="form-submit">+ AGREGAR EVENTO</button>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast">✓ Evento agregado exitosamente</div>
+
+<!-- ── FOOTER ────────────────────────────────── -->
+<footer style="
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 28px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  background: #070707;
+">
+  <!-- Sumeria logo + link -->
+  <a href="https://sumeria.uy/landing" target="_blank" rel="noopener" style="
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    opacity: 0.85;
+    transition: opacity 0.15s;
+  " onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">
+    <img src="sumeria-logo.jpeg" alt="Sumeria" style="
+      height: 36px;
+      width: auto;
+      border-radius: 6px;
+      object-fit: contain;
+    ">
+  </a>
+
+  <!-- Contact links -->
+  <div style="display:flex; align-items:center; gap:16px;">
+    <!-- LinkedIn -->
+    <a href="https://www.linkedin.com/in/gastondotta/" target="_blank" rel="noopener" style="
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 3px;
+      padding: 7px 13px;
+      transition: all 0.15s;
+    " onmouseover="this.style.color='#E7FE4E';this.style.borderColor='rgba(231,254,78,0.3)'" onmouseout="this.style.color='rgba(255,255,255,0.45)';this.style.borderColor='rgba(255,255,255,0.09)'">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+        <rect x="2" y="9" width="4" height="12"/>
+        <circle cx="4" cy="4" r="2"/>
+      </svg>
+      gastondotta
+    </a>
+
+    <!-- WhatsApp -->
+    <a href="https://wa.me/59896434220" target="_blank" rel="noopener" style="
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 3px;
+      padding: 7px 13px;
+      transition: all 0.15s;
+    " onmouseover="this.style.color='#E7FE4E';this.style.borderColor='rgba(231,254,78,0.3)'" onmouseout="this.style.color='rgba(255,255,255,0.45)';this.style.borderColor='rgba(255,255,255,0.09)'">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.532 5.844L0 24l6.334-1.51A11.954 11.954 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.807 9.807 0 0 1-5.003-1.368l-.36-.214-3.754.895.944-3.653-.234-.374A9.787 9.787 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/>
+      </svg>
+      +598 96 434 220
+    </a>
+  </div>
+</footer>
+
+<script>
+// ════════════════════════════════════════════
+// CATEGORY CONFIG
+// ════════════════════════════════════════════
+const CAT = {
+  "AI / ML":           { color: "#E7FE4E", bg: "rgba(231,254,78,0.10)" },
+  "Networking":        { color: "#4FC3F7", bg: "rgba(79,195,247,0.10)" },
+  "Climate Tech":      { color: "#69F0AE", bg: "rgba(105,240,174,0.10)" },
+  "Fintech":           { color: "#FFB74D", bg: "rgba(255,183,77,0.10)" },
+  "Deep Tech":         { color: "#CE93D8", bg: "rgba(206,147,216,0.10)" },
+  "Pitch / Demo":      { color: "#EF9A9A", bg: "rgba(239,154,154,0.10)" },
+  "Startup / General": { color: "#B0BEC5", bg: "rgba(176,190,197,0.10)" },
+  "SaaS / B2B":        { color: "#80DEEA", bg: "rgba(128,222,234,0.10)" },
+  "Bio / Health":      { color: "#F48FB1", bg: "rgba(244,143,177,0.10)" },
+  "Fashion Tech":      { color: "#FFE082", bg: "rgba(255,224,130,0.10)" },
+};
+
+// ════════════════════════════════════════════
+// BASE EVENTS
+// ════════════════════════════════════════════
+const BASE = [
+  { id:1,  date:"2026-04-07", end:"2026-04-07", name:"MedTech Startups Mixer",                                              city:"San Francisco",  state:"California",    region:"SF",       category:"Bio / Health",      series:null,            cost:"Pago",     link:"https://www.garysguide.com/events?region=sf" },
+  { id:2,  date:"2026-04-15", end:"2026-04-15", name:"AI x Hardware Engineering Dinner",                                    city:"Mountain View",  state:"California",    region:"SF",       category:"AI / ML",           series:null,            cost:"Ver web",  link:"https://lu.ma/0gkax6h6" },
+  { id:3,  date:"2026-04-15", end:"2026-04-15", name:"A+ Founders Dinner",                                                  city:"San Francisco",  state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Ver web",  link:"https://lu.ma/ncpq1ogx" },
+  { id:4,  date:"2026-04-15", end:"2026-04-15", name:"Ships & Sips: SF Engineering Happy Hour",                             city:"San Francisco",  state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Ver web",  link:"https://lu.ma/sf-eng-happy-hour" },
+  { id:5,  date:"2026-04-15", end:"2026-04-15", name:"Startups, Power, and the AI Age with Salen Churi",                   city:"Stanford",       state:"California",    region:"SF",       category:"AI / ML",           series:null,            cost:"Ver web",  link:"https://lu.ma/8fvs6pnw" },
+  { id:6,  date:"2026-04-15", end:"2026-04-15", name:"Celebrating 10 Years of MIT Sandbox",                                city:"Cambridge",      state:"Massachusetts", region:"Boston",   category:"Startup / General", series:null,            cost:"Ver web",  link:"https://lu.ma/vcxll7xl" },
+  { id:7,  date:"2026-04-15", end:"2026-04-15", name:"Meet the Investors: SOSV & HAX Demo Day",                            city:"New York",       state:"New York",      region:"NYC",      category:"Pitch / Demo",      series:null,            cost:"Ver web",  link:"https://lu.ma/sosv-demo" },
+  { id:8,  date:"2026-04-15", end:"2026-04-15", name:"Bitcoin Devs Meetup",                                                city:"New York",       state:"New York",      region:"NYC",      category:"Fintech",           series:null,            cost:"Gratuito", link:"https://www.garysguide.com/events" },
+  { id:9,  date:"2026-04-15", end:"2026-04-15", name:"Gen AI Summit 2026",                                                 city:"San Jose",       state:"California",    region:"SF",       category:"AI / ML",           series:null,            cost:"Pago",     link:"https://www.garysguide.com/events?region=sf" },
+  { id:10, date:"2026-04-15", end:"2026-04-15", name:"CodeLaunch USA 2026 – Hackathon & Pitch Competition",                city:"Dallas",         state:"Texas",         region:"Dallas TX",category:"Pitch / Demo",      series:null,            cost:"Gratuito", link:"https://codelaunch.com/events/2026-usa-ga/" },
+  { id:11, date:"2026-04-16", end:"2026-04-17", name:"VC Community Happy Hour: Round Two",                                 city:"New York",       state:"New York",      region:"NYC",      category:"Networking",        series:null,            cost:"Ver web",  link:"https://lu.ma/r97w2x2x" },
+  { id:12, date:"2026-04-16", end:"2026-04-17", name:"Spring Into Cyber: Community Mixer",                                 city:"Miami",          state:"Florida",       region:"Miami",    category:"Networking",        series:null,            cost:"Ver web",  link:"https://lu.ma/wl174nc7" },
+  { id:13, date:"2026-04-16", end:"2026-04-16", name:"AngularNYC Meetup",                                                  city:"New York",       state:"New York",      region:"NYC",      category:"Startup / General", series:null,            cost:"Gratuito", link:"https://www.garysguide.com/events" },
+  { id:14, date:"2026-04-16", end:"2026-04-16", name:"Slides Down – AI Founders Party (DigitalOcean x Zendesk)",          city:"San Francisco",  state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Gratuito", link:"https://www.garysguide.com/events?region=sf" },
+  { id:15, date:"2026-04-16", end:"2026-04-16", name:"Big Idea CONNECTpreneur Forum",                                     city:"Washington",     state:"DC",            region:"DC",       category:"Networking",        series:null,            cost:"Pago",     link:"https://connectpreneur.org/2026-events-calendar/" },
+  { id:16, date:"2026-04-17", end:"2026-04-17", name:"$100K AI Startup Pitch-Off @ Chargebee Beelieve '26",               city:"San Francisco",  state:"California",    region:"SF",       category:"Pitch / Demo",      series:null,            cost:"Ver web",  link:"https://lu.ma/beelieve" },
+  { id:17, date:"2026-04-17", end:"2026-04-17", name:"Startup Pitch Night // Sustainable AI",                             city:"San Francisco",  state:"California",    region:"SF",       category:"Climate Tech",      series:null,            cost:"Ver web",  link:"https://lu.ma/20daseu5" },
+  { id:18, date:"2026-04-17", end:"2026-04-17", name:"Voice AI Builders Night",                                           city:"San Francisco",  state:"California",    region:"SF",       category:"AI / ML",           series:null,            cost:"Ver web",  link:"https://lu.ma/voice_builders" },
+  { id:19, date:"2026-04-17", end:"2026-04-18", name:"Recharge Your Closet – Sustainable Fashion Pop-Up",                city:"San Francisco",  state:"California",    region:"SF",       category:"Fashion Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/eam8uq5s" },
+  { id:20, date:"2026-04-17", end:"2026-04-18", name:"Booth Alumni x BTG Happy Hour",                                     city:"San Francisco",  state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Ver web",  link:"https://lu.ma/" },
+  { id:21, date:"2026-04-17", end:"2026-04-17", name:"AI Engineers – Game Night",                                         city:"New York",       state:"New York",      region:"NYC",      category:"AI / ML",           series:null,            cost:"Gratuito", link:"https://www.garysguide.com/events" },
+  { id:22, date:"2026-04-19", end:"2026-04-19", name:"Founder Story: Building in the AI Era",                            city:"Boston",         state:"Massachusetts", region:"Boston",   category:"Startup / General", series:null,            cost:"Ver web",  link:"https://lu.ma/boston-founder" },
+  { id:23, date:"2026-04-20", end:"2026-04-20", name:"Climate Week SF – Founders, Investors & LP Happy Hour",            city:"San Francisco",  state:"California",    region:"SF",       category:"Climate Tech",      series:"SF Climate Week",cost:"Gratuito", link:"https://lu.ma/climatesf" },
+  { id:24, date:"2026-04-21", end:"2026-04-21", name:"Food & Ag Ecosystem Happy Hour (SF Climate Week)",                 city:"San Francisco",  state:"California",    region:"SF",       category:"Climate Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/8yuc8udq" },
+  { id:25, date:"2026-04-21", end:"2026-04-21", name:"California Leads: Investment, Innovation & Clean Energy Economy",  city:"San Francisco",  state:"California",    region:"SF",       category:"Climate Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/vr9fbyxd" },
+  { id:26, date:"2026-04-21", end:"2026-04-21", name:"Carbon Removal Happy Hour at SF Climate Week 2026",               city:"San Francisco",  state:"California",    region:"SF",       category:"Climate Tech",      series:"SF Climate Week",cost:"Gratuito", link:"https://lu.ma/svn0brc7" },
+  { id:27, date:"2026-04-21", end:"2026-04-21", name:"Crossing the Chasm in Climate Tech",                              city:"San Francisco",  state:"California",    region:"SF",       category:"Climate Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/k08b4zrr" },
+  { id:28, date:"2026-04-21", end:"2026-04-21", name:"WomenHack 2026",                                                   city:"San Francisco",  state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Ver web",  link:"https://lu.ma/womenhack-sf" },
+  { id:29, date:"2026-04-21", end:"2026-04-22", name:"International Founders Happy Hour – Magic Room Series",           city:"Stanford",       state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Ver web",  link:"https://lu.ma/2jxgjtn1" },
+  { id:30, date:"2026-04-21", end:"2026-04-21", name:"Ursa Space Spotlight – Satellite Intelligence Leadership",        city:"New York",       state:"New York",      region:"NYC",      category:"Deep Tech",         series:"NYC Space Week",cost:"Gratuito", link:"https://www.garysguide.com/events" },
+  { id:31, date:"2026-04-21", end:"2026-04-25", name:"NYC Space Week 2026",                                              city:"New York",       state:"New York",      region:"NYC",      category:"Deep Tech",         series:"NYC Space Week",cost:"Mixto",    link:"https://www.garysguide.com/events" },
+  { id:32, date:"2026-04-21", end:"2026-04-25", name:"NY FinTech Week 2026 – Community Events",                         city:"New York",       state:"New York",      region:"NYC",      category:"Fintech",           series:"NY FinTech Week",cost:"Mixto",    link:"https://luma.com/ny-fintech-week" },
+  { id:33, date:"2026-04-22", end:"2026-04-22", name:"AI for Investors | Synergist x Women in AI",                      city:"San Francisco",  state:"California",    region:"SF",       category:"AI / ML",           series:null,            cost:"Ver web",  link:"https://lu.ma/vpdlhyfh" },
+  { id:34, date:"2026-04-22", end:"2026-04-22", name:"Rubbish: Waste Management Tech Happy Hour",                       city:"San Francisco",  state:"California",    region:"SF",       category:"Climate Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/rubbish-happy-hour" },
+  { id:35, date:"2026-04-22", end:"2026-04-22", name:"NYC Space Week Kickoff at Luxembourg House",                      city:"New York",       state:"New York",      region:"NYC",      category:"Deep Tech",         series:"NYC Space Week",cost:"Gratuito", link:"https://www.garysguide.com/events" },
+  { id:36, date:"2026-04-23", end:"2026-04-24", name:"Nebulai Tech Wave: The AI Agents Era (Miami Tech Week)",          city:"Miami",          state:"Florida",       region:"Miami",    category:"AI / ML",           series:"eMerge Americas",cost:"Ver web",  link:"https://lu.ma/h7aiuiaq" },
+  { id:37, date:"2026-04-23", end:"2026-04-23", name:"ERA Accelerator Demo Day – 14 Startups Pitching",                city:"New York",       state:"New York",      region:"NYC",      category:"Pitch / Demo",      series:"NYC Space Week",cost:"Gratuito", link:"https://www.garysguide.com/events" },
+  { id:38, date:"2026-04-23", end:"2026-04-23", name:"SpaceTech Legal & Capital Playbook",                              city:"New York",       state:"New York",      region:"NYC",      category:"Deep Tech",         series:"NYC Space Week",cost:"Gratuito", link:"https://www.garysguide.com/events" },
+  { id:39, date:"2026-04-23", end:"2026-04-24", name:"eMerge Americas Conference + Expo 2026",                         city:"Miami Beach",    state:"Florida",       region:"Miami",    category:"Startup / General", series:"eMerge Americas",cost:"Pago",     link:"https://emergeamericas.com/register/" },
+  { id:40, date:"2026-04-24", end:"2026-04-25", name:"AI + SaaS Startups Happy Hour @ eMerge Americas",               city:"Miami",          state:"Florida",       region:"Miami",    category:"AI / ML",           series:"eMerge Americas",cost:"Gratuito", link:"https://lu.ma/bp5ka07v" },
+  { id:41, date:"2026-04-24", end:"2026-04-24", name:"New York Space Forum 2026",                                       city:"New York",       state:"New York",      region:"NYC",      category:"Deep Tech",         series:"NYC Space Week",cost:"Pago",     link:"https://www.garysguide.com/events" },
+  { id:42, date:"2026-04-24", end:"2026-04-24", name:"NYC Coffee Club – Early-Stage B2B Founders & Funders",           city:"New York",       state:"New York",      region:"NYC",      category:"SaaS / B2B",        series:null,            cost:"Gratuito", link:"https://www.garysguide.com/events" },
+  { id:43, date:"2026-04-25", end:"2026-04-25", name:"NYC Space Week Closing Townhouse Party",                         city:"New York",       state:"New York",      region:"NYC",      category:"Networking",        series:"NYC Space Week",cost:"Gratuito", link:"https://www.garysguide.com/events" },
+  { id:44, date:"2026-04-27", end:"2026-04-28", name:"Niural AI Summit",                                               city:"New York",       state:"New York",      region:"NYC",      category:"AI / ML",           series:"NY FinTech Week",cost:"Ver web",  link:"https://lu.ma/mggz3md1" },
+  { id:45, date:"2026-04-27", end:"2026-04-27", name:"C3 Davos of Healthcare Summit",                                  city:"Sunnyvale",      state:"California",    region:"SF",       category:"Bio / Health",      series:null,            cost:"Gratuito", link:"https://www.garysguide.com/events?region=sf" },
+  { id:46, date:"2026-04-28", end:"2026-04-28", name:"Fintech Is Femme + FTW: Official NY FinTech Week Conference",   city:"New York",       state:"New York",      region:"NYC",      category:"Fintech",           series:"NY FinTech Week",cost:"Pago",     link:"https://lu.ma/FTW_NYC26" },
+  { id:47, date:"2026-04-28", end:"2026-04-30", name:"FTW: Official NY FinTech Week Conference (Fintech Is Femme)",   city:"New York",       state:"New York",      region:"NYC",      category:"Fintech",           series:"NY FinTech Week",cost:"Pago",     link:"https://lu.ma/FTW_NYC26" },
+  { id:48, date:"2026-04-28", end:"2026-04-29", name:"Startup Grind Global Conference 2026",                          city:"Redwood City",   state:"California",    region:"SF",       category:"Startup / General", series:"Startup Grind",  cost:"Pago",     link:"https://www.startupgrind.tech/" },
+  { id:49, date:"2026-04-29", end:"2026-04-29", name:"Stripe Sessions 2026",                                          city:"San Francisco",  state:"California",    region:"SF",       category:"SaaS / B2B",        series:null,            cost:"Pago",     link:"https://lu.ma/stripe-sessions" },
+  { id:50, date:"2026-04-30", end:"2026-05-01", name:"Side Event: Reverse Network Opening Power Walk at NY AI/Tech",  city:"New York",       state:"New York",      region:"NYC",      category:"Networking",        series:"NYC Tech Week",  cost:"Gratuito", link:"https://lu.ma/q345qiay" },
+  { id:51, date:"2026-04-30", end:"2026-04-30", name:"StrictlyVC San Francisco 2026",                                 city:"San Francisco",  state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Pago",     link:"https://techcrunch.com/events/strictlyvc-san-francisco-2026/" },
+  { id:52, date:"2026-04-30", end:"2026-04-30", name:"SF Startup & Tech Mixer 2026",                                  city:"San Francisco",  state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Pago",     link:"https://www.eventbrite.com/e/sf-startup-tech-mixer-2026-tickets-1985409306682" },
+  { id:53, date:"2026-05-01", end:"2026-05-01", name:"Penn Venture Lab Startup Challenge – Live Pitch",               city:"Philadelphia",   state:"Pennsylvania",  region:"Philly",   category:"Pitch / Demo",      series:null,            cost:"Gratuito", link:"https://venturelab.upenn.edu/startup-challenge" },
+  { id:54, date:"2026-05-01", end:"2026-05-03", name:"Techstars Startup Weekend Boston",                              city:"Boston",         state:"Massachusetts", region:"Boston",   category:"Pitch / Demo",      series:null,            cost:"Pago",     link:"https://startupweekend.boston/" },
+  { id:55, date:"2026-05-06", end:"2026-05-06", name:"SF Coffee Club – Early Stage B2B Tech Founders & Funders",     city:"San Francisco",  state:"California",    region:"SF",       category:"SaaS / B2B",        series:null,            cost:"Gratuito", link:"https://lu.ma/sf-coffee-club" },
+  { id:56, date:"2026-05-07", end:"2026-05-07", name:"AI Hot 100 Summit",                                             city:"New York",       state:"New York",      region:"NYC",      category:"AI / ML",           series:null,            cost:"Pago",     link:"https://www.garysguide.com/events" },
+  { id:57, date:"2026-05-12", end:"2026-05-12", name:"SaaStr AI Summit",                                              city:"San Mateo",      state:"California",    region:"SF",       category:"SaaS / B2B",        series:"SaaStr",        cost:"Pago",     link:"https://lu.ma/saastr-ai" },
+  { id:58, date:"2026-05-12", end:"2026-05-13", name:"TECHSPO Boston 2026",                                           city:"Boston",         state:"Massachusetts", region:"Boston",   category:"Startup / General", series:null,            cost:"Pago",     link:"https://techspoboston.com/" },
+  { id:59, date:"2026-05-12", end:"2026-05-14", name:"SaaStr Annual 2026",                                            city:"San Mateo",      state:"California",    region:"SF",       category:"SaaS / B2B",        series:"SaaStr",        cost:"Pago",     link:"https://www.saastr.com/events/" },
+  { id:60, date:"2026-05-14", end:"2026-05-14", name:"Wall Street South FinTech Summit",                              city:"Miami",          state:"Florida",       region:"Miami",    category:"Fintech",           series:null,            cost:"Gratuito", link:"https://lu.ma/wallstreet-south" },
+  { id:61, date:"2026-05-18", end:"2026-05-18", name:"Techex 2026",                                                   city:"San Jose",       state:"California",    region:"SF",       category:"Startup / General", series:null,            cost:"Pago",     link:"https://lu.ma/techex" },
+  { id:62, date:"2026-05-26", end:"2026-05-31", name:"Tech Week Boston 2026",                                         city:"Boston",         state:"Massachusetts", region:"Boston",   category:"Startup / General", series:"Tech Week Boston",cost:"Mixto",   link:"https://www.tech-week.com/boston" },
+  { id:63, date:"2026-05-28", end:"2026-05-28", name:"Niural AI Summit (NYC)",                                        city:"New York",       state:"New York",      region:"NYC",      category:"AI / ML",           series:"NYC Tech Week",  cost:"Ver web",  link:"https://lu.ma/mggz3md1" },
+  { id:64, date:"2026-05-28", end:"2026-05-28", name:"AI Engineers – Devs & Drinks NYC",                             city:"New York",       state:"New York",      region:"NYC",      category:"AI / ML",           series:null,            cost:"Gratuito", link:"https://www.garysguide.com/events" },
+  { id:65, date:"2026-06-01", end:"2026-06-07", name:"NYC Tech Week 2026",                                            city:"New York",       state:"New York",      region:"NYC",      category:"Startup / General", series:"NYC Tech Week",  cost:"Mixto",    link:"https://www.tech-week.com/" },
+];
+
+// ════════════════════════════════════════════
+// PERSISTENCE
+// ════════════════════════════════════════════
+function loadCustom() {
+  try { return JSON.parse(localStorage.getItem('startup_events_custom') || '[]'); }
+  catch { return []; }
+}
+function saveCustom(ev) {
+  const all = loadCustom();
+  all.push(ev);
+  localStorage.setItem('startup_events_custom', JSON.stringify(all));
+}
+function allEvents() {
+  return [...BASE, ...loadCustom()].sort((a,b) => a.date.localeCompare(b.date));
+}
+
+// ════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════
+const state = { month:'ALL', region:'ALL', cost:'ALL', cat:'ALL', search:'', view:'agenda' };
+let calYear = 2026, calMonth = 3; // April (0-indexed)
+
+// ════════════════════════════════════════════
+// FILTER
+// ════════════════════════════════════════════
+function filtered() {
+  return allEvents().filter(e => {
+    if (state.month  !== 'ALL' && !e.date.startsWith(state.month))  return false;
+    if (state.region !== 'ALL' && e.region !== state.region)         return false;
+    if (state.cost   !== 'ALL' && e.cost   !== state.cost)           return false;
+    if (state.cat    !== 'ALL' && e.category !== state.cat)          return false;
+    if (state.search) {
+      const q = state.search.toLowerCase();
+      if (!e.name.toLowerCase().includes(q) &&
+          !e.city.toLowerCase().includes(q) &&
+          !(e.category||'').toLowerCase().includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+// ════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════
+const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const MONTH_MAP   = { '2026-04':'ABRIL 2026', '2026-05':'MAYO 2026', '2026-06':'JUNIO 2026' };
+const WD          = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
+
+function toDate(s) { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+function wd(s)     { return WD[toDate(s).getDay()]; }
+
+function catStyle(cat) {
+  const c = CAT[cat] || { color:'#fff', bg:'rgba(255,255,255,0.08)' };
+  return `--cc:${c.color};--cc-bg:${c.bg};`;
+}
+
+function costHtml(cost) {
+  const cls = cost==='Gratuito'?'free':cost==='Pago'?'paid':'';
+  const lbl = cost==='Gratuito'?'FREE':cost==='Pago'?'PAID':cost==='Ver web'?'VER WEB':cost.toUpperCase();
+  return `<span class="cost-tag ${cls}">${lbl}</span>`;
+}
+
+function cardHtml(e, delay=0) {
+  const c = CAT[e.category] || { color:'#fff', bg:'rgba(255,255,255,0.08)' };
+  return `
+    <div class="event-card" style="${catStyle(e.category)}animation-delay:${delay}ms">
+      <div class="ev-body">
+        <div class="ev-name">${e.name}</div>
+        <div class="ev-meta">
+          <span class="ev-city">${e.city}, ${e.state}</span>
+          ${e.series?`<span class="ev-series">${e.series}</span>`:''}
+        </div>
+      </div>
+      <div class="ev-side">
+        <span class="cat-pill" style="background:${c.bg};color:${c.color};">${e.category}</span>
+        <div class="ev-actions">
+          ${costHtml(e.cost)}
+          ${e.link?`<a class="reg-link" href="${e.link}" target="_blank" rel="noopener">↗ REG</a>`:''}
+        </div>
+      </div>
+    </div>`;
+}
+
+// ════════════════════════════════════════════
+// RENDER AGENDA
+// ════════════════════════════════════════════
+function renderAgenda() {
+  const evs = filtered();
+  const el  = document.getElementById('agendaView');
+
+  document.getElementById('visibleCount').textContent = evs.length;
+  document.getElementById('totalCount').textContent   = allEvents().length;
+
+  if (!evs.length) {
+    el.innerHTML = '<div class="empty">SIN EVENTOS PARA LOS FILTROS SELECCIONADOS</div>';
+    return;
+  }
+
+  // Group by month → date
+  const byMonth = {};
+  evs.forEach(e => {
+    const m = e.date.slice(0,7);
+    if (!byMonth[m]) byMonth[m] = {};
+    if (!byMonth[m][e.date]) byMonth[m][e.date] = [];
+    byMonth[m][e.date].push(e);
+  });
+
+  let html = '', idx = 0;
+  Object.keys(byMonth).sort().forEach(mo => {
+    const total = Object.values(byMonth[mo]).flat().length;
+    html += `<div class="month-section">
+      <div class="month-header">
+        <span class="month-name">${MONTH_MAP[mo]||mo}</span>
+        <span class="month-count">${total} EVENTOS</span>
+        <span class="month-rule"></span>
+      </div>`;
+    Object.keys(byMonth[mo]).sort().forEach(dt => {
+      const day = toDate(dt).getDate();
+      html += `<div class="date-group">
+        <div class="date-col">
+          <div class="date-num">${String(day).padStart(2,'0')}</div>
+          <div class="date-wd">${wd(dt)}</div>
+        </div>
+        <div class="events-col">`;
+      byMonth[mo][dt].forEach(e => { html += cardHtml(e, (idx++)*25); });
+      html += `</div></div>`;
+    });
+    html += `</div>`;
+  });
+
+  el.innerHTML = html;
+}
+
+// ════════════════════════════════════════════
+// RENDER LEGEND
+// ════════════════════════════════════════════
+function renderLegend() {
+  const legend = document.getElementById('catLegend');
+  let html = '';
+  Object.entries(CAT).forEach(([name, {color}]) => {
+    const active = state.cat === name ? ' active' : '';
+    html += `<div class="legend-item${active}" data-cat="${name}" title="${name}">
+      <div class="legend-dot" style="background:${color}"></div>
+      <span class="legend-label" style="color:${color}">${name}</span>
+    </div>`;
+  });
+  legend.innerHTML = html;
+
+  legend.querySelectorAll('.legend-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const cat = item.dataset.cat;
+      state.cat = (state.cat === cat) ? 'ALL' : cat;
+      renderLegend();
+      renderAgenda();
+      if (state.view === 'calendar') renderCalendar();
+    });
+  });
+}
+
+// ════════════════════════════════════════════
+// RENDER CALENDAR
+// ════════════════════════════════════════════
+function renderCalendar() {
+  document.getElementById('calTitle').textContent = `${MONTH_NAMES[calMonth]} ${calYear}`;
+  const grid    = document.getElementById('calGrid');
+  const all     = allEvents();
+  const first   = new Date(calYear, calMonth, 1).getDay();
+  const days    = new Date(calYear, calMonth+1, 0).getDate();
+
+  let html = WD.map(d=>`<div class="cal-wday">${d}</div>`).join('');
+  for (let i=0; i<first; i++) html += `<div class="cal-day empty"></div>`;
+
+  for (let d=1; d<=days; d++) {
+    const ds  = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const evs = all.filter(e => e.date <= ds && e.end >= ds);
+    const has = evs.length > 0;
+    const MAX = 2;
+
+    let dots = evs.slice(0,MAX).map(e=>{
+      const c = CAT[e.category]||{color:'#fff',bg:'rgba(255,255,255,0.08)'};
+      return `<div class="cal-dot" style="background:${c.bg};color:${c.color};">${e.name}</div>`;
+    }).join('');
+    if (evs.length > MAX) dots += `<div class="cal-more">+${evs.length-MAX} más</div>`;
+
+    html += `<div class="cal-day ${has?'has-events clickable':''}" ${has?`onclick="openSide('${ds}')"`:''}">
+      <div class="cal-day-num">${d}</div>
+      <div class="cal-day-dots">${dots}</div>
+    </div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function openSide(ds) {
+  const evs = allEvents().filter(e => e.date <= ds && e.end >= ds);
+  if (!evs.length) return;
+  const d = toDate(ds);
+  document.getElementById('sideDayNum').textContent   = d.getDate();
+  document.getElementById('sideDayLabel').textContent = `${MONTH_NAMES[d.getMonth()]} ${d.getFullYear()}`;
+  document.getElementById('sideEvents').innerHTML     = evs.map(e=>cardHtml(e)).join('');
+  document.getElementById('sidePanel').classList.add('open');
+}
+
+// ════════════════════════════════════════════
+// PILLS
+// ════════════════════════════════════════════
+document.querySelectorAll('.pill').forEach(p => {
+  p.addEventListener('click', () => {
+    const f = p.dataset.f, v = p.dataset.v;
+    document.querySelectorAll(`.pill[data-f="${f}"]`).forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+    state[f] = v;
+    renderAgenda();
+    if (state.view==='calendar') renderCalendar();
+  });
+});
+
+// VIEW TOGGLE
+document.getElementById('btnList').addEventListener('click', () => {
+  state.view = 'agenda';
+  document.getElementById('btnList').classList.add('active');
+  document.getElementById('btnCal').classList.remove('active');
+  document.getElementById('agendaView').classList.remove('hidden');
+  document.getElementById('calView').classList.remove('visible');
+});
+
+document.getElementById('btnCal').addEventListener('click', () => {
+  state.view = 'calendar';
+  document.getElementById('btnCal').classList.add('active');
+  document.getElementById('btnList').classList.remove('active');
+  document.getElementById('agendaView').classList.add('hidden');
+  document.getElementById('calView').classList.add('visible');
+  renderCalendar();
+});
+
+// CAL NAV
+document.getElementById('calPrev').addEventListener('click', ()=>{ calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); });
+document.getElementById('calNext').addEventListener('click', ()=>{ calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCalendar(); });
+
+// SIDE PANEL CLOSE
+document.getElementById('sideClose').addEventListener('click', ()=>{ document.getElementById('sidePanel').classList.remove('open'); });
+
+// SEARCH
+document.getElementById('searchInput').addEventListener('input', e=>{ state.search=e.target.value; renderAgenda(); });
+
+// MODAL
+document.getElementById('openModal').addEventListener('click',  ()=>document.getElementById('overlay').classList.add('open'));
+document.getElementById('closeModal').addEventListener('click', ()=>document.getElementById('overlay').classList.remove('open'));
+document.getElementById('overlay').addEventListener('click', e=>{ if(e.target===document.getElementById('overlay')) document.getElementById('overlay').classList.remove('open'); });
+
+// FORM SUBMIT
+document.getElementById('addForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const ev = {
+    id:       Date.now(),
+    date:     fd.get('date'),
+    end:      fd.get('end') || fd.get('date'),
+    name:     fd.get('name'),
+    city:     fd.get('city'),
+    state:    fd.get('state') || '',
+    region:   fd.get('region'),
+    category: fd.get('category'),
+    series:   fd.get('series') || null,
+    cost:     fd.get('cost'),
+    link:     fd.get('link') || null,
+    custom:   true,
+  };
+  saveCustom(ev);
+  e.target.reset();
+  document.getElementById('overlay').classList.remove('open');
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+  renderAgenda();
+  renderLegend();
+  if (state.view==='calendar') renderCalendar();
+});
+
+// ════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════
+renderLegend();
+renderAgenda();
+</script>
+</body>
+</html>
