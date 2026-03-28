@@ -121,11 +121,37 @@
     /* ── FILTER BAR ─────────────────────────── */
     .filter-bar {
       display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .filter-row {
+      display: flex;
       align-items: center;
       gap: 6px;
-      flex-wrap: wrap;
-      padding: 14px 0;
+      padding: 10px 0;
+    }
+
+    .filter-row--main {
       border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .filter-row--controls {
+      gap: 8px;
+    }
+
+    .fg {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pills-wrap {
+      display: flex;
+      gap: 4px;
+      align-items: center;
     }
 
     .f-label {
@@ -134,7 +160,6 @@
       color: var(--text-muted);
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      margin-right: 2px;
       white-space: nowrap;
     }
 
@@ -142,7 +167,7 @@
       width: 1px;
       height: 18px;
       background: var(--border-mid);
-      margin: 0 6px;
+      margin: 0 4px;
       flex-shrink: 0;
     }
 
@@ -869,71 +894,133 @@
     .footer-btn svg { flex-shrink: 0; }
 
     /* ── RESPONSIVE ─────────────────────────── */
+
     /* Tablet */
     @media (max-width: 900px) {
-      .header { padding: 24px 24px 0; }
-      .main   { padding: 0 24px 60px; }
-      .results-bar { padding: 0 24px; }
-      .legend { padding: 0 24px; }
-      .site-footer { padding: 24px; }
+      .header       { padding: 24px 24px 0; }
+      .main         { padding: 0 24px 60px; }
+      .results-bar  { padding: 0 24px; }
+      .legend       { padding: 0 24px; }
+      .site-footer  { padding: 24px; }
     }
 
-    /* Mobile */
+    /* Mobile ─────────────────────────────────── */
     @media (max-width: 640px) {
-      .header { padding: 16px 16px 0; }
-      .main   { padding: 0 16px 60px; }
-      .results-bar { padding: 0 16px; font-size: 9px; }
-      .legend { padding: 0 16px; }
-      .site-footer { padding: 20px 16px; flex-direction: column; align-items: flex-start; }
-      .footer-links { width: 100%; flex-direction: column; align-items: stretch; }
-      .footer-btn { justify-content: center; }
 
-      /* Header */
-      .header-meta { display: none; }
-      .brand-title { font-size: 28px; }
-      .brand-eyebrow { font-size: 9px; }
+      /* ── Sticky header fix ── */
+      /* Use fixed so it's truly locked, compensate with padding-top on body */
+      .header {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        padding: 12px 16px 0;
+        z-index: 200;
+        background: var(--bg);
+        /* Subtle bottom shadow so content scrolls under it cleanly */
+        box-shadow: 0 1px 0 rgba(255,255,255,0.07);
+      }
 
-      /* Filter bar: horizontal scroll */
-      .filter-bar {
+      /* Push page content below the fixed header */
+      body { padding-top: var(--mobile-header-height, 140px); }
+      /* Keep legend/results at full width, no extra offset needed */
+      .results-bar, .legend { margin-top: 0; }
+
+      .main         { padding: 0 16px 60px; }
+      .results-bar  { padding: 0 16px; font-size: 9px; }
+      .legend       { padding: 0 16px; }
+
+      /* ── Header top row ── */
+      .header-meta  { display: none; }
+      .header-top   { padding-bottom: 12px; gap: 12px; align-items: center; }
+      .brand-title  { font-size: 24px; line-height: 1; }
+      .brand-eyebrow{ font-size: 8px; letter-spacing: 0.14em; }
+
+      /* ── Filter bar ── */
+      /* Each row scrolls independently, no wrapping mess */
+      .filter-bar   { gap: 0; }
+
+      .filter-row--main {
         flex-wrap: nowrap;
         overflow-x: auto;
-        padding-bottom: 12px;
         scrollbar-width: none;
         -webkit-overflow-scrolling: touch;
-        gap: 5px;
+        padding: 8px 0;
+        gap: 4px;
+        border-bottom: 1px solid var(--border);
       }
-      .filter-bar::-webkit-scrollbar { display: none; }
-      .f-sep { display: none; }
-      .add-btn { flex-shrink: 0; }
-      .search-wrap { flex-shrink: 0; }
-      .search-wrap input { width: 130px; }
+      .filter-row--main::-webkit-scrollbar { display: none; }
 
-      /* Events list */
-      .date-group { grid-template-columns: 48px 1fr; }
-      .date-num { font-size: 28px; }
-      .date-col { padding: 12px 8px 12px 0; }
-      .events-col { padding-left: 12px; }
+      /* Hide text labels on mobile to save space */
+      .filter-row--main .f-label { display: none; }
 
-      /* Event card */
-      .event-card { grid-template-columns: 1fr; gap: 8px; padding: 12px; }
-      .ev-side { flex-direction: row; align-items: center; justify-content: space-between; }
-      .ev-name { font-size: 12px; white-space: normal; }
+      /* Separators become smaller dots */
+      .filter-row--main .f-sep {
+        width: 1px; height: 14px; margin: 0 2px; flex-shrink: 0;
+      }
 
-      /* Calendar */
-      .cal-day { min-height: 60px; padding: 5px; }
-      .cal-day-num { font-size: 10px; }
-      .cal-dot { display: none; }
-      .cal-dot:first-child { display: block; }
-      .cal-more { font-size: 8px; }
-      .cal-month-title { font-size: 20px; }
+      .fg { flex-shrink: 0; gap: 3px; }
+      .pills-wrap { flex-shrink: 0; gap: 3px; }
 
-      /* Side panel */
-      .side-panel { width: 100%; }
+      .pill {
+        font-size: 9px;
+        padding: 4px 9px;
+        white-space: nowrap;
+      }
 
-      /* Modal */
-      .modal { padding: 20px 16px; }
-      .form-grid { grid-template-columns: 1fr; }
-      .modal-title { font-size: 20px; }
+      /* Controls row: tight, no wrapping */
+      .filter-row--controls {
+        padding: 8px 0;
+        gap: 6px;
+        flex-wrap: nowrap;
+      }
+
+      .view-toggle { flex-shrink: 0; }
+
+      .search-wrap { flex: 1; min-width: 0; }
+      .search-wrap input {
+        width: 100%;
+        font-size: 11px;
+        padding: 7px 10px 7px 28px;
+      }
+
+      .add-btn {
+        flex-shrink: 0;
+        font-size: 9px;
+        padding: 7px 12px;
+        white-space: nowrap;
+      }
+
+      /* ── Events list ── */
+      .date-group       { grid-template-columns: 46px 1fr; }
+      .date-num         { font-size: 26px; }
+      .date-col         { padding: 12px 8px 12px 0; }
+      .events-col       { padding-left: 12px; }
+
+      /* ── Event card ── */
+      .event-card       { grid-template-columns: 1fr; gap: 8px; padding: 11px 12px; }
+      .ev-side          { flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+      .ev-name          { font-size: 12px; white-space: normal; }
+      .ev-actions       { gap: 6px; }
+
+      /* ── Calendar ── */
+      .cal-day          { min-height: 55px; padding: 4px; }
+      .cal-day-num      { font-size: 10px; }
+      .cal-dot          { display: none; }
+      .cal-dot:first-child { display: block; font-size: 8px; }
+      .cal-more         { font-size: 8px; }
+      .cal-month-title  { font-size: 20px; }
+
+      /* ── Side panel ── */
+      .side-panel       { width: 100%; }
+
+      /* ── Modal ── */
+      .modal            { padding: 20px 16px; }
+      .form-grid        { grid-template-columns: 1fr; }
+      .modal-title      { font-size: 20px; }
+
+      /* ── Footer ── */
+      .site-footer      { padding: 20px 16px; flex-direction: column; align-items: flex-start; }
+      .footer-links     { width: 100%; flex-direction: column; align-items: stretch; }
+      .footer-btn       { justify-content: center; }
     }
   </style>
 </head>
@@ -964,46 +1051,53 @@
 
   <!-- Filter bar -->
   <div class="filter-bar">
-    <span class="f-label">Month</span>
-    <div id="monthPills">
-      <button class="pill active" data-f="month" data-v="ALL">ALL</button>
-      <button class="pill" data-f="month" data-v="2026-04">APR</button>
-      <button class="pill" data-f="month" data-v="2026-05">MAY</button>
-      <button class="pill" data-f="month" data-v="2026-06">JUN</button>
+    <!-- Row A: Month + City -->
+    <div class="filter-row filter-row--main">
+      <div class="fg">
+        <span class="f-label">Month</span>
+        <div id="monthPills" class="pills-wrap">
+          <button class="pill active" data-f="month" data-v="ALL">ALL</button>
+          <button class="pill" data-f="month" data-v="2026-04">APR</button>
+          <button class="pill" data-f="month" data-v="2026-05">MAY</button>
+          <button class="pill" data-f="month" data-v="2026-06">JUN</button>
+        </div>
+      </div>
+      <div class="f-sep"></div>
+      <div class="fg">
+        <span class="f-label">City</span>
+        <div id="regionPills" class="pills-wrap">
+          <button class="pill active" data-f="region" data-v="ALL">ALL</button>
+          <button class="pill" data-f="region" data-v="SF Bay Area">SF</button>
+          <button class="pill" data-f="region" data-v="NYC">NYC</button>
+          <button class="pill" data-f="region" data-v="Boston">BOSTON</button>
+          <button class="pill" data-f="region" data-v="Miami">MIAMI</button>
+          <button class="pill" data-f="region" data-v="DC">DC</button>
+          <button class="pill" data-f="region" data-v="Philadelphia">PHILLY</button>
+        </div>
+      </div>
+      <div class="f-sep"></div>
+      <div class="fg">
+        <span class="f-label">Cost</span>
+        <div id="costPills" class="pills-wrap">
+          <button class="pill active" data-f="cost" data-v="ALL">ALL</button>
+          <button class="pill" data-f="cost" data-v="Gratuito">FREE</button>
+          <button class="pill" data-f="cost" data-v="Pago">PAID</button>
+        </div>
+      </div>
     </div>
 
-    <div class="f-sep"></div>
-    <span class="f-label">City</span>
-    <div id="regionPills">
-      <button class="pill active" data-f="region" data-v="ALL">ALL</button>
-      <button class="pill" data-f="region" data-v="SF Bay Area">SF</button>
-      <button class="pill" data-f="region" data-v="NYC">NYC</button>
-      <button class="pill" data-f="region" data-v="Boston">BOSTON</button>
-      <button class="pill" data-f="region" data-v="Miami">MIAMI</button>
-      <button class="pill" data-f="region" data-v="DC">DC</button>
-      <button class="pill" data-f="region" data-v="Philadelphia">PHILLY</button>
+    <!-- Row B: Controls -->
+    <div class="filter-row filter-row--controls">
+      <div class="view-toggle">
+        <button class="v-btn active" id="btnList">≡ LIST</button>
+        <button class="v-btn" id="btnCal">⊞ CAL</button>
+      </div>
+      <div class="search-wrap">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Search events...">
+      </div>
+      <button class="add-btn" id="openModal">+ ADD EVENT</button>
     </div>
-
-    <div class="f-sep"></div>
-    <span class="f-label">Cost</span>
-    <div id="costPills">
-      <button class="pill active" data-f="cost" data-v="ALL">ALL</button>
-      <button class="pill" data-f="cost" data-v="Gratuito">FREE</button>
-      <button class="pill" data-f="cost" data-v="Pago">PAID</button>
-    </div>
-
-    <div class="f-sep"></div>
-    <div class="view-toggle">
-      <button class="v-btn active" id="btnList">≡ LIST</button>
-      <button class="v-btn" id="btnCal">⊞ CAL</button>
-    </div>
-
-    <div class="search-wrap">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" id="searchInput" placeholder="Search events...">
-    </div>
-
-    <button class="add-btn" id="openModal">+ ADD EVENT</button>
   </div>
 </header>
 
@@ -1520,10 +1614,24 @@ document.getElementById('addForm').addEventListener('submit', e => {
 });
 
 // ════════════════════════════════════════════
+// MOBILE HEADER HEIGHT COMPENSATION
+// ════════════════════════════════════════════
+function syncHeaderHeight() {
+  if (window.innerWidth <= 640) {
+    const h = document.querySelector('.header').offsetHeight;
+    document.documentElement.style.setProperty('--mobile-header-height', h + 'px');
+  } else {
+    document.documentElement.style.removeProperty('--mobile-header-height');
+  }
+}
+
+// ════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════
 renderLegend();
 renderAgenda();
+syncHeaderHeight();
+window.addEventListener('resize', syncHeaderHeight);
 </script>
 </body>
 </html>
