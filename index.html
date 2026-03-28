@@ -477,18 +477,43 @@
 
     .reg-link {
       font-family: var(--f-mono);
-      font-size: 9px;
-      padding: 4px 9px;
-      border: 1px solid rgba(231,254,78,0.25);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border: 1px solid rgba(231,254,78,0.35);
       border-radius: var(--r);
       color: var(--accent);
-      background: transparent;
+      background: rgba(231,254,78,0.05);
       text-decoration: none;
-      transition: background 0.12s;
+      transition: all 0.15s;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+    }
+
+    .reg-link:hover {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+
+    .delete-btn {
+      font-family: var(--f-mono);
+      font-size: 9px;
+      padding: 4px 8px;
+      border: 1px solid rgba(239,154,154,0.25);
+      border-radius: var(--r);
+      color: rgba(239,154,154,0.6);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.12s;
       white-space: nowrap;
     }
 
-    .reg-link:hover { background: var(--accent-dim); }
+    .delete-btn:hover {
+      background: rgba(239,154,154,0.1);
+      color: #EF9A9A;
+      border-color: rgba(239,154,154,0.5);
+    }
 
     /* ── CALENDAR VIEW ──────────────────────── */
     .cal-view { display: none; }
@@ -923,7 +948,7 @@
     </div>
     <div class="header-meta" id="headerMeta">
       <div class="meta-stat">
-        <div class="meta-num" id="totalCount">65</div>
+        <div class="meta-num" id="totalCount">63</div>
         <div class="meta-label">Events</div>
       </div>
       <div class="meta-stat">
@@ -951,11 +976,12 @@
     <span class="f-label">City</span>
     <div id="regionPills">
       <button class="pill active" data-f="region" data-v="ALL">ALL</button>
-      <button class="pill" data-f="region" data-v="SF">SF</button>
+      <button class="pill" data-f="region" data-v="SF Bay Area">SF</button>
       <button class="pill" data-f="region" data-v="NYC">NYC</button>
       <button class="pill" data-f="region" data-v="Boston">BOSTON</button>
       <button class="pill" data-f="region" data-v="Miami">MIAMI</button>
       <button class="pill" data-f="region" data-v="DC">DC</button>
+      <button class="pill" data-f="region" data-v="Philadelphia">PHILLY</button>
     </div>
 
     <div class="f-sep"></div>
@@ -983,7 +1009,7 @@
 
 <!-- ── RESULTS BAR ───────────────────────────── -->
 <div class="results-bar">
-  Showing&nbsp;<strong id="visibleCount">65</strong>&nbsp;events · APR — JUN 2026
+  Showing&nbsp;<strong id="visibleCount">63</strong>&nbsp;events · APR — JUN 2026
 </div>
 
 <!-- ── LEGEND ────────────────────────────────── -->
@@ -1141,71 +1167,69 @@ const CAT = {
 // BASE EVENTS
 // ════════════════════════════════════════════
 const BASE = [
-  { id:1,  date:"2026-04-07", end:"2026-04-07", name:"MedTech Startups Mixer",                                              city:"San Francisco",  state:"California",    region:"SF",       category:"Bio / Health",      series:null,            cost:"Pago",     link:"https://www.garysguide.com/events?region=sf" },
-  { id:2,  date:"2026-04-15", end:"2026-04-15", name:"AI x Hardware Engineering Dinner",                                    city:"Mountain View",  state:"California",    region:"SF",       category:"AI / ML",           series:null,            cost:"Ver web",  link:"https://lu.ma/0gkax6h6" },
-  { id:3,  date:"2026-04-15", end:"2026-04-15", name:"A+ Founders Dinner",                                                  city:"San Francisco",  state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Ver web",  link:"https://lu.ma/ncpq1ogx" },
-  { id:4,  date:"2026-04-15", end:"2026-04-15", name:"Ships & Sips: SF Engineering Happy Hour",                             city:"San Francisco",  state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Ver web",  link:"https://lu.ma/sf-eng-happy-hour" },
-  { id:5,  date:"2026-04-15", end:"2026-04-15", name:"Startups, Power, and the AI Age with Salen Churi",                   city:"Stanford",       state:"California",    region:"SF",       category:"AI / ML",           series:null,            cost:"Ver web",  link:"https://lu.ma/8fvs6pnw" },
-  { id:6,  date:"2026-04-15", end:"2026-04-15", name:"Celebrating 10 Years of MIT Sandbox",                                city:"Cambridge",      state:"Massachusetts", region:"Boston",   category:"Startup / General", series:null,            cost:"Ver web",  link:"https://lu.ma/vcxll7xl" },
-  { id:7,  date:"2026-04-15", end:"2026-04-15", name:"Meet the Investors: SOSV & HAX Demo Day",                            city:"New York",       state:"New York",      region:"NYC",      category:"Pitch / Demo",      series:null,            cost:"Ver web",  link:"https://lu.ma/sosv-demo" },
-  { id:8,  date:"2026-04-15", end:"2026-04-15", name:"Bitcoin Devs Meetup",                                                city:"New York",       state:"New York",      region:"NYC",      category:"Fintech",           series:null,            cost:"Gratuito", link:"https://www.garysguide.com/events" },
-  { id:9,  date:"2026-04-15", end:"2026-04-15", name:"Gen AI Summit 2026",                                                 city:"San Jose",       state:"California",    region:"SF",       category:"AI / ML",           series:null,            cost:"Pago",     link:"https://www.garysguide.com/events?region=sf" },
-  { id:10, date:"2026-04-15", end:"2026-04-15", name:"CodeLaunch USA 2026 – Hackathon & Pitch Competition",                city:"Dallas",         state:"Texas",         region:"Dallas TX",category:"Pitch / Demo",      series:null,            cost:"Gratuito", link:"https://codelaunch.com/events/2026-usa-ga/" },
-  { id:11, date:"2026-04-16", end:"2026-04-17", name:"VC Community Happy Hour: Round Two",                                 city:"New York",       state:"New York",      region:"NYC",      category:"Networking",        series:null,            cost:"Ver web",  link:"https://lu.ma/r97w2x2x" },
-  { id:12, date:"2026-04-16", end:"2026-04-17", name:"Spring Into Cyber: Community Mixer",                                 city:"Miami",          state:"Florida",       region:"Miami",    category:"Networking",        series:null,            cost:"Ver web",  link:"https://lu.ma/wl174nc7" },
-  { id:13, date:"2026-04-16", end:"2026-04-16", name:"AngularNYC Meetup",                                                  city:"New York",       state:"New York",      region:"NYC",      category:"Startup / General", series:null,            cost:"Gratuito", link:"https://www.garysguide.com/events" },
-  { id:14, date:"2026-04-16", end:"2026-04-16", name:"Slides Down – AI Founders Party (DigitalOcean x Zendesk)",          city:"San Francisco",  state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Gratuito", link:"https://www.garysguide.com/events?region=sf" },
-  { id:15, date:"2026-04-16", end:"2026-04-16", name:"Big Idea CONNECTpreneur Forum",                                     city:"Washington",     state:"DC",            region:"DC",       category:"Networking",        series:null,            cost:"Pago",     link:"https://connectpreneur.org/2026-events-calendar/" },
-  { id:16, date:"2026-04-17", end:"2026-04-17", name:"$100K AI Startup Pitch-Off @ Chargebee Beelieve '26",               city:"San Francisco",  state:"California",    region:"SF",       category:"Pitch / Demo",      series:null,            cost:"Ver web",  link:"https://lu.ma/beelieve" },
-  { id:17, date:"2026-04-17", end:"2026-04-17", name:"Startup Pitch Night // Sustainable AI",                             city:"San Francisco",  state:"California",    region:"SF",       category:"Climate Tech",      series:null,            cost:"Ver web",  link:"https://lu.ma/20daseu5" },
-  { id:18, date:"2026-04-17", end:"2026-04-17", name:"Voice AI Builders Night",                                           city:"San Francisco",  state:"California",    region:"SF",       category:"AI / ML",           series:null,            cost:"Ver web",  link:"https://lu.ma/voice_builders" },
-  { id:19, date:"2026-04-17", end:"2026-04-18", name:"Recharge Your Closet – Sustainable Fashion Pop-Up",                city:"San Francisco",  state:"California",    region:"SF",       category:"Fashion Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/eam8uq5s" },
-  { id:20, date:"2026-04-17", end:"2026-04-18", name:"Booth Alumni x BTG Happy Hour",                                     city:"San Francisco",  state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Ver web",  link:"https://lu.ma/" },
-  { id:21, date:"2026-04-17", end:"2026-04-17", name:"AI Engineers – Game Night",                                         city:"New York",       state:"New York",      region:"NYC",      category:"AI / ML",           series:null,            cost:"Gratuito", link:"https://www.garysguide.com/events" },
-  { id:22, date:"2026-04-19", end:"2026-04-19", name:"Founder Story: Building in the AI Era",                            city:"Boston",         state:"Massachusetts", region:"Boston",   category:"Startup / General", series:null,            cost:"Ver web",  link:"https://lu.ma/boston-founder" },
-  { id:23, date:"2026-04-20", end:"2026-04-20", name:"Climate Week SF – Founders, Investors & LP Happy Hour",            city:"San Francisco",  state:"California",    region:"SF",       category:"Climate Tech",      series:"SF Climate Week",cost:"Gratuito", link:"https://lu.ma/climatesf" },
-  { id:24, date:"2026-04-21", end:"2026-04-21", name:"Food & Ag Ecosystem Happy Hour (SF Climate Week)",                 city:"San Francisco",  state:"California",    region:"SF",       category:"Climate Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/8yuc8udq" },
-  { id:25, date:"2026-04-21", end:"2026-04-21", name:"California Leads: Investment, Innovation & Clean Energy Economy",  city:"San Francisco",  state:"California",    region:"SF",       category:"Climate Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/vr9fbyxd" },
-  { id:26, date:"2026-04-21", end:"2026-04-21", name:"Carbon Removal Happy Hour at SF Climate Week 2026",               city:"San Francisco",  state:"California",    region:"SF",       category:"Climate Tech",      series:"SF Climate Week",cost:"Gratuito", link:"https://lu.ma/svn0brc7" },
-  { id:27, date:"2026-04-21", end:"2026-04-21", name:"Crossing the Chasm in Climate Tech",                              city:"San Francisco",  state:"California",    region:"SF",       category:"Climate Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/k08b4zrr" },
-  { id:28, date:"2026-04-21", end:"2026-04-21", name:"WomenHack 2026",                                                   city:"San Francisco",  state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Ver web",  link:"https://lu.ma/womenhack-sf" },
-  { id:29, date:"2026-04-21", end:"2026-04-22", name:"International Founders Happy Hour – Magic Room Series",           city:"Stanford",       state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Ver web",  link:"https://lu.ma/2jxgjtn1" },
-  { id:30, date:"2026-04-21", end:"2026-04-21", name:"Ursa Space Spotlight – Satellite Intelligence Leadership",        city:"New York",       state:"New York",      region:"NYC",      category:"Deep Tech",         series:"NYC Space Week",cost:"Gratuito", link:"https://www.garysguide.com/events" },
-  { id:31, date:"2026-04-21", end:"2026-04-25", name:"NYC Space Week 2026",                                              city:"New York",       state:"New York",      region:"NYC",      category:"Deep Tech",         series:"NYC Space Week",cost:"Mixto",    link:"https://www.garysguide.com/events" },
-  { id:32, date:"2026-04-21", end:"2026-04-25", name:"NY FinTech Week 2026 – Community Events",                         city:"New York",       state:"New York",      region:"NYC",      category:"Fintech",           series:"NY FinTech Week",cost:"Mixto",    link:"https://luma.com/ny-fintech-week" },
-  { id:33, date:"2026-04-22", end:"2026-04-22", name:"AI for Investors | Synergist x Women in AI",                      city:"San Francisco",  state:"California",    region:"SF",       category:"AI / ML",           series:null,            cost:"Ver web",  link:"https://lu.ma/vpdlhyfh" },
-  { id:34, date:"2026-04-22", end:"2026-04-22", name:"Rubbish: Waste Management Tech Happy Hour",                       city:"San Francisco",  state:"California",    region:"SF",       category:"Climate Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/rubbish-happy-hour" },
-  { id:35, date:"2026-04-22", end:"2026-04-22", name:"NYC Space Week Kickoff at Luxembourg House",                      city:"New York",       state:"New York",      region:"NYC",      category:"Deep Tech",         series:"NYC Space Week",cost:"Gratuito", link:"https://www.garysguide.com/events" },
-  { id:36, date:"2026-04-23", end:"2026-04-24", name:"Nebulai Tech Wave: The AI Agents Era (Miami Tech Week)",          city:"Miami",          state:"Florida",       region:"Miami",    category:"AI / ML",           series:"eMerge Americas",cost:"Ver web",  link:"https://lu.ma/h7aiuiaq" },
-  { id:37, date:"2026-04-23", end:"2026-04-23", name:"ERA Accelerator Demo Day – 14 Startups Pitching",                city:"New York",       state:"New York",      region:"NYC",      category:"Pitch / Demo",      series:"NYC Space Week",cost:"Gratuito", link:"https://www.garysguide.com/events" },
-  { id:38, date:"2026-04-23", end:"2026-04-23", name:"SpaceTech Legal & Capital Playbook",                              city:"New York",       state:"New York",      region:"NYC",      category:"Deep Tech",         series:"NYC Space Week",cost:"Gratuito", link:"https://www.garysguide.com/events" },
-  { id:39, date:"2026-04-23", end:"2026-04-24", name:"eMerge Americas Conference + Expo 2026",                         city:"Miami Beach",    state:"Florida",       region:"Miami",    category:"Startup / General", series:"eMerge Americas",cost:"Pago",     link:"https://emergeamericas.com/register/" },
-  { id:40, date:"2026-04-24", end:"2026-04-25", name:"AI + SaaS Startups Happy Hour @ eMerge Americas",               city:"Miami",          state:"Florida",       region:"Miami",    category:"AI / ML",           series:"eMerge Americas",cost:"Gratuito", link:"https://lu.ma/bp5ka07v" },
-  { id:41, date:"2026-04-24", end:"2026-04-24", name:"New York Space Forum 2026",                                       city:"New York",       state:"New York",      region:"NYC",      category:"Deep Tech",         series:"NYC Space Week",cost:"Pago",     link:"https://www.garysguide.com/events" },
-  { id:42, date:"2026-04-24", end:"2026-04-24", name:"NYC Coffee Club – Early-Stage B2B Founders & Funders",           city:"New York",       state:"New York",      region:"NYC",      category:"SaaS / B2B",        series:null,            cost:"Gratuito", link:"https://www.garysguide.com/events" },
-  { id:43, date:"2026-04-25", end:"2026-04-25", name:"NYC Space Week Closing Townhouse Party",                         city:"New York",       state:"New York",      region:"NYC",      category:"Networking",        series:"NYC Space Week",cost:"Gratuito", link:"https://www.garysguide.com/events" },
-  { id:44, date:"2026-04-27", end:"2026-04-28", name:"Niural AI Summit",                                               city:"New York",       state:"New York",      region:"NYC",      category:"AI / ML",           series:"NY FinTech Week",cost:"Ver web",  link:"https://lu.ma/mggz3md1" },
-  { id:45, date:"2026-04-27", end:"2026-04-27", name:"C3 Davos of Healthcare Summit",                                  city:"Sunnyvale",      state:"California",    region:"SF",       category:"Bio / Health",      series:null,            cost:"Gratuito", link:"https://www.garysguide.com/events?region=sf" },
-  { id:46, date:"2026-04-28", end:"2026-04-28", name:"Fintech Is Femme + FTW: Official NY FinTech Week Conference",   city:"New York",       state:"New York",      region:"NYC",      category:"Fintech",           series:"NY FinTech Week",cost:"Pago",     link:"https://lu.ma/FTW_NYC26" },
-  { id:47, date:"2026-04-28", end:"2026-04-30", name:"FTW: Official NY FinTech Week Conference (Fintech Is Femme)",   city:"New York",       state:"New York",      region:"NYC",      category:"Fintech",           series:"NY FinTech Week",cost:"Pago",     link:"https://lu.ma/FTW_NYC26" },
-  { id:48, date:"2026-04-28", end:"2026-04-29", name:"Startup Grind Global Conference 2026",                          city:"Redwood City",   state:"California",    region:"SF",       category:"Startup / General", series:"Startup Grind",  cost:"Pago",     link:"https://www.startupgrind.tech/" },
-  { id:49, date:"2026-04-29", end:"2026-04-29", name:"Stripe Sessions 2026",                                          city:"San Francisco",  state:"California",    region:"SF",       category:"SaaS / B2B",        series:null,            cost:"Pago",     link:"https://lu.ma/stripe-sessions" },
-  { id:50, date:"2026-04-30", end:"2026-05-01", name:"Side Event: Reverse Network Opening Power Walk at NY AI/Tech",  city:"New York",       state:"New York",      region:"NYC",      category:"Networking",        series:"NYC Tech Week",  cost:"Gratuito", link:"https://lu.ma/q345qiay" },
-  { id:51, date:"2026-04-30", end:"2026-04-30", name:"StrictlyVC San Francisco 2026",                                 city:"San Francisco",  state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Pago",     link:"https://techcrunch.com/events/strictlyvc-san-francisco-2026/" },
-  { id:52, date:"2026-04-30", end:"2026-04-30", name:"SF Startup & Tech Mixer 2026",                                  city:"San Francisco",  state:"California",    region:"SF",       category:"Networking",        series:null,            cost:"Pago",     link:"https://www.eventbrite.com/e/sf-startup-tech-mixer-2026-tickets-1985409306682" },
-  { id:53, date:"2026-05-01", end:"2026-05-01", name:"Penn Venture Lab Startup Challenge – Live Pitch",               city:"Philadelphia",   state:"Pennsylvania",  region:"Philly",   category:"Pitch / Demo",      series:null,            cost:"Gratuito", link:"https://venturelab.upenn.edu/startup-challenge" },
-  { id:54, date:"2026-05-01", end:"2026-05-03", name:"Techstars Startup Weekend Boston",                              city:"Boston",         state:"Massachusetts", region:"Boston",   category:"Pitch / Demo",      series:null,            cost:"Pago",     link:"https://startupweekend.boston/" },
-  { id:55, date:"2026-05-06", end:"2026-05-06", name:"SF Coffee Club – Early Stage B2B Tech Founders & Funders",     city:"San Francisco",  state:"California",    region:"SF",       category:"SaaS / B2B",        series:null,            cost:"Gratuito", link:"https://lu.ma/sf-coffee-club" },
-  { id:56, date:"2026-05-07", end:"2026-05-07", name:"AI Hot 100 Summit",                                             city:"New York",       state:"New York",      region:"NYC",      category:"AI / ML",           series:null,            cost:"Pago",     link:"https://www.garysguide.com/events" },
-  { id:57, date:"2026-05-12", end:"2026-05-12", name:"SaaStr AI Summit",                                              city:"San Mateo",      state:"California",    region:"SF",       category:"SaaS / B2B",        series:"SaaStr",        cost:"Pago",     link:"https://lu.ma/saastr-ai" },
-  { id:58, date:"2026-05-12", end:"2026-05-13", name:"TECHSPO Boston 2026",                                           city:"Boston",         state:"Massachusetts", region:"Boston",   category:"Startup / General", series:null,            cost:"Pago",     link:"https://techspoboston.com/" },
-  { id:59, date:"2026-05-12", end:"2026-05-14", name:"SaaStr Annual 2026",                                            city:"San Mateo",      state:"California",    region:"SF",       category:"SaaS / B2B",        series:"SaaStr",        cost:"Pago",     link:"https://www.saastr.com/events/" },
-  { id:60, date:"2026-05-14", end:"2026-05-14", name:"Wall Street South FinTech Summit",                              city:"Miami",          state:"Florida",       region:"Miami",    category:"Fintech",           series:null,            cost:"Gratuito", link:"https://lu.ma/wallstreet-south" },
-  { id:61, date:"2026-05-18", end:"2026-05-18", name:"Techex 2026",                                                   city:"San Jose",       state:"California",    region:"SF",       category:"Startup / General", series:null,            cost:"Pago",     link:"https://lu.ma/techex" },
-  { id:62, date:"2026-05-26", end:"2026-05-31", name:"Tech Week Boston 2026",                                         city:"Boston",         state:"Massachusetts", region:"Boston",   category:"Startup / General", series:"Tech Week Boston",cost:"Mixto",   link:"https://www.tech-week.com/boston" },
-  { id:63, date:"2026-05-28", end:"2026-05-28", name:"Niural AI Summit (NYC)",                                        city:"New York",       state:"New York",      region:"NYC",      category:"AI / ML",           series:"NYC Tech Week",  cost:"Ver web",  link:"https://lu.ma/mggz3md1" },
-  { id:64, date:"2026-05-28", end:"2026-05-28", name:"AI Engineers – Devs & Drinks NYC",                             city:"New York",       state:"New York",      region:"NYC",      category:"AI / ML",           series:null,            cost:"Gratuito", link:"https://www.garysguide.com/events" },
-  { id:65, date:"2026-06-01", end:"2026-06-07", name:"NYC Tech Week 2026",                                            city:"New York",       state:"New York",      region:"NYC",      category:"Startup / General", series:"NYC Tech Week",  cost:"Mixto",    link:"https://www.tech-week.com/" },
+  { id:1,  date:"2026-04-15", end:"2026-04-15", name:"AI x Hardware Engineering Dinner",                                        city:"Mountain View", state:"CA", region:"SF Bay Area",   category:"AI / ML",           series:null,             cost:"Ver web",  link:"https://lu.ma/0gkax6h6" },
+  { id:2,  date:"2026-04-15", end:"2026-04-15", name:"A+ Founders Dinner",                                                      city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Networking",        series:null,             cost:"Ver web",  link:"https://lu.ma/ncpq1ogx" },
+  { id:3,  date:"2026-04-15", end:"2026-04-15", name:"Ships & Sips: SF Engineering Happy Hour",                                 city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Networking",        series:null,             cost:"Ver web",  link:"https://lu.ma/sf-eng-happy-hour" },
+  { id:4,  date:"2026-04-15", end:"2026-04-15", name:"Startups, Power, and the AI Age",                                         city:"Stanford",      state:"CA", region:"SF Bay Area",   category:"AI / ML",           series:null,             cost:"Ver web",  link:"https://lu.ma/8fvs6pnw" },
+  { id:5,  date:"2026-04-15", end:"2026-04-15", name:"Gen AI Summit 2026",                                                      city:"San Jose",      state:"CA", region:"SF Bay Area",   category:"AI / ML",           series:null,             cost:"Pago",     link:"https://www.garysguide.com/events/ndagxbs/Gen-AI-Summit" },
+  { id:6,  date:"2026-04-15", end:"2026-04-15", name:"Celebrating 10 Years of MIT Sandbox",                                     city:"Cambridge",     state:"MA", region:"Boston",        category:"Pitch / Demo",      series:null,             cost:"Ver web",  link:"https://lu.ma/vcxll7xl" },
+  { id:7,  date:"2026-04-15", end:"2026-04-15", name:"Bitcoin Devs Meetup",                                                     city:"New York",      state:"NY", region:"NYC",           category:"Fintech",           series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/l81ewxx/Bitcoin-Devs-Meetup" },
+  { id:8,  date:"2026-04-15", end:"2026-04-15", name:"CodeLaunch USA 2026 – Hackathon & Pitch Competition",                     city:"Dallas",        state:"TX", region:"Dallas TX",     category:"Pitch / Demo",      series:null,             cost:"Gratuito", link:"https://codelaunch.com/events/2026-usa-ga/" },
+  { id:9,  date:"2026-04-16", end:"2026-04-16", name:"Big Idea CONNECTpreneur Forum",                                           city:"Washington",    state:"DC", region:"DC",            category:"Networking",        series:null,             cost:"Pago",     link:"https://connectpreneur.org/2026-events-calendar/" },
+  { id:10, date:"2026-04-16", end:"2026-04-16", name:"Slides Down – AI Founders Party (DigitalOcean x Zendesk)",               city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Networking",        series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/3dp7ip4/Slides-Down-AI-Founders-Party" },
+  { id:11, date:"2026-04-16", end:"2026-04-16", name:"AngularNYC Meetup",                                                       city:"New York",      state:"NY", region:"NYC",           category:"Startup / General", series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/6cf1lp7/AngularNYC-Meetup" },
+  { id:12, date:"2026-04-16", end:"2026-04-17", name:"VC Community Happy Hour: Round Two",                                      city:"New York",      state:"NY", region:"NYC",           category:"Networking",        series:null,             cost:"Ver web",  link:"https://lu.ma/r97w2x2x" },
+  { id:13, date:"2026-04-16", end:"2026-04-17", name:"Spring Into Cyber: Community Mixer",                                      city:"Miami",         state:"FL", region:"Miami",         category:"Networking",        series:null,             cost:"Ver web",  link:"https://lu.ma/wl174nc7" },
+  { id:14, date:"2026-04-17", end:"2026-04-17", name:"AI Engineers – Game Night",                                               city:"New York",      state:"NY", region:"NYC",           category:"AI / ML",           series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/2fc2gyd/AI-Engineers-Game-Night" },
+  { id:15, date:"2026-04-17", end:"2026-04-17", name:"$100K AI Startup Pitch-Off @ Chargebee Beelieve '26",                    city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Pitch / Demo",      series:null,             cost:"Ver web",  link:"https://lu.ma/beelieve" },
+  { id:16, date:"2026-04-17", end:"2026-04-17", name:"Startup Pitch Night // Sustainable AI",                                   city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Climate Tech",      series:null,             cost:"Ver web",  link:"https://lu.ma/20daseu5" },
+  { id:17, date:"2026-04-17", end:"2026-04-17", name:"Voice AI Builders Night",                                                 city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"AI / ML",           series:null,             cost:"Ver web",  link:"https://lu.ma/voice_builders" },
+  { id:18, date:"2026-04-17", end:"2026-04-18", name:"Recharge Your Closet – Sustainable Fashion Pop-Up (Rethink the Runway)", city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Fashion Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/eam8uq5s" },
+  { id:19, date:"2026-04-20", end:"2026-04-20", name:"Climate Week – Founders, Investors & LP Happy Hour",                     city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Climate Tech",      series:"SF Climate Week",cost:"Gratuito", link:"https://www.garysguide.com/events/74rq32b/Climate-Week-Founders-Investors-LP-Happy-Hour" },
+  { id:20, date:"2026-04-21", end:"2026-04-25", name:"NYC Space Week 2026",                                                     city:"New York",      state:"NY", region:"NYC",           category:"Deep Tech",         series:"NYC Space Week", cost:"Mixto",    link:"https://www.garysguide.com/events" },
+  { id:21, date:"2026-04-21", end:"2026-04-21", name:"Lunar Development Co-Operative Spotlight",                                city:"New York",      state:"NY", region:"NYC",           category:"Deep Tech",         series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/jmk2rbu/Lunar-Development-Co-Operative-Spotlight" },
+  { id:22, date:"2026-04-21", end:"2026-04-21", name:"Ursa Space Spotlight – Satellite Intelligence Leadership",                city:"New York",      state:"NY", region:"NYC",           category:"Deep Tech",         series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/q34iugp/Ursa-Space-Spotlight-Satellite-Intelligence-Leadership" },
+  { id:23, date:"2026-04-21", end:"2026-04-21", name:"WomenHack 2026",                                                          city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Networking",        series:null,             cost:"Ver web",  link:"https://www.garysguide.com/events/4yx7twv/WomenHack-2026" },
+  { id:24, date:"2026-04-21", end:"2026-04-21", name:"Food & Ag Ecosystem Happy Hour (SF Climate Week)",                       city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Climate Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/8yuc8udq" },
+  { id:25, date:"2026-04-21", end:"2026-04-21", name:"California Leads: Investment, Innovation & Clean Energy",                 city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Climate Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/vr9fbyxd" },
+  { id:26, date:"2026-04-21", end:"2026-04-21", name:"Carbon Removal Happy Hour – SF Climate Week",                            city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Climate Tech",      series:"SF Climate Week",cost:"Gratuito", link:"https://lu.ma/svn0brc7" },
+  { id:27, date:"2026-04-21", end:"2026-04-22", name:"International Founders Happy Hour – Magic Room Series",                  city:"Stanford",      state:"CA", region:"SF Bay Area",   category:"Networking",        series:null,             cost:"Ver web",  link:"https://lu.ma/2jxgjtn1" },
+  { id:28, date:"2026-04-22", end:"2026-04-22", name:"New York Analog Astronauts",                                              city:"New York",      state:"NY", region:"NYC",           category:"Deep Tech",         series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/o7o9rk8/New-York-Analog-Astronauts" },
+  { id:29, date:"2026-04-22", end:"2026-04-22", name:"NYC Space Week Kickoff at Luxembourg House",                              city:"New York",      state:"NY", region:"NYC",           category:"Deep Tech",         series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/a2f2uah/Space-Week-Kickoff-At-Luxembourg-House" },
+  { id:30, date:"2026-04-22", end:"2026-04-22", name:"AI for Investors | Synergist x Women in AI",                             city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"AI / ML",           series:null,             cost:"Ver web",  link:"https://lu.ma/vpdlhyfh" },
+  { id:31, date:"2026-04-22", end:"2026-04-22", name:"Rubbish: Waste Management Tech Happy Hour",                               city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Climate Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/rubbish-happy-hour" },
+  { id:32, date:"2026-04-23", end:"2026-04-23", name:"ERA Accelerator Demo Day – 14 Startups Pitching",                        city:"New York",      state:"NY", region:"NYC",           category:"Pitch / Demo",      series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/s0r96jd/ERA-Accelerator-Demo-Day" },
+  { id:33, date:"2026-04-23", end:"2026-04-23", name:"SpaceTech Legal & Capital Playbook",                                      city:"New York",      state:"NY", region:"NYC",           category:"Deep Tech",         series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/ue2qihk/Spacetech-Legal-Capital-Playbook" },
+  { id:34, date:"2026-04-23", end:"2026-04-24", name:"eMerge Americas Conference + Expo 2026",                                  city:"Miami Beach",   state:"FL", region:"Miami",         category:"Startup / General", series:"eMerge Americas", cost:"Pago",    link:"https://emergeamericas.com/register/" },
+  { id:35, date:"2026-04-23", end:"2026-04-24", name:"Nebulai Tech Wave: AI Agents Era (Miami Tech Week)",                     city:"Miami",         state:"FL", region:"Miami",         category:"AI / ML",           series:"eMerge Americas", cost:"Ver web",  link:"https://lu.ma/h7aiuiaq" },
+  { id:36, date:"2026-04-24", end:"2026-04-24", name:"New York Space Forum 2026",                                               city:"New York",      state:"NY", region:"NYC",           category:"Deep Tech",         series:"NYC Space Week", cost:"Pago",     link:"https://www.garysguide.com/events/dclqane/New-York-Space-Forum" },
+  { id:37, date:"2026-04-24", end:"2026-04-24", name:"NYC Coffee Club – Early-Stage B2B Founders & Funders",                   city:"New York",      state:"NY", region:"NYC",           category:"SaaS / B2B",        series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/kohryjk/NYC-Coffee-Club-Early-Stage-B2B-Founders-Funders" },
+  { id:38, date:"2026-04-24", end:"2026-04-25", name:"AI + SaaS Startups Happy Hour @ eMerge Americas",                       city:"Miami",         state:"FL", region:"Miami",         category:"AI / ML",           series:"eMerge Americas", cost:"Gratuito", link:"https://lu.ma/bp5ka07v" },
+  { id:39, date:"2026-04-25", end:"2026-04-25", name:"NYC Space Week Closing Townhouse Party",                                  city:"New York",      state:"NY", region:"NYC",           category:"Networking",        series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/z4jwr9h/Space-Week-Closing-Townhouse-Party" },
+  { id:40, date:"2026-04-27", end:"2026-04-27", name:"C3 Davos of Healthcare Summit",                                          city:"Sunnyvale",     state:"CA", region:"SF Bay Area",   category:"Bio / Health",      series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/b71d2zg/C3-Davos-Of-Healthcare-Summit" },
+  { id:41, date:"2026-04-27", end:"2026-05-01", name:"NY FinTech Week 2026 – Community Events",                                city:"New York",      state:"NY", region:"NYC",           category:"Fintech",           series:"NY FinTech Week",cost:"Mixto",    link:"https://lu.ma/ny-fintech-week" },
+  { id:42, date:"2026-04-28", end:"2026-04-28", name:"Startup Grind Global Conference 2026",                                   city:"Redwood City",  state:"CA", region:"SF Bay Area",   category:"Startup / General", series:"Startup Grind",  cost:"Pago",     link:"https://www.startupgrind.tech/" },
+  { id:43, date:"2026-04-28", end:"2026-04-29", name:"Niural AI Summit – NY FinTech Week",                                     city:"New York",      state:"NY", region:"NYC",           category:"AI / ML",           series:"NY FinTech Week",cost:"Ver web",  link:"https://lu.ma/mggz3md1" },
+  { id:44, date:"2026-04-28", end:"2026-04-30", name:"FTW: Official NY FinTech Week Conference (Fintech Is Femme)",            city:"New York",      state:"NY", region:"NYC",           category:"Fintech",           series:"NY FinTech Week",cost:"Pago",     link:"https://lu.ma/FTW_NYC26" },
+  { id:45, date:"2026-04-29", end:"2026-04-29", name:"Stripe Sessions 2026",                                                   city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"SaaS / B2B",        series:null,             cost:"Pago",     link:"https://www.garysguide.com/events/zcp0uor/Stripe-Session" },
+  { id:46, date:"2026-04-30", end:"2026-04-30", name:"StrictlyVC San Francisco 2026",                                          city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Networking",        series:null,             cost:"Pago",     link:"https://techcrunch.com/events/strictlyvc-san-francisco-2026/" },
+  { id:47, date:"2026-04-30", end:"2026-04-30", name:"SF Startup & Tech Mixer 2026",                                           city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Networking",        series:null,             cost:"Pago",     link:"https://www.eventbrite.com/e/sf-startup-tech-mixer-2026-tickets-1985409306682" },
+  { id:48, date:"2026-04-30", end:"2026-05-01", name:"Side Event: Reverse Network Power Walk – NY Tech",                      city:"New York",      state:"NY", region:"NYC",           category:"Networking",        series:"NYC Tech Week",  cost:"Gratuito", link:"https://lu.ma/q345qiay" },
+  { id:49, date:"2026-05-01", end:"2026-05-01", name:"Penn Venture Lab Startup Challenge – Live Pitch",                        city:"Philadelphia",  state:"PA", region:"Philadelphia",  category:"Pitch / Demo",      series:null,             cost:"Gratuito", link:"https://venturelab.upenn.edu/startup-challenge" },
+  { id:50, date:"2026-05-01", end:"2026-05-03", name:"Techstars Startup Weekend Boston",                                       city:"Boston",        state:"MA", region:"Boston",        category:"Pitch / Demo",      series:null,             cost:"Pago",     link:"https://startupweekend.boston/" },
+  { id:51, date:"2026-05-01", end:"2026-05-01", name:"InsurTech 2026 Spring Conference",                                       city:"New York",      state:"NY", region:"NYC",           category:"Bio / Health",      series:null,             cost:"Pago",     link:"https://www.garysguide.com/events/ac02xaa/InsurTech-2026-Spring-Conference" },
+  { id:52, date:"2026-05-06", end:"2026-05-06", name:"SF Coffee Club – Early Stage B2B Tech Founders & Funders",              city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"SaaS / B2B",        series:null,             cost:"Gratuito", link:"https://lu.ma/sf-coffee-club" },
+  { id:53, date:"2026-05-07", end:"2026-05-07", name:"AI Hot 100 Summit",                                                      city:"New York",      state:"NY", region:"NYC",           category:"AI / ML",           series:null,             cost:"Pago",     link:"https://www.garysguide.com/events/avpydk5/AI-Hot-100-Summit" },
+  { id:54, date:"2026-05-12", end:"2026-05-13", name:"TECHSPO Boston 2026",                                                    city:"Boston",        state:"MA", region:"Boston",        category:"Startup / General", series:null,             cost:"Pago",     link:"https://techspoboston.com/" },
+  { id:55, date:"2026-05-12", end:"2026-05-14", name:"SaaStr Annual 2026",                                                     city:"San Mateo",     state:"CA", region:"SF Bay Area",   category:"SaaS / B2B",        series:"SaaStr",         cost:"Pago",     link:"https://www.saastr.com/events/" },
+  { id:56, date:"2026-05-12", end:"2026-05-12", name:"SaaStr AI Summit",                                                       city:"San Mateo",     state:"CA", region:"SF Bay Area",   category:"SaaS / B2B",        series:"SaaStr",         cost:"Pago",     link:"https://www.garysguide.com/events/m1q3bbo/SaaStr-AI-Summit" },
+  { id:57, date:"2026-05-14", end:"2026-05-14", name:"Wall Street South FinTech Summit",                                       city:"Miami",         state:"FL", region:"Miami",         category:"Fintech",           series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/8651lg8/Wall-Street-South-FinTech-Summit" },
+  { id:58, date:"2026-05-15", end:"2026-05-15", name:"NYC Coffee Club – Early-Stage B2B Founders & Funders",                  city:"New York",      state:"NY", region:"NYC",           category:"SaaS / B2B",        series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/n657y5e/NYC-Coffee-Club-Early-Stage-B2B-Founders-Funders" },
+  { id:59, date:"2026-05-18", end:"2026-05-18", name:"Techex 2026",                                                            city:"San Jose",      state:"CA", region:"SF Bay Area",   category:"Startup / General", series:null,             cost:"Pago",     link:"https://www.garysguide.com/events/8f6s9f6/Techex-2026" },
+  { id:60, date:"2026-05-26", end:"2026-05-31", name:"Tech Week Boston 2026 (a16z)",                                           city:"Boston",        state:"MA", region:"Boston",        category:"Startup / General", series:"Tech Week Boston",cost:"Mixto",   link:"https://www.tech-week.com/boston" },
+  { id:61, date:"2026-05-28", end:"2026-05-28", name:"Niural AI Summit (NYC Tech Week side event)",                            city:"New York",      state:"NY", region:"NYC",           category:"AI / ML",           series:"NYC Tech Week",  cost:"Ver web",  link:"https://lu.ma/mggz3md1" },
+  { id:62, date:"2026-05-28", end:"2026-05-28", name:"AI Engineers – Devs & Drinks NYC",                                      city:"New York",      state:"NY", region:"NYC",           category:"AI / ML",           series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/r7skk0c/AI-Engineers-Devs-Drinks" },
+  { id:63, date:"2026-06-01", end:"2026-06-07", name:"NYC Tech Week 2026 (a16z)",                                              city:"New York",      state:"NY", region:"NYC",           category:"Startup / General", series:"NYC Tech Week",  cost:"Mixto",    link:"https://www.tech-week.com/" },
 ];
 
 // ════════════════════════════════════════════
@@ -1270,6 +1294,13 @@ function costHtml(cost) {
   return `<span class="cost-tag ${cls}">${lbl}</span>`;
 }
 
+function deleteCustom(id) {
+  const evs = loadCustom().filter(e => e.id !== id);
+  localStorage.setItem('startup_events_custom', JSON.stringify(evs));
+  renderAgenda();
+  if (state.view === 'calendar') renderCalendar();
+}
+
 function cardHtml(e, delay=0) {
   const c = CAT[e.category] || { color:'#fff', bg:'rgba(255,255,255,0.08)' };
   return `
@@ -1279,13 +1310,15 @@ function cardHtml(e, delay=0) {
         <div class="ev-meta">
           <span class="ev-city">${e.city}, ${e.state}</span>
           ${e.series?`<span class="ev-series">${e.series}</span>`:''}
+          ${e.custom?`<span class="ev-series" style="color:rgba(231,254,78,0.5);">custom</span>`:''}
         </div>
       </div>
       <div class="ev-side">
         <span class="cat-pill" style="background:${c.bg};color:${c.color};">${e.category}</span>
         <div class="ev-actions">
           ${costHtml(e.cost)}
-          ${e.link?`<a class="reg-link" href="${e.link}" target="_blank" rel="noopener">↗ REG</a>`:''}
+          ${e.link?`<a class="reg-link" href="${e.link}" target="_blank" rel="noopener">↗ Register</a>`:''}
+          ${e.custom?`<button class="delete-btn" onclick="deleteCustom(${e.id})">✕ delete</button>`:''}
         </div>
       </div>
     </div>`;
