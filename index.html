@@ -782,21 +782,133 @@
       to   { opacity:1; transform: translateY(0); }
     }
 
+    /* ── FOOTER ─────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      background: var(--bg);
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      opacity: 0.82;
+      transition: opacity 0.15s;
+      flex-shrink: 0;
+    }
+
+    .footer-logo:hover { opacity: 1; }
+
+    .footer-logo img {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--f-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px;
+      padding: 9px 18px;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .footer-btn:hover {
+      color: #000;
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .footer-btn svg { flex-shrink: 0; }
+
     /* ── RESPONSIVE ─────────────────────────── */
-    @media (max-width: 760px) {
-      .header { padding: 20px 20px 0; }
-      .main   { padding: 0 20px 60px; }
-      .results-bar { padding: 0 20px; }
-      .legend { padding: 0 20px; }
+    /* Tablet */
+    @media (max-width: 900px) {
+      .header { padding: 24px 24px 0; }
+      .main   { padding: 0 24px 60px; }
+      .results-bar { padding: 0 24px; }
+      .legend { padding: 0 24px; }
+      .site-footer { padding: 24px; }
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      .header { padding: 16px 16px 0; }
+      .main   { padding: 0 16px 60px; }
+      .results-bar { padding: 0 16px; font-size: 9px; }
+      .legend { padding: 0 16px; }
+      .site-footer { padding: 20px 16px; flex-direction: column; align-items: flex-start; }
+      .footer-links { width: 100%; flex-direction: column; align-items: stretch; }
+      .footer-btn { justify-content: center; }
+
+      /* Header */
       .header-meta { display: none; }
-      .brand-title { font-size: 32px; }
-      .date-group { grid-template-columns: 54px 1fr; }
-      .date-num { font-size: 30px; }
-      .ev-name { font-size: 12px; }
-      .search-wrap input { width: 140px; }
-      .modal { padding: 24px; }
-      .form-grid { grid-template-columns: 1fr; }
+      .brand-title { font-size: 28px; }
+      .brand-eyebrow { font-size: 9px; }
+
+      /* Filter bar: horizontal scroll */
+      .filter-bar {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 12px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        gap: 5px;
+      }
+      .filter-bar::-webkit-scrollbar { display: none; }
+      .f-sep { display: none; }
+      .add-btn { flex-shrink: 0; }
+      .search-wrap { flex-shrink: 0; }
+      .search-wrap input { width: 130px; }
+
+      /* Events list */
+      .date-group { grid-template-columns: 48px 1fr; }
+      .date-num { font-size: 28px; }
+      .date-col { padding: 12px 8px 12px 0; }
+      .events-col { padding-left: 12px; }
+
+      /* Event card */
+      .event-card { grid-template-columns: 1fr; gap: 8px; padding: 12px; }
+      .ev-side { flex-direction: row; align-items: center; justify-content: space-between; }
+      .ev-name { font-size: 12px; white-space: normal; }
+
+      /* Calendar */
+      .cal-day { min-height: 60px; padding: 5px; }
+      .cal-day-num { font-size: 10px; }
+      .cal-dot { display: none; }
+      .cal-dot:first-child { display: block; }
+      .cal-more { font-size: 8px; }
+      .cal-month-title { font-size: 20px; }
+
+      /* Side panel */
       .side-panel { width: 100%; }
+
+      /* Modal */
+      .modal { padding: 20px 16px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .modal-title { font-size: 20px; }
     }
   </style>
 </head>
@@ -812,33 +924,33 @@
     <div class="header-meta" id="headerMeta">
       <div class="meta-stat">
         <div class="meta-num" id="totalCount">65</div>
-        <div class="meta-label">Eventos</div>
+        <div class="meta-label">Events</div>
       </div>
       <div class="meta-stat">
         <div class="meta-num">7</div>
-        <div class="meta-label">Ciudades</div>
+        <div class="meta-label">Cities</div>
       </div>
       <div class="meta-stat">
         <div class="meta-num">10</div>
-        <div class="meta-label">Categorías</div>
+        <div class="meta-label">Categories</div>
       </div>
     </div>
   </div>
 
   <!-- Filter bar -->
   <div class="filter-bar">
-    <span class="f-label">Mes</span>
+    <span class="f-label">Month</span>
     <div id="monthPills">
-      <button class="pill active" data-f="month" data-v="ALL">TODOS</button>
-      <button class="pill" data-f="month" data-v="2026-04">ABR</button>
+      <button class="pill active" data-f="month" data-v="ALL">ALL</button>
+      <button class="pill" data-f="month" data-v="2026-04">APR</button>
       <button class="pill" data-f="month" data-v="2026-05">MAY</button>
       <button class="pill" data-f="month" data-v="2026-06">JUN</button>
     </div>
 
     <div class="f-sep"></div>
-    <span class="f-label">Ciudad</span>
+    <span class="f-label">City</span>
     <div id="regionPills">
-      <button class="pill active" data-f="region" data-v="ALL">TODAS</button>
+      <button class="pill active" data-f="region" data-v="ALL">ALL</button>
       <button class="pill" data-f="region" data-v="SF">SF</button>
       <button class="pill" data-f="region" data-v="NYC">NYC</button>
       <button class="pill" data-f="region" data-v="Boston">BOSTON</button>
@@ -847,22 +959,22 @@
     </div>
 
     <div class="f-sep"></div>
-    <span class="f-label">Costo</span>
+    <span class="f-label">Cost</span>
     <div id="costPills">
-      <button class="pill active" data-f="cost" data-v="ALL">TODOS</button>
+      <button class="pill active" data-f="cost" data-v="ALL">ALL</button>
       <button class="pill" data-f="cost" data-v="Gratuito">FREE</button>
       <button class="pill" data-f="cost" data-v="Pago">PAID</button>
     </div>
 
     <div class="f-sep"></div>
     <div class="view-toggle">
-      <button class="v-btn active" id="btnList">≡ LISTA</button>
+      <button class="v-btn active" id="btnList">≡ LIST</button>
       <button class="v-btn" id="btnCal">⊞ CAL</button>
     </div>
 
     <div class="search-wrap">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" id="searchInput" placeholder="Buscar evento...">
+      <input type="text" id="searchInput" placeholder="Search events...">
     </div>
 
     <button class="add-btn" id="openModal">+ ADD EVENT</button>
@@ -871,7 +983,7 @@
 
 <!-- ── RESULTS BAR ───────────────────────────── -->
 <div class="results-bar">
-  Mostrando&nbsp;<strong id="visibleCount">65</strong>&nbsp;eventos · APR — JUN 2026
+  Showing&nbsp;<strong id="visibleCount">65</strong>&nbsp;events · APR — JUN 2026
 </div>
 
 <!-- ── LEGEND ────────────────────────────────── -->
@@ -907,27 +1019,27 @@
     </div>
     <form id="addForm" class="form-grid">
       <div class="f-field span2">
-        <label>Nombre del Evento *</label>
-        <input type="text" name="name" required placeholder="Ej: AI Founders Mixer NYC">
+        <label>Event Name *</label>
+        <input type="text" name="name" required placeholder="e.g.: AI Founders Mixer NYC">
       </div>
       <div class="f-field">
-        <label>Fecha Inicio *</label>
+        <label>Start Date *</label>
         <input type="date" name="date" required>
       </div>
       <div class="f-field">
-        <label>Fecha Fin</label>
+        <label>End Date</label>
         <input type="date" name="end">
       </div>
       <div class="f-field">
-        <label>Ciudad *</label>
-        <input type="text" name="city" required placeholder="Ej: New York">
+        <label>City *</label>
+        <input type="text" name="city" required placeholder="e.g.: New York">
       </div>
       <div class="f-field">
-        <label>Estado</label>
-        <input type="text" name="state" placeholder="Ej: New York">
+        <label>State</label>
+        <input type="text" name="state" placeholder="e.g.: New York">
       </div>
       <div class="f-field">
-        <label>Región</label>
+        <label>Region</label>
         <select name="region">
           <option value="NYC">NYC</option>
           <option value="SF">SF / Bay Area</option>
@@ -936,11 +1048,11 @@
           <option value="DC">DC</option>
           <option value="Dallas TX">Dallas TX</option>
           <option value="Philly">Philly</option>
-          <option value="Other">Otro</option>
+          <option value="Other">Other</option>
         </select>
       </div>
       <div class="f-field">
-        <label>Categoría</label>
+        <label>Category</label>
         <select name="category">
           <option value="AI / ML">AI / ML</option>
           <option value="Networking">Networking</option>
@@ -955,100 +1067,55 @@
         </select>
       </div>
       <div class="f-field">
-        <label>Costo</label>
+        <label>Cost</label>
         <select name="cost">
-          <option value="Gratuito">Gratuito</option>
-          <option value="Pago">Pago</option>
-          <option value="Ver web">Ver web</option>
-          <option value="Mixto">Mixto</option>
+          <option value="Gratuito">Free</option>
+          <option value="Pago">Paid</option>
+          <option value="Ver web">See website</option>
+          <option value="Mixto">Mixed</option>
         </select>
       </div>
       <div class="f-field span2">
-        <label>Serie / Semana</label>
-        <input type="text" name="series" placeholder="Ej: NYC Tech Week">
+        <label>Series / Week</label>
+        <input type="text" name="series" placeholder="e.g.: NYC Tech Week">
       </div>
       <div class="f-field span2">
-        <label>Link / Registro</label>
+        <label>Link / Registration</label>
         <input type="url" name="link" placeholder="https://...">
       </div>
-      <button type="submit" class="form-submit">+ AGREGAR EVENTO</button>
+      <button type="submit" class="form-submit">+ ADD EVENT</button>
     </form>
   </div>
 </div>
 
-<div class="toast" id="toast">✓ Evento agregado exitosamente</div>
+<div class="toast" id="toast">✓ Event added successfully</div>
 
 <!-- ── FOOTER ────────────────────────────────── -->
-<footer style="
-  border-top: 1px solid rgba(255,255,255,0.07);
-  padding: 28px 48px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
-  background: #070707;
-">
+<footer class="site-footer">
   <!-- Sumeria logo + link -->
-  <a href="https://sumeria.uy/landing" target="_blank" rel="noopener" style="
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    opacity: 0.85;
-    transition: opacity 0.15s;
-  " onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.85'">
-    <img src="sumeria-logo.jpeg" alt="Sumeria" style="
-      height: 36px;
-      width: auto;
-      border-radius: 6px;
-      object-fit: contain;
-    ">
+  <a href="https://sumeria.uy/landing" target="_blank" rel="noopener" class="footer-logo">
+    <img src="sumeria-logo.png" alt="Sumeria">
   </a>
 
   <!-- Contact links -->
-  <div style="display:flex; align-items:center; gap:16px;">
+  <div class="footer-links">
     <!-- LinkedIn -->
-    <a href="https://www.linkedin.com/in/gastondotta/" target="_blank" rel="noopener" style="
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      color: rgba(255,255,255,0.45);
-      text-decoration: none;
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 3px;
-      padding: 7px 13px;
-      transition: all 0.15s;
-    " onmouseover="this.style.color='#E7FE4E';this.style.borderColor='rgba(231,254,78,0.3)'" onmouseout="this.style.color='rgba(255,255,255,0.45)';this.style.borderColor='rgba(255,255,255,0.09)'">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+    <a href="https://www.linkedin.com/in/gastondotta/" target="_blank" rel="noopener" class="footer-btn footer-btn--li">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
         <rect x="2" y="9" width="4" height="12"/>
         <circle cx="4" cy="4" r="2"/>
       </svg>
-      gastondotta
+      Let's connect on LinkedIn!
     </a>
 
     <!-- WhatsApp -->
-    <a href="https://wa.me/59896434220" target="_blank" rel="noopener" style="
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      color: rgba(255,255,255,0.45);
-      text-decoration: none;
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 3px;
-      padding: 7px 13px;
-      transition: all 0.15s;
-    " onmouseover="this.style.color='#E7FE4E';this.style.borderColor='rgba(231,254,78,0.3)'" onmouseout="this.style.color='rgba(255,255,255,0.45)';this.style.borderColor='rgba(255,255,255,0.09)'">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+    <a href="https://wa.me/59896434220" target="_blank" rel="noopener" class="footer-btn footer-btn--wa">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
         <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.532 5.844L0 24l6.334-1.51A11.954 11.954 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.807 9.807 0 0 1-5.003-1.368l-.36-.214-3.754.895.944-3.653-.234-.374A9.787 9.787 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/>
       </svg>
-      +598 96 434 220
+      Send me a WhatsApp message!
     </a>
   </div>
 </footer>
@@ -1185,9 +1252,9 @@ function filtered() {
 // ════════════════════════════════════════════
 // HELPERS
 // ════════════════════════════════════════════
-const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-const MONTH_MAP   = { '2026-04':'ABRIL 2026', '2026-05':'MAYO 2026', '2026-06':'JUNIO 2026' };
-const WD          = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTH_MAP   = { '2026-04':'APRIL 2026', '2026-05':'MAY 2026', '2026-06':'JUNE 2026' };
+const WD          = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 
 function toDate(s) { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
 function wd(s)     { return WD[toDate(s).getDay()]; }
@@ -1199,7 +1266,7 @@ function catStyle(cat) {
 
 function costHtml(cost) {
   const cls = cost==='Gratuito'?'free':cost==='Pago'?'paid':'';
-  const lbl = cost==='Gratuito'?'FREE':cost==='Pago'?'PAID':cost==='Ver web'?'VER WEB':cost.toUpperCase();
+  const lbl = cost==='Gratuito'?'FREE':cost==='Pago'?'PAID':cost==='Ver web'?'SEE WEB':cost.toUpperCase();
   return `<span class="cost-tag ${cls}">${lbl}</span>`;
 }
 
@@ -1235,7 +1302,7 @@ function renderAgenda() {
   document.getElementById('totalCount').textContent   = allEvents().length;
 
   if (!evs.length) {
-    el.innerHTML = '<div class="empty">SIN EVENTOS PARA LOS FILTROS SELECCIONADOS</div>';
+    el.innerHTML = '<div class="empty">NO EVENTS MATCH THE SELECTED FILTERS</div>';
     return;
   }
 
