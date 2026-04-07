@@ -832,6 +832,150 @@
       to   { opacity:1; transform: translateY(0); }
     }
 
+    /* ── NYC EXTRA SECTION ─────────────────── */
+    .nyc-section {
+      margin: 0 48px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .nyc-toggle-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 20px 0;
+      text-align: left;
+      color: var(--text);
+      font-family: var(--f-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .nyc-toggle-btn:hover { color: var(--accent); }
+
+    .nyc-toggle-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px; height: 22px;
+      border: 1px solid var(--border-mid);
+      border-radius: 50%;
+      font-size: 12px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .nyc-toggle-btn[aria-expanded="true"] .nyc-toggle-icon {
+      transform: rotate(45deg);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .nyc-badge {
+      background: rgba(231,254,78,0.12);
+      color: var(--accent);
+      font-family: var(--f-mono);
+      font-size: 9px;
+      padding: 2px 8px;
+      border-radius: 100px;
+      border: 1px solid rgba(231,254,78,0.25);
+      letter-spacing: 0.1em;
+    }
+
+    .nyc-content {
+      display: none;
+      padding-bottom: 32px;
+    }
+
+    .nyc-content.open { display: block; }
+
+    .nyc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .nyc-card {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      background: rgba(255,255,255,0.02);
+      transition: border-color 0.15s;
+    }
+
+    .nyc-card:hover { border-color: rgba(255,255,255,0.2); }
+
+    .nyc-card-name {
+      font-family: var(--f-sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nyc-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .nyc-card-cat {
+      font-family: var(--f-mono);
+      font-size: 9px;
+      padding: 2px 7px;
+      border-radius: 100px;
+      letter-spacing: 0.06em;
+    }
+
+    .nyc-card-date {
+      font-family: var(--f-mono);
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    .nyc-card-recurring {
+      font-family: var(--f-mono);
+      font-size: 8px;
+      color: var(--accent);
+      border: 1px solid rgba(231,254,78,0.3);
+      border-radius: 100px;
+      padding: 1px 6px;
+      letter-spacing: 0.08em;
+    }
+
+    .nyc-card-link {
+      margin-top: 2px;
+      font-family: var(--f-mono);
+      font-size: 9px;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nyc-card-link:hover { color: var(--accent); }
+
+    @media (max-width: 900px) {
+      .nyc-section { margin: 0 24px; }
+    }
+
+    @media (max-width: 640px) {
+      .nyc-section { margin: 0 16px; }
+      .nyc-grid { grid-template-columns: 1fr; }
+    }
+
     /* ── FOOTER ─────────────────────────────── */
     .site-footer {
       border-top: 1px solid var(--border);
@@ -1073,6 +1217,7 @@
           <button class="pill" data-f="region" data-v="Miami">MIAMI</button>
           <button class="pill" data-f="region" data-v="DC">DC</button>
           <button class="pill" data-f="region" data-v="Philadelphia">PHILLY</button>
+      <button class="pill" data-f="region" data-v="Northeast">NORTHEAST</button>
         </div>
       </div>
       <div class="f-sep"></div>
@@ -1210,6 +1355,18 @@
 
 <div class="toast" id="toast">✓ Event added successfully</div>
 
+<!-- ── MORE IN NYC ──────────────────────────────── -->
+<section class="nyc-section" id="nycSection">
+  <button class="nyc-toggle-btn" id="nycToggle" aria-expanded="false">
+    <span class="nyc-toggle-icon">+</span>
+    🗽 More in NYC — Things to do beyond work
+    <span class="nyc-badge" id="nycCount">50 experiences</span>
+  </button>
+  <div class="nyc-content" id="nycContent">
+    <div class="nyc-grid" id="nycGrid"></div>
+  </div>
+</section>
+
 <!-- ── FOOTER ────────────────────────────────── -->
 <footer class="site-footer">
   <!-- Sumeria logo + link -->
@@ -1277,236 +1434,456 @@ const CAT = {
   "Social":            { color: "#FFCC80", bg: "rgba(255,204,128,0.10)" },
   "Comedy":            { color: "#FFF176", bg: "rgba(255,241,118,0.10)" },
   "General":           { color: "#BDBDBD", bg: "rgba(189,189,189,0.10)" },
+  "Enterprise / SaaS": { color: "#29B6F6", bg: "rgba(41,182,246,0.10)" },
+  "Blockchain / Web3": { color: "#AB47BC", bg: "rgba(171,71,188,0.10)" },
+  "Healthtech":        { color: "#EF9A9A", bg: "rgba(239,154,154,0.10)" },
+  "Startup / Founders":{ color: "#FFD54F", bg: "rgba(255,213,79,0.10)"  },
+  "Cultura / Arte":    { color: "#F48FB1", bg: "rgba(244,143,177,0.12)" },
+  "Cultura / Ocio":    { color: "#CE93D8", bg: "rgba(206,147,216,0.10)" },
+  "Deportes / Fitness":{ color: "#AED581", bg: "rgba(174,213,129,0.10)" },
+  "Gastronomía":       { color: "#FFAB40", bg: "rgba(255,171,64,0.10)"  },
+  "Entretenimiento":   { color: "#FF7043", bg: "rgba(255,112,67,0.10)"  },
 };
 
 // ════════════════════════════════════════════
 // BASE EVENTS
 // ════════════════════════════════════════════
 const BASE = [
-  { id:1,  date:"2026-04-15", end:"2026-04-15", name:"AI x Hardware Engineering Dinner",                                        city:"Mountain View", state:"CA", region:"SF Bay Area",   category:"AI / ML",           series:null,             cost:"Ver web",  link:"https://lu.ma/0gkax6h6" },
-  { id:2,  date:"2026-04-15", end:"2026-04-15", name:"A+ Founders Dinner",                                                      city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Networking",        series:null,             cost:"Ver web",  link:"https://lu.ma/ncpq1ogx" },
-  { id:3,  date:"2026-04-15", end:"2026-04-15", name:"Ships & Sips: SF Engineering Happy Hour",                                 city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Networking",        series:null,             cost:"Ver web",  link:"https://lu.ma/sf-eng-happy-hour" },
-  { id:4,  date:"2026-04-15", end:"2026-04-15", name:"Startups, Power, and the AI Age",                                         city:"Stanford",      state:"CA", region:"SF Bay Area",   category:"AI / ML",           series:null,             cost:"Ver web",  link:"https://lu.ma/8fvs6pnw" },
-  { id:5,  date:"2026-04-15", end:"2026-04-15", name:"Gen AI Summit 2026",                                                      city:"San Jose",      state:"CA", region:"SF Bay Area",   category:"AI / ML",           series:null,             cost:"Pago",     link:"https://www.garysguide.com/events/ndagxbs/Gen-AI-Summit" },
-  { id:6,  date:"2026-04-15", end:"2026-04-15", name:"Celebrating 10 Years of MIT Sandbox",                                     city:"Cambridge",     state:"MA", region:"Boston",        category:"Pitch / Demo",      series:null,             cost:"Ver web",  link:"https://lu.ma/vcxll7xl" },
-  { id:7,  date:"2026-04-15", end:"2026-04-15", name:"Bitcoin Devs Meetup",                                                     city:"New York",      state:"NY", region:"NYC",           category:"Fintech",           series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/l81ewxx/Bitcoin-Devs-Meetup" },
-  { id:8,  date:"2026-04-15", end:"2026-04-15", name:"CodeLaunch USA 2026 – Hackathon & Pitch Competition",                     city:"Dallas",        state:"TX", region:"Dallas TX",     category:"Pitch / Demo",      series:null,             cost:"Gratuito", link:"https://codelaunch.com/events/2026-usa-ga/" },
-  { id:9,  date:"2026-04-16", end:"2026-04-16", name:"Big Idea CONNECTpreneur Forum",                                           city:"Washington",    state:"DC", region:"DC",            category:"Networking",        series:null,             cost:"Pago",     link:"https://connectpreneur.org/2026-events-calendar/" },
-  { id:10, date:"2026-04-16", end:"2026-04-16", name:"Slides Down – AI Founders Party (DigitalOcean x Zendesk)",               city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Networking",        series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/3dp7ip4/Slides-Down-AI-Founders-Party" },
-  { id:11, date:"2026-04-16", end:"2026-04-16", name:"AngularNYC Meetup",                                                       city:"New York",      state:"NY", region:"NYC",           category:"Startup / General", series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/6cf1lp7/AngularNYC-Meetup" },
-  { id:12, date:"2026-04-16", end:"2026-04-17", name:"VC Community Happy Hour: Round Two",                                      city:"New York",      state:"NY", region:"NYC",           category:"Networking",        series:null,             cost:"Ver web",  link:"https://lu.ma/r97w2x2x" },
-  { id:13, date:"2026-04-16", end:"2026-04-17", name:"Spring Into Cyber: Community Mixer",                                      city:"Miami",         state:"FL", region:"Miami",         category:"Networking",        series:null,             cost:"Ver web",  link:"https://lu.ma/wl174nc7" },
-  { id:14, date:"2026-04-17", end:"2026-04-17", name:"AI Engineers – Game Night",                                               city:"New York",      state:"NY", region:"NYC",           category:"AI / ML",           series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/2fc2gyd/AI-Engineers-Game-Night" },
-  { id:15, date:"2026-04-17", end:"2026-04-17", name:"$100K AI Startup Pitch-Off @ Chargebee Beelieve '26",                    city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Pitch / Demo",      series:null,             cost:"Ver web",  link:"https://lu.ma/beelieve" },
-  { id:16, date:"2026-04-17", end:"2026-04-17", name:"Startup Pitch Night // Sustainable AI",                                   city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Climate Tech",      series:null,             cost:"Ver web",  link:"https://lu.ma/20daseu5" },
-  { id:17, date:"2026-04-17", end:"2026-04-17", name:"Voice AI Builders Night",                                                 city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"AI / ML",           series:null,             cost:"Ver web",  link:"https://lu.ma/voice_builders" },
-  { id:18, date:"2026-04-17", end:"2026-04-18", name:"Recharge Your Closet – Sustainable Fashion Pop-Up (Rethink the Runway)", city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Fashion Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/eam8uq5s" },
-  { id:19, date:"2026-04-20", end:"2026-04-20", name:"Climate Week – Founders, Investors & LP Happy Hour",                     city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Climate Tech",      series:"SF Climate Week",cost:"Gratuito", link:"https://www.garysguide.com/events/74rq32b/Climate-Week-Founders-Investors-LP-Happy-Hour" },
-  { id:20, date:"2026-04-21", end:"2026-04-25", name:"NYC Space Week 2026",                                                     city:"New York",      state:"NY", region:"NYC",           category:"Deep Tech",         series:"NYC Space Week", cost:"Mixto",    link:"https://www.garysguide.com/events" },
-  { id:21, date:"2026-04-21", end:"2026-04-21", name:"Lunar Development Co-Operative Spotlight",                                city:"New York",      state:"NY", region:"NYC",           category:"Deep Tech",         series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/jmk2rbu/Lunar-Development-Co-Operative-Spotlight" },
-  { id:22, date:"2026-04-21", end:"2026-04-21", name:"Ursa Space Spotlight – Satellite Intelligence Leadership",                city:"New York",      state:"NY", region:"NYC",           category:"Deep Tech",         series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/q34iugp/Ursa-Space-Spotlight-Satellite-Intelligence-Leadership" },
-  { id:23, date:"2026-04-21", end:"2026-04-21", name:"WomenHack 2026",                                                          city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Networking",        series:null,             cost:"Ver web",  link:"https://www.garysguide.com/events/4yx7twv/WomenHack-2026" },
-  { id:24, date:"2026-04-21", end:"2026-04-21", name:"Food & Ag Ecosystem Happy Hour (SF Climate Week)",                       city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Climate Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/8yuc8udq" },
-  { id:25, date:"2026-04-21", end:"2026-04-21", name:"California Leads: Investment, Innovation & Clean Energy",                 city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Climate Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/vr9fbyxd" },
-  { id:26, date:"2026-04-21", end:"2026-04-21", name:"Carbon Removal Happy Hour – SF Climate Week",                            city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Climate Tech",      series:"SF Climate Week",cost:"Gratuito", link:"https://lu.ma/svn0brc7" },
-  { id:27, date:"2026-04-21", end:"2026-04-22", name:"International Founders Happy Hour – Magic Room Series",                  city:"Stanford",      state:"CA", region:"SF Bay Area",   category:"Networking",        series:null,             cost:"Ver web",  link:"https://lu.ma/2jxgjtn1" },
-  { id:28, date:"2026-04-22", end:"2026-04-22", name:"New York Analog Astronauts",                                              city:"New York",      state:"NY", region:"NYC",           category:"Deep Tech",         series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/o7o9rk8/New-York-Analog-Astronauts" },
-  { id:29, date:"2026-04-22", end:"2026-04-22", name:"NYC Space Week Kickoff at Luxembourg House",                              city:"New York",      state:"NY", region:"NYC",           category:"Deep Tech",         series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/a2f2uah/Space-Week-Kickoff-At-Luxembourg-House" },
-  { id:30, date:"2026-04-22", end:"2026-04-22", name:"AI for Investors | Synergist x Women in AI",                             city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"AI / ML",           series:null,             cost:"Ver web",  link:"https://lu.ma/vpdlhyfh" },
-  { id:31, date:"2026-04-22", end:"2026-04-22", name:"Rubbish: Waste Management Tech Happy Hour",                               city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Climate Tech",      series:"SF Climate Week",cost:"Ver web",  link:"https://lu.ma/rubbish-happy-hour" },
-  { id:32, date:"2026-04-23", end:"2026-04-23", name:"ERA Accelerator Demo Day – 14 Startups Pitching",                        city:"New York",      state:"NY", region:"NYC",           category:"Pitch / Demo",      series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/s0r96jd/ERA-Accelerator-Demo-Day" },
-  { id:33, date:"2026-04-23", end:"2026-04-23", name:"SpaceTech Legal & Capital Playbook",                                      city:"New York",      state:"NY", region:"NYC",           category:"Deep Tech",         series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/ue2qihk/Spacetech-Legal-Capital-Playbook" },
-  { id:34, date:"2026-04-23", end:"2026-04-24", name:"eMerge Americas Conference + Expo 2026",                                  city:"Miami Beach",   state:"FL", region:"Miami",         category:"Startup / General", series:"eMerge Americas", cost:"Pago",    link:"https://emergeamericas.com/register/" },
-  { id:35, date:"2026-04-23", end:"2026-04-24", name:"Nebulai Tech Wave: AI Agents Era (Miami Tech Week)",                     city:"Miami",         state:"FL", region:"Miami",         category:"AI / ML",           series:"eMerge Americas", cost:"Ver web",  link:"https://lu.ma/h7aiuiaq" },
-  { id:36, date:"2026-04-24", end:"2026-04-24", name:"New York Space Forum 2026",                                               city:"New York",      state:"NY", region:"NYC",           category:"Deep Tech",         series:"NYC Space Week", cost:"Pago",     link:"https://www.garysguide.com/events/dclqane/New-York-Space-Forum" },
-  { id:37, date:"2026-04-24", end:"2026-04-24", name:"NYC Coffee Club – Early-Stage B2B Founders & Funders",                   city:"New York",      state:"NY", region:"NYC",           category:"SaaS / B2B",        series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/kohryjk/NYC-Coffee-Club-Early-Stage-B2B-Founders-Funders" },
-  { id:38, date:"2026-04-24", end:"2026-04-25", name:"AI + SaaS Startups Happy Hour @ eMerge Americas",                       city:"Miami",         state:"FL", region:"Miami",         category:"AI / ML",           series:"eMerge Americas", cost:"Gratuito", link:"https://lu.ma/bp5ka07v" },
-  { id:39, date:"2026-04-25", end:"2026-04-25", name:"NYC Space Week Closing Townhouse Party",                                  city:"New York",      state:"NY", region:"NYC",           category:"Networking",        series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/z4jwr9h/Space-Week-Closing-Townhouse-Party" },
-  { id:40, date:"2026-04-27", end:"2026-04-27", name:"C3 Davos of Healthcare Summit",                                          city:"Sunnyvale",     state:"CA", region:"SF Bay Area",   category:"Bio / Health",      series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/b71d2zg/C3-Davos-Of-Healthcare-Summit" },
-  { id:41, date:"2026-04-27", end:"2026-05-01", name:"NY FinTech Week 2026 – Community Events",                                city:"New York",      state:"NY", region:"NYC",           category:"Fintech",           series:"NY FinTech Week",cost:"Mixto",    link:"https://lu.ma/ny-fintech-week" },
-  { id:42, date:"2026-04-28", end:"2026-04-28", name:"Startup Grind Global Conference 2026",                                   city:"Redwood City",  state:"CA", region:"SF Bay Area",   category:"Startup / General", series:"Startup Grind",  cost:"Pago",     link:"https://www.startupgrind.tech/" },
-  { id:43, date:"2026-04-28", end:"2026-04-29", name:"Niural AI Summit – NY FinTech Week",                                     city:"New York",      state:"NY", region:"NYC",           category:"AI / ML",           series:"NY FinTech Week",cost:"Ver web",  link:"https://lu.ma/mggz3md1" },
-  { id:44, date:"2026-04-28", end:"2026-04-30", name:"FTW: Official NY FinTech Week Conference (Fintech Is Femme)",            city:"New York",      state:"NY", region:"NYC",           category:"Fintech",           series:"NY FinTech Week",cost:"Pago",     link:"https://lu.ma/FTW_NYC26" },
-  { id:45, date:"2026-04-29", end:"2026-04-29", name:"Stripe Sessions 2026",                                                   city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"SaaS / B2B",        series:null,             cost:"Pago",     link:"https://www.garysguide.com/events/zcp0uor/Stripe-Session" },
-  { id:46, date:"2026-04-30", end:"2026-04-30", name:"StrictlyVC San Francisco 2026",                                          city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Networking",        series:null,             cost:"Pago",     link:"https://techcrunch.com/events/strictlyvc-san-francisco-2026/" },
-  { id:47, date:"2026-04-30", end:"2026-04-30", name:"SF Startup & Tech Mixer 2026",                                           city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"Networking",        series:null,             cost:"Pago",     link:"https://www.eventbrite.com/e/sf-startup-tech-mixer-2026-tickets-1985409306682" },
-  { id:48, date:"2026-04-30", end:"2026-05-01", name:"Side Event: Reverse Network Power Walk – NY Tech",                      city:"New York",      state:"NY", region:"NYC",           category:"Networking",        series:"NYC Tech Week",  cost:"Gratuito", link:"https://lu.ma/q345qiay" },
-  { id:49, date:"2026-05-01", end:"2026-05-01", name:"Penn Venture Lab Startup Challenge – Live Pitch",                        city:"Philadelphia",  state:"PA", region:"Philadelphia",  category:"Pitch / Demo",      series:null,             cost:"Gratuito", link:"https://venturelab.upenn.edu/startup-challenge" },
-  { id:50, date:"2026-05-01", end:"2026-05-03", name:"Techstars Startup Weekend Boston",                                       city:"Boston",        state:"MA", region:"Boston",        category:"Pitch / Demo",      series:null,             cost:"Pago",     link:"https://startupweekend.boston/" },
-  { id:51, date:"2026-05-01", end:"2026-05-01", name:"InsurTech 2026 Spring Conference",                                       city:"New York",      state:"NY", region:"NYC",           category:"Bio / Health",      series:null,             cost:"Pago",     link:"https://www.garysguide.com/events/ac02xaa/InsurTech-2026-Spring-Conference" },
-  { id:52, date:"2026-05-06", end:"2026-05-06", name:"SF Coffee Club – Early Stage B2B Tech Founders & Funders",              city:"San Francisco", state:"CA", region:"SF Bay Area",   category:"SaaS / B2B",        series:null,             cost:"Gratuito", link:"https://lu.ma/sf-coffee-club" },
-  { id:53, date:"2026-05-07", end:"2026-05-07", name:"AI Hot 100 Summit",                                                      city:"New York",      state:"NY", region:"NYC",           category:"AI / ML",           series:null,             cost:"Pago",     link:"https://www.garysguide.com/events/avpydk5/AI-Hot-100-Summit" },
-  { id:54, date:"2026-05-12", end:"2026-05-13", name:"TECHSPO Boston 2026",                                                    city:"Boston",        state:"MA", region:"Boston",        category:"Startup / General", series:null,             cost:"Pago",     link:"https://techspoboston.com/" },
-  { id:55, date:"2026-05-12", end:"2026-05-14", name:"SaaStr Annual 2026",                                                     city:"San Mateo",     state:"CA", region:"SF Bay Area",   category:"SaaS / B2B",        series:"SaaStr",         cost:"Pago",     link:"https://www.saastr.com/events/" },
-  { id:56, date:"2026-05-12", end:"2026-05-12", name:"SaaStr AI Summit",                                                       city:"San Mateo",     state:"CA", region:"SF Bay Area",   category:"SaaS / B2B",        series:"SaaStr",         cost:"Pago",     link:"https://www.garysguide.com/events/m1q3bbo/SaaStr-AI-Summit" },
-  { id:57, date:"2026-05-14", end:"2026-05-14", name:"Wall Street South FinTech Summit",                                       city:"Miami",         state:"FL", region:"Miami",         category:"Fintech",           series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/8651lg8/Wall-Street-South-FinTech-Summit" },
-  { id:58, date:"2026-05-15", end:"2026-05-15", name:"NYC Coffee Club – Early-Stage B2B Founders & Funders",                  city:"New York",      state:"NY", region:"NYC",           category:"SaaS / B2B",        series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/n657y5e/NYC-Coffee-Club-Early-Stage-B2B-Founders-Funders" },
-  { id:59, date:"2026-05-18", end:"2026-05-18", name:"Techex 2026",                                                            city:"San Jose",      state:"CA", region:"SF Bay Area",   category:"Startup / General", series:null,             cost:"Pago",     link:"https://www.garysguide.com/events/8f6s9f6/Techex-2026" },
-  { id:60, date:"2026-05-26", end:"2026-05-31", name:"Tech Week Boston 2026 (a16z)",                                           city:"Boston",        state:"MA", region:"Boston",        category:"Startup / General", series:"Tech Week Boston",cost:"Mixto",   link:"https://www.tech-week.com/boston" },
-  { id:61, date:"2026-05-28", end:"2026-05-28", name:"Niural AI Summit (NYC Tech Week side event)",                            city:"New York",      state:"NY", region:"NYC",           category:"AI / ML",           series:"NYC Tech Week",  cost:"Ver web",  link:"https://lu.ma/mggz3md1" },
-  { id:62, date:"2026-05-28", end:"2026-05-28", name:"AI Engineers – Devs & Drinks NYC",                                      city:"New York",      state:"NY", region:"NYC",           category:"AI / ML",           series:null,             cost:"Gratuito", link:"https://www.garysguide.com/events/r7skk0c/AI-Engineers-Devs-Drinks" },
-  { id:63, date:"2026-06-01", end:"2026-06-07", name:"NYC Tech Week 2026 (a16z)",                                              city:"New York",      state:"NY", region:"NYC",           category:"Startup / General", series:"NYC Tech Week",  cost:"Mixto",    link:"https://www.tech-week.com/" },
+  { id:1, date:"2026-04-15", end:"2026-04-15", name:"AI x Hardware Engineering Dinner", city:"Mountain View", state:"CA", region:"SF Bay Area", category:"AI / ML", series:null, cost:"Ver web", link:"https://lu.ma/0gkax6h6" },
+  { id:2, date:"2026-04-15", end:"2026-04-15", name:"A+ Founders Dinner", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"Networking", series:null, cost:"Ver web", link:"https://lu.ma/ncpq1ogx" },
+  { id:3, date:"2026-04-15", end:"2026-04-15", name:"Ships & Sips: SF Engineering Happy Hour", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"Networking", series:null, cost:"Ver web", link:"https://lu.ma/sf-eng-happy-hour" },
+  { id:4, date:"2026-04-15", end:"2026-04-15", name:"Startups, Power, and the AI Age", city:"Stanford", state:"CA", region:"SF Bay Area", category:"AI / ML", series:null, cost:"Ver web", link:"https://lu.ma/8fvs6pnw" },
+  { id:5, date:"2026-04-15", end:"2026-04-15", name:"Gen AI Summit 2026", city:"San Jose", state:"CA", region:"SF Bay Area", category:"AI / ML", series:null, cost:"Pago", link:"https://www.garysguide.com/events/ndagxbs/Gen-AI-Summit" },
+  { id:6, date:"2026-04-15", end:"2026-04-15", name:"Celebrating 10 Years of MIT Sandbox", city:"Cambridge", state:"MA", region:"Boston", category:"Pitch / Demo", series:null, cost:"Ver web", link:"https://lu.ma/vcxll7xl" },
+  { id:7, date:"2026-04-15", end:"2026-04-15", name:"Bitcoin Devs Meetup", city:"New York", state:"NY", region:"NYC", category:"Fintech", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/l81ewxx/Bitcoin-Devs-Meetup" },
+  { id:8, date:"2026-04-15", end:"2026-04-15", name:"CodeLaunch USA 2026 – Hackathon & Pitch Competition", city:"Dallas", state:"TX", region:"Dallas TX", category:"Pitch / Demo", series:null, cost:"Gratuito", link:"https://codelaunch.com/events/2026-usa-ga/" },
+  { id:9, date:"2026-04-15", end:"2026-06-01", name:"Whitney Biennial 2026", city:"New York", state:"NY", region:"NYC", category:"Cultura / Arte", series:"Camila NYC", cost:"Pago", link:"https://whitney.org" },
+  { id:10, date:"2026-04-15", end:"2026-06-01", name:"MET Raphael Exhibit", city:"New York", state:"NY", region:"NYC", category:"Cultura / Arte", series:"Camila NYC", cost:"Pago", link:"https://www.metmuseum.org" },
+  { id:11, date:"2026-04-15", end:"2026-06-01", name:"Guggenheim Exhibitions 2026", city:"New York", state:"NY", region:"NYC", category:"Cultura / Arte", series:"Camila NYC", cost:"Pago", link:"https://www.guggenheim.org" },
+  { id:12, date:"2026-04-15", end:"2026-06-01", name:"Hamilton (Broadway)", city:"New York", state:"NY", region:"NYC", category:"Entretenimiento", series:"Camila NYC", cost:"Pago", link:"https://www.newyorktheatreguide.com" },
+  { id:13, date:"2026-04-15", end:"2026-06-01", name:"The Lion King (Broadway)", city:"New York", state:"NY", region:"NYC", category:"Entretenimiento", series:"Camila NYC", cost:"Pago", link:"https://www.newyorktheatreguide.com" },
+  { id:14, date:"2026-04-15", end:"2026-06-01", name:"Moulin Rouge! (Broadway)", city:"New York", state:"NY", region:"NYC", category:"Entretenimiento", series:"Camila NYC", cost:"Pago", link:"https://www.newyorktheatreguide.com" },
+  { id:15, date:"2026-04-15", end:"2026-06-01", name:"Wicked (Broadway)", city:"New York", state:"NY", region:"NYC", category:"Entretenimiento", series:"Camila NYC", cost:"Pago", link:"https://www.newyorktheatreguide.com" },
+  { id:16, date:"2026-04-15", end:"2026-06-01", name:"Hadestown (Broadway)", city:"New York", state:"NY", region:"NYC", category:"Entretenimiento", series:"Camila NYC", cost:"Pago", link:"https://www.newyorktheatreguide.com" },
+  { id:17, date:"2026-04-15", end:"2026-06-01", name:"NY Yankees Home Games (Apr–May 2026)", city:"New York", state:"NY", region:"NYC", category:"Deportes / Fitness", series:"Camila NYC", cost:"Pago", link:"https://www.mlb.com/yankees" },
+  { id:18, date:"2026-04-15", end:"2026-06-01", name:"NY Mets Home Games (Apr–May 2026)", city:"New York", state:"NY", region:"NYC", category:"Deportes / Fitness", series:"Camila NYC", cost:"Pago", link:"https://www.mlb.com/mets" },
+  { id:19, date:"2026-04-15", end:"2026-06-01", name:"Smorgasburg (Weekends – Williamsburg)", city:"Brooklyn", state:"NY", region:"NYC", category:"Gastronomía", series:"Camila NYC", cost:"Gratuito", link:"https://www.smorgasburg.com" },
+  { id:20, date:"2026-04-15", end:"2026-06-01", name:"Brooklyn Flea Market (Weekends)", city:"Brooklyn", state:"NY", region:"NYC", category:"Cultura / Ocio", series:"Camila NYC", cost:"Gratuito", link:"https://brooklynflea.com" },
+  { id:21, date:"2026-04-15", end:"2026-06-01", name:"Candlelight Concerts NYC (Apr–May)", city:"New York", state:"NY", region:"NYC", category:"Entretenimiento", series:"Camila NYC", cost:"Pago", link:"https://feverup.com" },
+  { id:22, date:"2026-04-15", end:"2026-06-01", name:"Macys Flower Show 2026", city:"New York", state:"NY", region:"NYC", category:"Cultura / Arte", series:"Camila NYC", cost:"Gratuito", link:"https://www.macys.com" },
+  { id:23, date:"2026-04-15", end:"2026-06-01", name:"Midnight Market NYC", city:"New York", state:"NY", region:"NYC", category:"Gastronomía", series:"Camila NYC", cost:"Gratuito", link:"https://www.midnightmarketjc.com" },
+  { id:24, date:"2026-04-15", end:"2026-04-15", name:"Founder Breakfast", city:"New York", state:"NY", region:"NYC", category:"Networking", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/cyzscspj" },
+  { id:25, date:"2026-04-15", end:"2026-04-15", name:"Founder Coffee Meet", city:"New York", state:"NY", region:"NYC", category:"Networking", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/b5q2vx9f" },
+  { id:26, date:"2026-04-15", end:"2026-04-15", name:"The Human Side of AI: Building Real Connection with Goodword", city:"New York", state:"NY", region:"NYC", category:"Startup / Tech", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/2m8dfx6p" },
+  { id:27, date:"2026-04-15", end:"2026-04-15", name:"Cocktails & Claude — an AI Salon for Ecommerce", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/ubo7ib5c" },
+  { id:28, date:"2026-04-15", end:"2026-04-15", name:"Data on Tap NYC | Astrato & Propelling Tech", city:"New York", state:"NY", region:"NYC", category:"Startup / Tech", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/kzlny60a" },
+  { id:29, date:"2026-04-15", end:"2026-04-15", name:"NYC Alt Cloud Meetup (April 2026)", city:"New York", state:"NY", region:"NYC", category:"Networking", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/mih253wk" },
+  { id:30, date:"2026-04-15", end:"2026-04-15", name:"Pitch Roast Live - April", city:"New York", state:"NY", region:"NYC", category:"Pitch / Demo Day", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/pitchroastapr" },
+  { id:31, date:"2026-04-15", end:"2026-04-15", name:"[April 2026] Monthly NYC Tech Poker Night!", city:"New York", state:"NY", region:"NYC", category:"Startup / Tech", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/m2s52agz" },
+  { id:32, date:"2026-04-15", end:"2026-04-15", name:"Deal Catch: Networking & Pitch in New York", city:"New York", state:"NY", region:"NYC", category:"Pitch / Demo Day", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/manhattanpitch" },
+  { id:33, date:"2026-04-15", end:"2026-04-15", name:"AI, Fintech and Compliance: Panel + Wine Tasting", city:"New York", state:"NY", region:"NYC", category:"Fintech", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/2ex1lqyf" },
+  { id:34, date:"2026-04-15", end:"2026-04-15", name:"Legal Hackers Dinner", city:"New York", state:"NY", region:"NYC", category:"Startup / Tech", series:"Gary's Guide", cost:"Gratuito", link:"https://www.garysguide.com/events/035e7tb/Legal-Hackers-Dinner" },
+  { id:35, date:"2026-04-15", end:"2026-04-15", name:"NYC 1 Million Cups", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/9r5443vl" },
+  { id:36, date:"2026-04-15", end:"2026-04-15", name:"AI IRL Coffee", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/un4n3dj9" },
+  { id:37, date:"2026-04-15", end:"2026-04-15", name:"Hidden Universities of NYC: International Students Walking Tour", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/9mvvcdbw" },
+  { id:38, date:"2026-04-15", end:"2026-04-15", name:"Wednesday Coworking - Founders, Builders, Creatives, Researchers, and Supporters", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/usiwmi0f" },
+  { id:39, date:"2026-04-15", end:"2026-04-15", name:"Networking Walk for Women Entrepreneurs ✦ Union City, NJ ✦ BizBestie Walk", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/bizbestie-walk-networking-union-city-april-15" },
+  { id:40, date:"2026-04-15", end:"2026-04-15", name:"Building Beats Mentor Mixer", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/7gm7h2ue" },
+  { id:41, date:"2026-04-15", end:"2026-04-15", name:"nextNYC x Queen One Consumer Happy Hour + Conversation with Ryan Urban", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/next-nyc-queen-one-consumer-happy-hour" },
+  { id:42, date:"2026-04-15", end:"2026-04-15", name:"CSC Workshop: Build Your Own Data Factory: AI Agents That Generate and Validate Data", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/jwxt56to" },
+  { id:43, date:"2026-04-15", end:"2026-04-15", name:"Marketing Jobs in the Age of AI: Myth, Reality, and Your Next Move", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/a0050k02" },
+  { id:44, date:"2026-04-15", end:"2026-04-16", name:"Stamford Claude Code for Everyone", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/138p6tmq" },
+  { id:45, date:"2026-04-15", end:"2026-04-16", name:"The Creationship Launch Party @ Caravan of Dreams", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/4v7b6xp1" },
+  { id:46, date:"2026-04-15", end:"2026-04-16", name:"Happy Hour: Founders who Become Friends", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/scuutxjo" },
+  { id:47, date:"2026-04-15", end:"2026-04-15", name:"Manhattan Climate Changemakers Hour of Action", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/zfhn6sql" },
+  { id:48, date:"2026-04-15", end:"2026-04-15", name:"NYC Meet Up #21 - Facilitation That Sticks: What Makes an Effective Workshop", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/hxgbrags" },
+  { id:49, date:"2026-04-15", end:"2026-04-16", name:"Seed-to-Series Table NYC", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/eepmdzmf" },
+  { id:50, date:"2026-04-15", end:"2026-04-16", name:"StartOut NYC April Mixer at Henrietta Hudson", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/2shnga3l" },
+  { id:51, date:"2026-04-15", end:"2026-04-16", name:"AI After Five: Music History Connected", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/w080zw4u" },
+  { id:52, date:"2026-04-15", end:"2026-04-16", name:"Join us for a Fireside Chat: From Datadog to Dash0 — A Customer's Journey", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/z27er0to" },
+  { id:53, date:"2026-04-15", end:"2026-04-16", name:"Pitch Roast Live - April 15th", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/pitchroastapr" },
+  { id:54, date:"2026-04-15", end:"2026-04-16", name:"NYC: Brooklyn Mom Connect", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/0rd5jr2j" },
+  { id:55, date:"2026-04-15", end:"2026-04-15", name:"Consumer Happy Hour", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/gkls6hk/Consumer-Happy-Hour" },
+  { id:56, date:"2026-04-15", end:"2026-04-15", name:"Founders, Investors & Talent Mixer", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/0zn1q1r/Founders-Investors-Talent-Mixer" },
+  { id:57, date:"2026-04-15", end:"2026-04-15", name:"AI Startup Founder Pitch Night", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/rrdbba5/AI-Startup-Founder-Pitch-Night" },
+  { id:58, date:"2026-04-15", end:"2026-04-15", name:"AI Evenings - Shipping AI That Actually Works", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Pago", link:"https://www.garysguide.com/events/jjcvxzi/AI-Evenings-Shipping-AI-That-Actually-Works" },
+  { id:59, date:"2026-04-15", end:"2026-04-15", name:"Founders Who Become Friends Happy Hour", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/j6dfje6/Founders-Who-Become-Friends-Happy-Hour" },
+  { id:60, date:"2026-04-16", end:"2026-04-16", name:"Big Idea CONNECTpreneur Forum", city:"Washington", state:"DC", region:"DC", category:"Networking", series:null, cost:"Pago", link:"https://connectpreneur.org/2026-events-calendar/" },
+  { id:61, date:"2026-04-16", end:"2026-04-16", name:"Slides Down – AI Founders Party (DigitalOcean x Zendesk)", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"Networking", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/3dp7ip4/Slides-Down-AI-Founders-Party" },
+  { id:62, date:"2026-04-16", end:"2026-04-16", name:"AngularNYC Meetup", city:"New York", state:"NY", region:"NYC", category:"Startup / General", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/6cf1lp7/AngularNYC-Meetup" },
+  { id:63, date:"2026-04-16", end:"2026-04-17", name:"VC Community Happy Hour: Round Two", city:"New York", state:"NY", region:"NYC", category:"Networking", series:null, cost:"Ver web", link:"https://lu.ma/r97w2x2x" },
+  { id:64, date:"2026-04-16", end:"2026-04-17", name:"Spring Into Cyber: Community Mixer", city:"Miami", state:"FL", region:"Miami", category:"Networking", series:null, cost:"Ver web", link:"https://lu.ma/wl174nc7" },
+  { id:65, date:"2026-04-16", end:"2026-04-19", name:"Brooklyn Art Fest", city:"Brooklyn", state:"NY", region:"NYC", category:"Cultura / Arte", series:"Camila NYC", cost:"Gratuito", link:"https://www.eventbrite.com" },
+  { id:66, date:"2026-04-16", end:"2026-04-16", name:"HUMP! Film Festival NYC", city:"New York", state:"NY", region:"NYC", category:"Entretenimiento", series:"Camila NYC", cost:"Pago", link:"https://www.eventbrite.com" },
+  { id:67, date:"2026-04-16", end:"2026-04-16", name:"NYC Founders Breakfast + Pitch Workshop w/ Varun Puri (Yoodli)", city:"New York", state:"NY", region:"NYC", category:"Pitch / Demo Day", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/eqho5nfb" },
+  { id:68, date:"2026-04-16", end:"2026-04-16", name:"LangChain Presents: AI Agents Workshop with Harrison Chase", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/zx3sxeqj" },
+  { id:69, date:"2026-04-16", end:"2026-04-16", name:"NYC Product Leaders Breakfast: Let the AI Agents Work", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/wpfam6au" },
+  { id:70, date:"2026-04-16", end:"2026-04-16", name:"Construction Robotics Summit - From Dirt to Data", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/RoboticsSummit26" },
+  { id:71, date:"2026-04-16", end:"2026-04-16", name:"Workshop: Financial Readiness for Fundraising & Exits", city:"New York", state:"NY", region:"NYC", category:"Fintech", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/madwest-financial-readiness-workshop" },
+  { id:72, date:"2026-04-16", end:"2026-04-16", name:"AI Implementation Strategies for Nonprofit Leaders (Whole Whale)", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/0ccoix6c" },
+  { id:73, date:"2026-04-16", end:"2026-04-16", name:"Data & Drinks - Biotechs: Insights and Lessons Learned", city:"New York", state:"NY", region:"NYC", category:"BioTech / Health", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/m5slywup" },
+  { id:74, date:"2026-04-16", end:"2026-04-16", name:"Nucleate NY x BlueRock Therapeutics: Mixer & Flash Pitches", city:"New York", state:"NY", region:"NYC", category:"BioTech / Health", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/2wzk00du" },
+  { id:75, date:"2026-04-16", end:"2026-04-16", name:"NYC Venture Panel: Indemnities and Reps & Warranty Insurance in M&A", city:"New York", state:"NY", region:"NYC", category:"Fintech", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/m0gzxtjg" },
+  { id:76, date:"2026-04-16", end:"2026-04-16", name:"Women of Customer Success NYC: What's Driving Productivity in CS", city:"New York", state:"NY", region:"NYC", category:"Startup / Tech", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/6drcjvf0" },
+  { id:77, date:"2026-04-16", end:"2026-04-16", name:"Accessing the Enterprise: Microsoft Founder's Forum NYC", city:"New York", state:"NY", region:"NYC", category:"Startup / Tech", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/uyjkyel0" },
+  { id:78, date:"2026-04-16", end:"2026-04-16", name:"Pitch Deck Workshop", city:"New York", state:"NY", region:"NYC", category:"Pitch / Demo Day", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/pitchworkshop" },
+  { id:79, date:"2026-04-16", end:"2026-04-16", name:"Vention Unplugged: Optimizing for What? When AI Efficiency Runs Into Human Values", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/lrq3o3nx" },
+  { id:80, date:"2026-04-16", end:"2026-04-16", name:"Your Next Step in Tech Mixer", city:"New York", state:"NY", region:"NYC", category:"Networking", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/mkah521u" },
+  { id:81, date:"2026-04-16", end:"2026-04-16", name:"Bereisheet Hoboken - AI, Vibe Coding & Creativity", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/ksrkwvhz" },
+  { id:82, date:"2026-04-16", end:"2026-04-16", name:"Mansion Poker Night for VCs & Founders", city:"New York", state:"NY", region:"NYC", category:"Startup / Tech", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/tptyn0o8" },
+  { id:83, date:"2026-04-16", end:"2026-04-16", name:"Mission-Driven AI", city:"New York", state:"NY", region:"NYC", category:"Startup / Tech", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/sv1bwg2j" },
+  { id:84, date:"2026-04-16", end:"2026-04-16", name:"GTM AI in Practice", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/5fndsjpu" },
+  { id:85, date:"2026-04-16", end:"2026-04-16", name:"Founder Breakfast", city:"New York", state:"NY", region:"NYC", category:"Networking", series:"Gary's Guide", cost:"Gratuito", link:"https://www.garysguide.com/events/4fttpg8/Founder-Breakfast" },
+  { id:86, date:"2026-04-16", end:"2026-04-16", name:"Global Blockchain Conference", city:"New York", state:"NY", region:"NYC", category:"Blockchain / Web3", series:"Gary's Guide", cost:"Pago", link:"https://www.garysguide.com/events/qclqk9b/Global-Blockchain-Conference" },
+  { id:87, date:"2026-04-16", end:"2026-04-16", name:"VentureCrush", city:"New York", state:"NY", region:"NYC", category:"VC / Inversores", series:"Gary's Guide", cost:"Gratuito", link:"https://www.garysguide.com/events/jo12h5e/VentureCrush" },
+  { id:88, date:"2026-04-16", end:"2026-04-16", name:"Tech+Faith Meetup", city:"New York", state:"NY", region:"NYC", category:"Networking", series:"Gary's Guide", cost:"Gratuito", link:"https://www.garysguide.com/events/9rwk3o2/Tech-Faith-Meetup" },
+  { id:89, date:"2026-04-16", end:"2026-04-16", name:"Female Founder Coworking Day with Superhuman Mail and Lovable", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/p9w239dc" },
+  { id:90, date:"2026-04-16", end:"2026-04-16", name:"NYC AI in HR Breakfast", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/7b8gkh0k" },
+  { id:91, date:"2026-04-16", end:"2026-04-16", name:"The Stack Summit: NYC", city:"New York", state:"NY", region:"Northeast", category:"Enterprise / SaaS", series:null, cost:"Gratuito", link:"https://lu.ma/a46jjpbz" },
+  { id:92, date:"2026-04-16", end:"2026-04-16", name:"Community Event: PEF NY - Fireside Chat: Intellectual Property & Digital Marketing Challenges In The Age Of AI", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/rb5ajc3y" },
+  { id:93, date:"2026-04-16", end:"2026-04-16", name:"NYC Venture Panel - Founders, Investors + Exits: How Indemnities and Reps and Warranty Insurance Shape M&A Outcomes", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/m0gzxtjg" },
+  { id:94, date:"2026-04-16", end:"2026-04-17", name:"Women of Customer Success NYC Panel: What's Really Driving Productivity in Customer Success", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/6drcjvf0" },
+  { id:95, date:"2026-04-16", end:"2026-04-17", name:"April 16: How to talk to people: friends, strangers, customers, investors, employees, or the general public.", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/wlm9eadu" },
+  { id:96, date:"2026-04-16", end:"2026-04-17", name:"ComfyUI Official NYC April Forum", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/5aktbe24" },
+  { id:97, date:"2026-04-16", end:"2026-04-17", name:"Senior Engineers Roundtable (Kubernetes & AI Agents)", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/yoxpqd84" },
+  { id:98, date:"2026-04-16", end:"2026-04-17", name:"AI After 5 x Equinox", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/0vgn9210" },
+  { id:99, date:"2026-04-16", end:"2026-04-17", name:"DERTF NYC Meetup (Back in Brooklyn!)", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/u8pjoa1f" },
+  { id:100, date:"2026-04-16", end:"2026-04-17", name:"Book Launch: Tame the Tech Beast", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/9n97bs45" },
+  { id:101, date:"2026-04-16", end:"2026-04-17", name:"Tech Poker, April Edition", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/7kz0vvir" },
+  { id:102, date:"2026-04-16", end:"2026-04-17", name:"Third Thursday Tech Schmooze I April", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/6099hj9o" },
+  { id:103, date:"2026-04-16", end:"2026-04-16", name:"How To Talk To People", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/tahlp86/How-To-Talk-To-People" },
+  { id:104, date:"2026-04-16", end:"2026-04-16", name:"Out In Tech - Queer Tech Stories Across Generations", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/5at69nq/Out-In-Tech-Queer-Tech-Stories-Across-Generations" },
+  { id:105, date:"2026-04-16", end:"2026-04-16", name:"I3 NYC Happy Hour", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/4wfvfsr/I3-NYC-Happy-Hour" },
+  { id:106, date:"2026-04-16", end:"2026-04-16", name:"Tech Gather Meetup", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/os11ntw/Tech-Gather-Meetup" },
+  { id:107, date:"2026-04-17", end:"2026-04-17", name:"AI Engineers – Game Night", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/2fc2gyd/AI-Engineers-Game-Night" },
+  { id:108, date:"2026-04-17", end:"2026-04-17", name:"$100K AI Startup Pitch-Off @ Chargebee Beelieve '26", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"Pitch / Demo", series:null, cost:"Ver web", link:"https://lu.ma/beelieve" },
+  { id:109, date:"2026-04-17", end:"2026-04-17", name:"Startup Pitch Night // Sustainable AI", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"Climate Tech", series:null, cost:"Ver web", link:"https://lu.ma/20daseu5" },
+  { id:110, date:"2026-04-17", end:"2026-04-17", name:"Voice AI Builders Night", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"AI / ML", series:null, cost:"Ver web", link:"https://lu.ma/voice_builders" },
+  { id:111, date:"2026-04-17", end:"2026-04-18", name:"Recharge Your Closet – Sustainable Fashion Pop-Up (Rethink the Runway)", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"Fashion Tech", series:"SF Climate Week", cost:"Ver web", link:"https://lu.ma/eam8uq5s" },
+  { id:112, date:"2026-04-17", end:"2026-04-17", name:"AWS & zeb: Deploying Production-Ready AI Agents on Amazon Bedrock", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/f4ndeli4" },
+  { id:113, date:"2026-04-17", end:"2026-04-17", name:"Female Founders & Builders: April Co-Work Session", city:"New York", state:"NY", region:"NYC", category:"Startup / Tech", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/v346rxmm" },
+  { id:114, date:"2026-04-17", end:"2026-04-17", name:"No-Code AI Agent Workshop with MuleRun Ambassadors", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/kwgv0ou3" },
+  { id:115, date:"2026-04-17", end:"2026-04-17", name:"Venture Studios and Japanese Corporate Innovation (Remarkable Ventures+ERA)", city:"New York", state:"NY", region:"NYC", category:"VC / Inversores", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/fwk9dsjw" },
+  { id:116, date:"2026-04-17", end:"2026-04-17", name:"When an AI Sees You: A Women & Non-Binary Only Evening with LUVE AI", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/jbwjnvpk" },
+  { id:117, date:"2026-04-17", end:"2026-04-17", name:"AI Debate Event", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/3a65g92e" },
+  { id:118, date:"2026-04-17", end:"2026-04-17", name:"Production Grade Agents", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"Gary's Guide", cost:"Gratuito", link:"https://www.garysguide.com/events/617bgpc/Production-Grade-Agents" },
+  { id:119, date:"2026-04-17", end:"2026-04-17", name:"Hybird Krea.ai x GenART NYU Challenge: The Furniture Lab", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/xhm403ef" },
+  { id:120, date:"2026-04-17", end:"2026-04-17", name:"Founder Breakfast", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/ndtbbscp" },
+  { id:121, date:"2026-04-17", end:"2026-04-17", name:"Founder Breakfast Club (Hosted by Andrew & Friends)", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/apr17breakfast" },
+  { id:122, date:"2026-04-17", end:"2026-04-17", name:"AWS & zeb - Build Smarter: Deploying Production-Ready AI Agents on Amazon Bedrock AgentCore (NYC)", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/f4ndeli4" },
+  { id:123, date:"2026-04-17", end:"2026-04-18", name:"Context Engineering Guild: April Edition", city:"New York", state:"NY", region:"Northeast", category:"Enterprise / SaaS", series:null, cost:"Gratuito", link:"https://lu.ma/utloz1vc" },
+  { id:124, date:"2026-04-17", end:"2026-04-17", name:"HAS National Conference", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Pago", link:"https://www.garysguide.com/events/ajcfvss/HAS-National-Conference" },
+  { id:125, date:"2026-04-17", end:"2026-04-17", name:"AI Engineers - Game Night", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/2fc2gyd/AI-Engineers-Game-Night" },
+  { id:126, date:"2026-04-18", end:"2026-04-18", name:"MoMA PS1 Spring Block Party", city:"New York", state:"NY", region:"NYC", category:"Entretenimiento", series:"Camila NYC", cost:"Gratuito", link:"https://momaps1.org" },
+  { id:127, date:"2026-04-18", end:"2026-04-18", name:"Alta Joda Latin Festival", city:"New York", state:"NY", region:"NYC", category:"Entretenimiento", series:"Camila NYC", cost:"Pago", link:"https://www.eventbrite.com" },
+  { id:128, date:"2026-04-18", end:"2026-04-18", name:"Conservative Principles in Investing and Tech with Marlena Haddad", city:"New York", state:"NY", region:"NYC", category:"Startup / Tech", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/q38trmz2" },
+  { id:129, date:"2026-04-18", end:"2026-04-18", name:"FOOD X HOUSING NYC CONFERENCE 2026", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/4l1b4tps" },
+  { id:130, date:"2026-04-18", end:"2026-04-19", name:"Enterprise Agent Jam NYC", city:"New York", state:"NY", region:"Northeast", category:"Enterprise / SaaS", series:null, cost:"Gratuito", link:"https://lu.ma/c6d3aw94" },
+  { id:131, date:"2026-04-18", end:"2026-04-18", name:"Where is AI in 2026 and Where is it Going NYC", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/uo1w07c8" },
+  { id:132, date:"2026-04-18", end:"2026-04-19", name:"Spring Salsa Tech Mixer & Social", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/mu8nagrf" },
+  { id:133, date:"2026-04-18", end:"2026-04-18", name:"Content Creators Meetup", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/pcrkr11/Content-Creators-Meetup" },
+  { id:134, date:"2026-04-19", end:"2026-04-19", name:"Earth Day Festival NYC", city:"New York", state:"NY", region:"NYC", category:"Cultura / Arte", series:"Camila NYC", cost:"Gratuito", link:"https://www.earthdayinitiative.org" },
+  { id:135, date:"2026-04-19", end:"2026-04-19", name:"Food Stroll NYC", city:"New York", state:"NY", region:"NYC", category:"Gastronomía", series:"Camila NYC", cost:"Pago", link:"https://www.eventbrite.com" },
+  { id:136, date:"2026-04-19", end:"2026-04-19", name:"Bonjour Girls in NYC - Martech/Marketing Coffee Chat", city:"New York", state:"NY", region:"NYC", category:"Networking", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/0vconpmh" },
+  { id:137, date:"2026-04-19", end:"2026-04-20", name:"SIGNAL / NOISE - A Creative Tech & Performance Social Night in Manhattan", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/rlhw7uxp" },
+  { id:138, date:"2026-04-20", end:"2026-04-20", name:"Climate Week – Founders, Investors & LP Happy Hour", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"Climate Tech", series:"SF Climate Week", cost:"Gratuito", link:"https://www.garysguide.com/events/74rq32b/Climate-Week-Founders-Investors-LP-Happy-Hour" },
+  { id:139, date:"2026-04-20", end:"2026-04-20", name:"RESCHEDULED: Ask a Chief of Staff Summit: NYC 2026", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/a01nwibi" },
+  { id:140, date:"2026-04-20", end:"2026-04-21", name:"Nordic AI Night - C10 Labs x Google x King & Spalding", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/zixtld36" },
+  { id:141, date:"2026-04-20", end:"2026-04-20", name:"Community Building Lab", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/b77lxjtc" },
+  { id:142, date:"2026-04-20", end:"2026-04-21", name:"NYC - Generalist World Brooklyn Meetup", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/6xtnspdq" },
+  { id:143, date:"2026-04-20", end:"2026-04-20", name:"Designers Who Vibe Code", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Pago", link:"https://www.garysguide.com/events/lud0csl/Designers-Who-Vibe-Code" },
+  { id:144, date:"2026-04-21", end:"2026-04-25", name:"NYC Space Week 2026", city:"New York", state:"NY", region:"NYC", category:"Deep Tech", series:"NYC Space Week", cost:"Mixto", link:"https://www.garysguide.com/events" },
+  { id:145, date:"2026-04-21", end:"2026-04-21", name:"Lunar Development Co-Operative Spotlight", city:"New York", state:"NY", region:"NYC", category:"Deep Tech", series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/jmk2rbu/Lunar-Development-Co-Operative-Spotlight" },
+  { id:146, date:"2026-04-21", end:"2026-04-21", name:"Ursa Space Spotlight – Satellite Intelligence Leadership", city:"New York", state:"NY", region:"NYC", category:"Deep Tech", series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/q34iugp/Ursa-Space-Spotlight-Satellite-Intelligence-Leadership" },
+  { id:147, date:"2026-04-21", end:"2026-04-21", name:"WomenHack 2026", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"Networking", series:null, cost:"Ver web", link:"https://www.garysguide.com/events/4yx7twv/WomenHack-2026" },
+  { id:148, date:"2026-04-21", end:"2026-04-21", name:"Food & Ag Ecosystem Happy Hour (SF Climate Week)", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"Climate Tech", series:"SF Climate Week", cost:"Ver web", link:"https://lu.ma/8yuc8udq" },
+  { id:149, date:"2026-04-21", end:"2026-04-21", name:"California Leads: Investment, Innovation & Clean Energy", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"Climate Tech", series:"SF Climate Week", cost:"Ver web", link:"https://lu.ma/vr9fbyxd" },
+  { id:150, date:"2026-04-21", end:"2026-04-21", name:"Carbon Removal Happy Hour – SF Climate Week", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"Climate Tech", series:"SF Climate Week", cost:"Gratuito", link:"https://lu.ma/svn0brc7" },
+  { id:151, date:"2026-04-21", end:"2026-04-21", name:"International Founders Happy Hour – Magic Room Series", city:"Stanford", state:"CA", region:"SF Bay Area", category:"Networking", series:null, cost:"Ver web", link:"https://lu.ma/2jxgjtn1" },
+  { id:152, date:"2026-04-21", end:"2026-04-21", name:"N.E. IT Security Leaders Lunch - NYC", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/ruitbfop" },
+  { id:153, date:"2026-04-21", end:"2026-04-21", name:"How We Built This: Partnership-Led Growth with Microsoft, Redis, Eden, Datadog and GTM Buddy", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/fnm68h8a" },
+  { id:154, date:"2026-04-21", end:"2026-04-21", name:"AI & The Culture IRL: Slack AI Integrations Demo", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/8a2bynu5" },
+  { id:155, date:"2026-04-21", end:"2026-04-21", name:"Gen Z NYC Founder & Creator Mixer", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/pc4ur04s" },
+  { id:156, date:"2026-04-21", end:"2026-04-22", name:"UGLY TALK: WHAT BREAKS ON THE WAY TO BUILDING AN EIGHT-FIGURE BRAND", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/evtk7oih" },
+  { id:157, date:"2026-04-21", end:"2026-04-22", name:"NYC BookTalk: A Chat with Charlie O'Donnell", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/0vfeuxmd" },
+  { id:158, date:"2026-04-21", end:"2026-04-22", name:"NYC Mobility & Delivery Tech Happy Hour", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/0pptglnt" },
+  { id:159, date:"2026-04-21", end:"2026-04-22", name:"The AI Strategy Dinner", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/Growing-smar-not-fast" },
+  { id:160, date:"2026-04-21", end:"2026-04-22", name:"Private Dinner at Charlie Bird: Building for $200M+ ARR", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/mw5yxj1x" },
+  { id:161, date:"2026-04-21", end:"2026-04-21", name:"Ursa Space Spotlight - Satellite Intelligence Leadership", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/q34iugp/Ursa-Space-Spotlight-Satellite-Intelligence-Leadership" },
+  { id:162, date:"2026-04-21", end:"2026-04-21", name:"Ugly Talk - What Breaks On The Way To Building Eight-Figure Brand", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/t7krmkw/Ugly-Talk-What-Breaks-On-The-Way-To-Building-Eight-Figure-Brand" },
+  { id:163, date:"2026-04-21", end:"2026-04-21", name:"Digital Colonialism", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/c1cttrk/Digital-Colonialism" },
+  { id:164, date:"2026-04-21", end:"2026-04-21", name:"100-Year Quest For Fusion Energy", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/s2lwr9o/100-Year-Quest-For-Fusion-Energy" },
+  { id:165, date:"2026-04-22", end:"2026-04-22", name:"New York Analog Astronauts", city:"New York", state:"NY", region:"NYC", category:"Deep Tech", series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/o7o9rk8/New-York-Analog-Astronauts" },
+  { id:166, date:"2026-04-22", end:"2026-04-22", name:"NYC Space Week Kickoff at Luxembourg House", city:"New York", state:"NY", region:"NYC", category:"Deep Tech", series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/a2f2uah/Space-Week-Kickoff-At-Luxembourg-House" },
+  { id:167, date:"2026-04-22", end:"2026-04-22", name:"AI for Investors | Synergist x Women in AI", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"AI / ML", series:null, cost:"Ver web", link:"https://lu.ma/vpdlhyfh" },
+  { id:168, date:"2026-04-22", end:"2026-04-22", name:"Rubbish: Waste Management Tech Happy Hour", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"Climate Tech", series:"SF Climate Week", cost:"Ver web", link:"https://lu.ma/rubbish-happy-hour" },
+  { id:169, date:"2026-04-22", end:"2026-04-26", name:"Downtown NYC JazzFest", city:"New York", state:"NY", region:"NYC", category:"Entretenimiento", series:"Camila NYC", cost:"Gratuito", link:"https://www.eventbrite.com" },
+  { id:170, date:"2026-04-22", end:"2026-04-22", name:"Table (formerly Startup Lean Coffee)", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/h9rw8du8" },
+  { id:171, date:"2026-04-22", end:"2026-04-22", name:"Gotham Foundry x NYCEDC Pitch Competition", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/s9960v98" },
+  { id:172, date:"2026-04-22", end:"2026-04-22", name:"GitHub Copilot Dev Days - NYC", city:"New York", state:"NY", region:"Northeast", category:"Enterprise / SaaS", series:null, cost:"Gratuito", link:"https://lu.ma/hdnj6mkg" },
+  { id:173, date:"2026-04-22", end:"2026-04-22", name:"Web Programming with AI", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/36couagc" },
+  { id:174, date:"2026-04-22", end:"2026-04-22", name:"Lab to Launch: Managing the Transition from Academic Research to Commercialization", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/s8j2l5fn" },
+  { id:175, date:"2026-04-22", end:"2026-04-22", name:"NYC Tech Ladies: Product Roundtable Discussions", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/3cp82km0" },
+  { id:176, date:"2026-04-22", end:"2026-04-23", name:"Introducing: Next Gen Professionals Networking", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/xuddm0ti" },
+  { id:177, date:"2026-04-22", end:"2026-04-22", name:"NYC B2B: AI Engineers x Devs Meetup", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/8aluta07" },
+  { id:178, date:"2026-04-22", end:"2026-04-23", name:"AI Infra After Dark Social with Essence, MongoDB, Vermilion in NYC", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/4oh9p583" },
+  { id:179, date:"2026-04-22", end:"2026-04-23", name:"ArtificialRuby.ai NYC: April", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/m1z16db0" },
+  { id:180, date:"2026-04-22", end:"2026-04-23", name:"Ask a Chief of Staff x Generalist World NYC Happy Hour", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/c0vq174n" },
+  { id:181, date:"2026-04-22", end:"2026-04-23", name:"Junto Founder Dinner - Series A+ Founders (Hosted by Andrew & Friends)", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/juntodinnerapr22" },
+  { id:182, date:"2026-04-22", end:"2026-04-22", name:"XPC NYC 26Q2", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/r8gjog3i" },
+  { id:183, date:"2026-04-22", end:"2026-04-23", name:"Health Tech Builders Mixer", city:"New York", state:"NY", region:"Northeast", category:"Healthtech", series:null, cost:"Gratuito", link:"https://lu.ma/4smsish4" },
+  { id:184, date:"2026-04-22", end:"2026-04-23", name:"Creative Women in AI - vol 2", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/ls56gkhi" },
+  { id:185, date:"2026-04-22", end:"2026-04-22", name:"CUNY-ASRC Industry Showcase", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/xvvw9f7/CUNY-ASRC-Industry-Showcase" },
+  { id:186, date:"2026-04-22", end:"2026-04-22", name:"GitHub Copilot Dev Days", city:"New York", state:"NY", region:"Northeast", category:"Enterprise / SaaS", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/clxr8e5/GitHub-Copilot-Dev-Days" },
+  { id:187, date:"2026-04-22", end:"2026-04-22", name:"Space Week Kickoff At Luxembourg House", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/a2f2uah/Space-Week-Kickoff-At-Luxembourg-House" },
+  { id:188, date:"2026-04-22", end:"2026-04-22", name:"B2B AI Engineers & Devs Meetup", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/5j8wmm9/B2B-AI-Engineers-Devs-Meetup" },
+  { id:189, date:"2026-04-22", end:"2026-04-22", name:"The CFO As Value Architect - Building Profitability That Lasts", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/hzk9wm7/The-CFO-As-Value-Architect-Building-Profitability-That-Lasts" },
+  { id:190, date:"2026-04-22", end:"2026-04-22", name:"AI Talks - AI In Robotics & Agentic Event Driven AI", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Pago", link:"https://www.garysguide.com/events/h8w36xj/AI-Talks-AI-In-Robotics-Agentic-Event-Driven-AI" },
+  { id:191, date:"2026-04-23", end:"2026-04-23", name:"ERA Accelerator Demo Day – 14 Startups Pitching", city:"New York", state:"NY", region:"NYC", category:"Pitch / Demo", series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/s0r96jd/ERA-Accelerator-Demo-Day" },
+  { id:192, date:"2026-04-23", end:"2026-04-23", name:"SpaceTech Legal & Capital Playbook", city:"New York", state:"NY", region:"NYC", category:"Deep Tech", series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/ue2qihk/Spacetech-Legal-Capital-Playbook" },
+  { id:193, date:"2026-04-23", end:"2026-04-24", name:"eMerge Americas Conference + Expo 2026", city:"Miami Beach", state:"FL", region:"Miami", category:"Startup / General", series:"eMerge Americas", cost:"Pago", link:"https://emergeamericas.com/register/" },
+  { id:194, date:"2026-04-23", end:"2026-04-24", name:"Nebulai Tech Wave: AI Agents Era (Miami Tech Week)", city:"Miami", state:"FL", region:"Miami", category:"AI / ML", series:"eMerge Americas", cost:"Ver web", link:"https://lu.ma/h7aiuiaq" },
+  { id:195, date:"2026-04-23", end:"2026-04-23", name:"Greenpill NYC Meetup", city:"New York", state:"NY", region:"Northeast", category:"Blockchain / Web3", series:null, cost:"Gratuito", link:"https://lu.ma/b5ml42so" },
+  { id:196, date:"2026-04-23", end:"2026-04-23", name:"CryptoAI Summit 2026: The Singularity is Here?", city:"New York", state:"NY", region:"Northeast", category:"Blockchain / Web3", series:null, cost:"Gratuito", link:"https://lu.ma/g14rifkg" },
+  { id:197, date:"2026-04-23", end:"2026-04-23", name:"Founder Unfriendly Book Event with Charlie O'Donnell at Newlab", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/founder-unfriendly-book-event-newlab" },
+  { id:198, date:"2026-04-23", end:"2026-04-23", name:"Pitch Day - April 23, 2026", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/ai354abz" },
+  { id:199, date:"2026-04-23", end:"2026-04-24", name:"(N)YC GTM+AI Masterclass #4", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/pes0snoo" },
+  { id:200, date:"2026-04-23", end:"2026-04-24", name:"NYC AI Demos #8", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/i8v2cmvk" },
+  { id:201, date:"2026-04-23", end:"2026-04-24", name:"NYC PMM Spring Happy Hour", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/yw9qteay" },
+  { id:202, date:"2026-04-23", end:"2026-04-24", name:"Raising Your Seed Round: How Investors Actually Decide If You're a Good Bet", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/zwvf6e0h" },
+  { id:203, date:"2026-04-23", end:"2026-04-24", name:"Artificially Unintelligent: NYC Tech Comedy Show (April)", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/NYTechComedyApril" },
+  { id:204, date:"2026-04-23", end:"2026-04-24", name:"Columbia in Tech 2026 NYC Spring Reunion", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/34g5yta1" },
+  { id:205, date:"2026-04-23", end:"2026-04-24", name:"spring tech mixer", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/springmixer2026" },
+  { id:206, date:"2026-04-23", end:"2026-04-24", name:"State of AI Safety 2026", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/state-of-ai-safety" },
+  { id:207, date:"2026-04-23", end:"2026-04-24", name:"ZavoVentures: Bridging Startup Founders and Investors for a Brighter Future", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/cxpei3z0" },
+  { id:208, date:"2026-04-23", end:"2026-04-24", name:"AI and Consciousness: What Is Actually Happening In There (According to Mathematics)?", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/kztb4pc2" },
+  { id:209, date:"2026-04-23", end:"2026-04-24", name:"Break Bread With Webflow & BX Studio NYC Tech CMO Dinner", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/amvzmfyj" },
+  { id:210, date:"2026-04-23", end:"2026-04-23", name:"ERA Accelerator Demo Day", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/s0r96jd/ERA-Accelerator-Demo-Day" },
+  { id:211, date:"2026-04-23", end:"2026-04-23", name:"AI, Wellness & Tech Mixer", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Pago", link:"https://www.garysguide.com/events/vwgmrml/Ai-Wellness-Tech-Mixer" },
+  { id:212, date:"2026-04-23", end:"2026-04-23", name:"Breaking Patterns - Private Salon For Leaders In AI, Tech & Product", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/0why1tc/Breaking-Patterns-Private-Salon-For-Leaders-In-AI-Tech-Product" },
+  { id:213, date:"2026-04-23", end:"2026-04-23", name:"Tech-Driven, Human-Centered - Leading Thru Disruption", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/7qv7dke/Tech-Driven-Human-Centered-Leading-Thru-Disruption" },
+  { id:214, date:"2026-04-23", end:"2026-04-23", name:"Soho Forum Debate", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Pago", link:"https://www.garysguide.com/events/2rv8cai/Soho-Forum-Debate" },
+  { id:215, date:"2026-04-23", end:"2026-04-23", name:"Artificially Unintelligent Tech Comedy Show", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/30s0nje/Artificially-Unintelligent-Tech-Comedy-Show" },
+  { id:216, date:"2026-04-23", end:"2026-04-23", name:"Free Speech Dialogue", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Pago", link:"https://www.garysguide.com/events/jm420gu/Free-Speech-Dialogue" },
+  { id:217, date:"2026-04-24", end:"2026-04-24", name:"New York Space Forum 2026", city:"New York", state:"NY", region:"NYC", category:"Deep Tech", series:"NYC Space Week", cost:"Pago", link:"https://www.garysguide.com/events/dclqane/New-York-Space-Forum" },
+  { id:218, date:"2026-04-24", end:"2026-04-24", name:"NYC Coffee Club – Early-Stage B2B Founders & Funders", city:"New York", state:"NY", region:"NYC", category:"SaaS / B2B", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/kohryjk/NYC-Coffee-Club-Early-Stage-B2B-Founders-Funders" },
+  { id:219, date:"2026-04-24", end:"2026-04-25", name:"AI + SaaS Startups Happy Hour @ eMerge Americas", city:"Miami", state:"FL", region:"Miami", category:"AI / ML", series:"eMerge Americas", cost:"Gratuito", link:"https://lu.ma/bp5ka07v" },
+  { id:220, date:"2026-04-24", end:"2026-04-24", name:"The Programmable Economy: AI & Blockchain Redefining Markets", city:"New York", state:"NY", region:"Northeast", category:"Blockchain / Web3", series:null, cost:"Gratuito", link:"https://lu.ma/aiblockchainnyc" },
+  { id:221, date:"2026-04-24", end:"2026-04-24", name:"2026 Wharton Fintech Conference", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://lu.ma/2026-wharton-fintech-conference" },
+  { id:222, date:"2026-04-24", end:"2026-04-24", name:"NYC Coffee Club Early-Stage B2B Founders & Funders", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/sh3jxm4q" },
+  { id:223, date:"2026-04-24", end:"2026-04-24", name:"Tech Happy Hour by Startup Grind", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/ycwmnszw" },
+  { id:224, date:"2026-04-24", end:"2026-04-24", name:"New York Space Forum", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Pago", link:"https://www.garysguide.com/events/dclqane/New-York-Space-Forum" },
+  { id:225, date:"2026-04-24", end:"2026-04-24", name:"NYC Coffee Club - Early-Stage B2B Founders & Funders", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/kohryjk/NYC-Coffee-Club-Early-Stage-B2B-Founders-Funders" },
+  { id:226, date:"2026-04-25", end:"2026-04-25", name:"NYC Space Week Closing Townhouse Party", city:"New York", state:"NY", region:"NYC", category:"Networking", series:"NYC Space Week", cost:"Gratuito", link:"https://www.garysguide.com/events/z4jwr9h/Space-Week-Closing-Townhouse-Party" },
+  { id:227, date:"2026-04-25", end:"2026-04-25", name:"NYC Beer & Wine Fest", city:"New York", state:"NY", region:"NYC", category:"Gastronomía", series:"Camila NYC", cost:"Pago", link:"https://www.eventbrite.com" },
+  { id:228, date:"2026-04-25", end:"2026-04-25", name:"PMAI: Claude Code for Beginners", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/p51du8b2" },
+  { id:229, date:"2026-04-25", end:"2026-04-25", name:"TechWalk Brooklyn, 4/25", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/pmekbgdj" },
+  { id:230, date:"2026-04-25", end:"2026-04-25", name:"AI Product Management And Demos", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/rt9ssilg" },
+  { id:231, date:"2026-04-25", end:"2026-04-25", name:"PMAI - Claude Code For Beginners", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/99b85c5/PMAI-Claude-Code-For-Beginners" },
+  { id:232, date:"2026-04-25", end:"2026-04-25", name:"Space Week Closing Townhouse Party", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/z4jwr9h/Space-Week-Closing-Townhouse-Party" },
+  { id:233, date:"2026-04-26", end:"2026-04-27", name:"Intezer Welcome Reception @ AI SOC Live", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/y428j9za" },
+  { id:234, date:"2026-04-27", end:"2026-04-27", name:"C3 Davos Of Healthcare Summit", city:"Sunnyvale", state:"CA", region:"SF Bay Area", category:"Bio / Health", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/b71d2zg/C3-Davos-Of-Healthcare-Summit" },
+  { id:235, date:"2026-04-27", end:"2026-05-01", name:"NY FinTech Week 2026 – Community Events", city:"New York", state:"NY", region:"NYC", category:"Fintech", series:"NY FinTech Week", cost:"Mixto", link:"https://lu.ma/ny-fintech-week" },
+  { id:236, date:"2026-04-27", end:"2026-04-27", name:"Taste of Madison Ave", city:"New York", state:"NY", region:"NYC", category:"Gastronomía", series:"Camila NYC", cost:"Gratuito", link:"https://www.eventbrite.com" },
+  { id:237, date:"2026-04-27", end:"2026-04-27", name:"NYC Fintech Coffee", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://lu.ma/w9470u90" },
+  { id:238, date:"2026-04-27", end:"2026-04-27", name:"From AI Strategy to Production: A Practical Playbook for Financial Services", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://lu.ma/noxqahzi" },
+  { id:239, date:"2026-04-27", end:"2026-04-28", name:"Investing in Direct-to-Consumer brands: For VCs, Family Offices and angels", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/3zn7005q" },
+  { id:240, date:"2026-04-27", end:"2026-04-28", name:"The Future of B2C Growth (Yes! and AI!)", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/u179n393" },
+  { id:241, date:"2026-04-27", end:"2026-04-27", name:"SEO Week", city:"New York", state:"NY", region:"Northeast", category:"Enterprise / SaaS", series:null, cost:"Pago", link:"https://www.garysguide.com/events/t0a8b2m/SEO-Week" },
+  { id:242, date:"2026-04-27", end:"2026-04-27", name:"Reinventing The Enterprise - Deploy AI At Scale To Drive Real Biz Impact", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/wwbm3h2/Reinventing-The-Enterprise-Deploy-AI-At-Scale-To-Drive-Real-Biz-Impact" },
+  { id:243, date:"2026-04-27", end:"2026-04-27", name:"Momentum AI New York", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/plvbiz9/Momentum-AI-New-York" },
+  { id:244, date:"2026-04-27", end:"2026-04-27", name:"The Information - Financing The AI Revolution", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/klvfet2/The-Information-Financing-The-AI-Revolution" },
+  { id:245, date:"2026-04-27", end:"2026-04-27", name:"DFS Fireside Chat", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/66at6r0/DFS-Fireside-Chat" },
+  { id:246, date:"2026-04-27", end:"2026-04-27", name:"The Shortlist - Founder Showcase", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/l7rejt9/The-Shortlist-Founder-Showcase" },
+  { id:247, date:"2026-04-27", end:"2026-04-27", name:"Fintech Bridge Table", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/37q9xsd/Fintech-Bridge-Table" },
+  { id:248, date:"2026-04-28", end:"2026-04-28", name:"Startup Grind Global Conference 2026", city:"Redwood City", state:"CA", region:"SF Bay Area", category:"Startup / General", series:"Startup Grind", cost:"Pago", link:"https://www.startupgrind.tech/" },
+  { id:249, date:"2026-04-28", end:"2026-04-29", name:"Niural AI Summit – NY FinTech Week", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"NY FinTech Week", cost:"Ver web", link:"https://lu.ma/mggz3md1" },
+  { id:250, date:"2026-04-28", end:"2026-04-30", name:"FTW: Official NY FinTech Week Conference (Fintech Is Femme)", city:"New York", state:"NY", region:"NYC", category:"Fintech", series:"NY FinTech Week", cost:"Pago", link:"https://lu.ma/FTW_NYC26" },
+  { id:251, date:"2026-04-28", end:"2026-04-28", name:"FRC ft. Rain Run Club during NYC FinTech Week", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://lu.ma/staetr4w" },
+  { id:252, date:"2026-04-28", end:"2026-04-28", name:"April Brewing Connections - FinTech Week Coffee Tasting Meetup", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://lu.ma/j8qs7xwd" },
+  { id:253, date:"2026-04-28", end:"2026-04-28", name:"The Future of Fintech in the Age of AI", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://lu.ma/3j0xdjcv" },
+  { id:254, date:"2026-04-28", end:"2026-04-30", name:"FTW: The Official New York Fintech Week Conference April 28-30", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://lu.ma/FTW_NYC26" },
+  { id:255, date:"2026-04-28", end:"2026-04-29", name:"Seed2Table - Pitch+Dinner for Tech + Life Science Investors Hosted by KPMG", city:"New York", state:"NY", region:"Northeast", category:"Healthtech", series:null, cost:"Gratuito", link:"https://lu.ma/k2h3htts" },
+  { id:256, date:"2026-04-28", end:"2026-04-28", name:"Women Defining AI: AI x Wellness Speaker Panel", city:"New York", state:"NY", region:"Northeast", category:"Blockchain / Web3", series:null, cost:"Gratuito", link:"https://lu.ma/kax4fo71" },
+  { id:257, date:"2026-04-28", end:"2026-04-29", name:"Show-and-Tell: AI workflows for Health Tech PMs", city:"New York", state:"NY", region:"Northeast", category:"Healthtech", series:null, cost:"Gratuito", link:"https://lu.ma/1qke08f8" },
+  { id:258, date:"2026-04-28", end:"2026-04-29", name:"Greenlight Yourself Mixer - NYC", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/u6sfp9o1" },
+  { id:259, date:"2026-04-28", end:"2026-04-28", name:"NY Fintech Week Conference", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Pago", link:"https://www.garysguide.com/events/9k87ig6/NY-Fintech-Week-Conference" },
+  { id:260, date:"2026-04-28", end:"2026-04-28", name:"Fintech Investors Happy Hour", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/e9wak8e/Fintech-Investors-Happy-Hour" },
+  { id:261, date:"2026-04-28", end:"2026-04-28", name:"Queens Tech+Innovation Challenge", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/s8itv14/Queens-Tech-Innovation-Challenge" },
+  { id:262, date:"2026-04-29", end:"2026-04-29", name:"Stripe Sessions 2026", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"SaaS / B2B", series:null, cost:"Pago", link:"https://www.garysguide.com/events/zcp0uor/Stripe-Session" },
+  { id:263, date:"2026-04-29", end:"2026-04-29", name:"Salesforce Agentforce World Tour NYC 2026", city:"New York", state:"NY", region:"NYC", category:"Enterprise / SaaS", series:"Salesforce", cost:"Gratuito", link:"https://www.salesforce.com/events/world-tour/nyc/" },
+  { id:264, date:"2026-04-29", end:"2026-04-29", name:"Transform 2026: A Private Executive Forum on AI Sourcing, Governance, and Strategic Control", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/lfrs03cx" },
+  { id:265, date:"2026-04-29", end:"2026-04-29", name:"New Applications for Blockchain in Energy + Environment", city:"New York", state:"NY", region:"Northeast", category:"Blockchain / Web3", series:null, cost:"Gratuito", link:"https://lu.ma/lja4lehs" },
+  { id:266, date:"2026-04-29", end:"2026-04-30", name:"Applied AI in Fintech (w/ Brex) - NYFTW", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://lu.ma/j4eatir9" },
+  { id:267, date:"2026-04-29", end:"2026-04-29", name:"NYFTW26 Fintech Showcase Powered By RevTech Labs", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://lu.ma/eygit2q2" },
+  { id:268, date:"2026-04-29", end:"2026-04-30", name:"Bereisheet Tech: Pitch. Connect. Elevate.", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/bjzbhlic" },
+  { id:269, date:"2026-04-29", end:"2026-04-30", name:"NY Fintech Week Founder Happy Hour", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://lu.ma/1q9qgwe6" },
+  { id:270, date:"2026-04-29", end:"2026-04-30", name:"Tech:NYC Women in AI Happy Hour", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/sqzuru4d" },
+  { id:271, date:"2026-04-29", end:"2026-04-30", name:"NYC B2B: FinTech Founders & Investors Meetup", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://lu.ma/6umeyzit" },
+  { id:272, date:"2026-04-29", end:"2026-04-30", name:"V11 x 645 Ventures: Thinking in Bets", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/zlo461g4" },
+  { id:273, date:"2026-04-29", end:"2026-04-29", name:"Fintech Showcase", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/64j48sa/Fintech-Showcase" },
+  { id:274, date:"2026-04-29", end:"2026-04-29", name:"Applied AI In Fintech", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/uihv7pz/Applied-AI-In-Fintech" },
+  { id:275, date:"2026-04-29", end:"2026-04-29", name:"Enshittification", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/jimil6q/Enshittification" },
+  { id:276, date:"2026-04-29", end:"2026-04-29", name:"Why AI Needs Feminism - From Campus Surveillance To Global Conflicts", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/3q6szbd/Why-AI-Needs-Feminism-From-Campus-Surveillance-To-Global-Conflicts" },
+  { id:277, date:"2026-04-29", end:"2026-04-29", name:"B2B FinTech Founders & Investors Meetup", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/sw2fo8r/B2B-FinTech-Founders-Investors-Meetup" },
+  { id:278, date:"2026-04-30", end:"2026-04-30", name:"StrictlyVC San Francisco 2026", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"Networking", series:null, cost:"Pago", link:"https://techcrunch.com/events/strictlyvc-san-francisco-2026/" },
+  { id:279, date:"2026-04-30", end:"2026-04-30", name:"SF Startup & Tech Mixer 2026", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"Networking", series:null, cost:"Pago", link:"https://www.eventbrite.com/e/sf-startup-tech-mixer-2026-tickets-1985409306682" },
+  { id:280, date:"2026-04-30", end:"2026-05-01", name:"Side Event: Reverse Network Power Walk – NY Tech", city:"New York", state:"NY", region:"NYC", category:"Networking", series:"NYC Tech Week", cost:"Gratuito", link:"https://lu.ma/q345qiay" },
+  { id:281, date:"2026-04-30", end:"2026-05-04", name:"Cult Gaia Sample Sale", city:"New York", state:"NY", region:"NYC", category:"Cultura / Ocio", series:"Camila NYC", cost:"Gratuito", link:"https://www.chicmi.com" },
+  { id:282, date:"2026-04-30", end:"2026-04-30", name:"TechWalk Jersey City, 4/30", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/2odiy5g7" },
+  { id:283, date:"2026-04-30", end:"2026-04-30", name:"Fintech Takes 3v3 Classic @ NY Fintech Week", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://lu.ma/mxyptobn" },
+  { id:284, date:"2026-04-30", end:"2026-04-30", name:"FOHE NYC: New Models of Education", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/rus3r90z" },
+  { id:285, date:"2026-04-30", end:"2026-05-01", name:"April AI Engineers: Devs & Drinks", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/bkd16px2" },
+  { id:286, date:"2026-04-30", end:"2026-05-01", name:"Is Taste All You Need? PMAI AI Design Workshop", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/k2ykc14t" },
+  { id:287, date:"2026-04-30", end:"2026-05-01", name:"The New Standard: a talk with Linear, Raycast, and Anthropic at South Park Commons", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/ldp71ob2" },
+  { id:288, date:"2026-04-30", end:"2026-04-30", name:"Horizons - AI & Digital Innovation", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Pago", link:"https://www.garysguide.com/events/vct0dx0/Horizons-AI-Digital-Innovation" },
+  { id:289, date:"2026-04-30", end:"2026-04-30", name:"AI Engineers - Devs & Drinks", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/uqiz6b4/AI-Engineers-Devs-Drinks" },
+  { id:290, date:"2026-04-30", end:"2026-04-30", name:"From Intros To Income", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/ix0w4d0/From-Intros-To-Income" },
+  { id:291, date:"2026-04-30", end:"2026-04-30", name:"Exec Night", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/uokz3x4/Exec-Night" },
+  { id:292, date:"2026-05-01", end:"2026-05-01", name:"Penn Venture Lab Startup Challenge – Live Pitch", city:"Philadelphia", state:"PA", region:"Philadelphia", category:"Pitch / Demo", series:null, cost:"Gratuito", link:"https://venturelab.upenn.edu/startup-challenge" },
+  { id:293, date:"2026-05-01", end:"2026-05-03", name:"Techstars Startup Weekend Boston", city:"Boston", state:"MA", region:"Boston", category:"Pitch / Demo", series:null, cost:"Pago", link:"https://startupweekend.boston/" },
+  { id:294, date:"2026-05-01", end:"2026-05-01", name:"InsurTech 2026 Spring Conference", city:"New York", state:"NY", region:"NYC", category:"Bio / Health", series:null, cost:"Pago", link:"https://www.garysguide.com/events/ac02xaa/InsurTech-2026-Spring-Conference" },
+  { id:295, date:"2026-05-01", end:"2026-05-01", name:"AI Engineers - Devs & Drinks", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"Gary's Guide", cost:"Gratuito", link:"https://www.garysguide.com/events/r7skk0c/AI-Engineers-Devs-Drinks" },
+  { id:296, date:"2026-05-01", end:"2026-05-01", name:"Urban Data Science Showcase", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/eqk6hrtm" },
+  { id:297, date:"2026-05-01", end:"2026-05-01", name:"Advanced Founder Roundtable Lunch: Series A+ and Scaling", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/e6obcay2" },
+  { id:298, date:"2026-05-01", end:"2026-05-01", name:"2026 NYU Entrepreneurs Challenge: Final Pitch-Off & Awards Ceremony", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/i9isr4ia" },
+  { id:299, date:"2026-05-01", end:"2026-05-01", name:"Deep-Bio Networking Event NYC", city:"New York", state:"NY", region:"Northeast", category:"Healthtech", series:null, cost:"Gratuito", link:"https://lu.ma/midfxrq5" },
+  { id:300, date:"2026-05-01", end:"2026-05-01", name:"NYC B2B: FinTech Founders & Operators Finale", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://lu.ma/sv7jfnx4" },
+  { id:301, date:"2026-05-01", end:"2026-05-01", name:"NYC B2B Fintech Founders & Operators Finale", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/elpw8tn/NYC-B2B-Fintech-Founders-Operators-Finale" },
+  { id:302, date:"2026-05-02", end:"2026-05-02", name:"Iron Ball by Cliqk + Pier + Coeus Collective - Ivy League Gala for Investors", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/icrwkgdg" },
+  { id:303, date:"2026-05-02", end:"2026-05-02", name:"PauseAI NYC May Gen. Meeting", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/t7w8nfg9" },
+  { id:304, date:"2026-05-02", end:"2026-05-02", name:"Superintelligent AI and Loss of Control NYC", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/9bmte6qy" },
+  { id:305, date:"2026-05-02", end:"2026-05-02", name:"Make The Best Worst Website Hackathon", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/z84fbsa/Make-The-Best-Worst-Website-Hackathon" },
+  { id:306, date:"2026-05-04", end:"2026-05-05", name:"KiloClaw Happy Hour #AIAgentWeek2026", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/nmymx567" },
+  { id:307, date:"2026-05-04", end:"2026-05-05", name:"Wesleyan Shark Tank: A Live Pitch Event", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/r6zzo68v" },
+  { id:308, date:"2026-05-04", end:"2026-05-04", name:"WSJ - The Future Of Everything", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Pago", link:"https://www.garysguide.com/events/k0gza1a/WSJ-The-Future-Of-Everything" },
+  { id:309, date:"2026-05-04", end:"2026-05-04", name:"AI Agent Conference", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Pago", link:"https://www.garysguide.com/events/8gowva5/AI-Agent-Conference" },
+  { id:310, date:"2026-05-05", end:"2026-05-06", name:"Inside the Startup Investor Mind: What Actually Gets Funded in 2026", city:"Jersey City", state:"NJ", region:"NYC", category:"VC / Inversores", series:"Luma NYC", cost:"Gratuito", link:"https://lu.ma/7b9izu9h" },
+  { id:311, date:"2026-05-06", end:"2026-05-06", name:"SF Coffee Club – Early Stage B2B Tech Founders & Funders", city:"San Francisco", state:"CA", region:"SF Bay Area", category:"SaaS / B2B", series:null, cost:"Gratuito", link:"https://lu.ma/sf-coffee-club" },
+  { id:312, date:"2026-05-06", end:"2026-05-06", name:"Dataiku & Matrix FSI PG Event", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/hexqsrwp" },
+  { id:313, date:"2026-05-06", end:"2026-05-06", name:"Ditch the Deck NYC - AI Show not Tell #AIAgentWeek2026", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/ptsqwzb6" },
+  { id:314, date:"2026-05-07", end:"2026-05-07", name:"AI Hot 100 Summit", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:null, cost:"Pago", link:"https://www.garysguide.com/events/avpydk5/AI-Hot-100-Summit" },
+  { id:315, date:"2026-05-07", end:"2026-05-07", name:"TechWalk Jersey City, 5/7", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/nsht9414" },
+  { id:316, date:"2026-05-07", end:"2026-05-07", name:"NYC Amazon Quick User Group", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/ki6osji8" },
+  { id:317, date:"2026-05-07", end:"2026-05-07", name:"Female Founders & Funders Life Admin Party", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/lifeadminparty" },
+  { id:318, date:"2026-05-07", end:"2026-05-08", name:"NYC QUANTUM TECHNOLOGIES in Lowenstein Sandler", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/1yq951ul" },
+  { id:319, date:"2026-05-07", end:"2026-05-07", name:"Startup & Professional Networking", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/iimx2epn" },
+  { id:320, date:"2026-05-07", end:"2026-05-08", name:"From Idea to Production App in 90 Minutes", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/builder-google" },
+  { id:321, date:"2026-05-07", end:"2026-05-08", name:"117th NY Hardware Meetup @ Cornell Tech - Assistive Tech", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/2tovyb2s" },
+  { id:322, date:"2026-05-07", end:"2026-05-07", name:"Symposium For Leon Levy Scholarships In Neuroscience", city:"New York", state:"NY", region:"Northeast", category:"Healthtech", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/vb9lc4w/Symposium-For-Leon-Levy-Scholarships-In-Neuroscience" },
+  { id:323, date:"2026-05-07", end:"2026-05-07", name:"Driving Brand Relevance & Growth Thru Cultural Moments", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Pago", link:"https://www.garysguide.com/events/opt5bqp/Driving-Brand-Relevance-Growth-Thru-Cultural-Moments" },
+  { id:324, date:"2026-05-07", end:"2026-05-07", name:"Marketing Evenings", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Pago", link:"https://www.garysguide.com/events/d22ltny/Marketing-Evenings" },
+  { id:325, date:"2026-05-07", end:"2026-05-07", name:"Long Island Technologists Meetup", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/crfhf6b/Long-Island-Technologists-Meetup" },
+  { id:326, date:"2026-05-08", end:"2026-05-08", name:"Amplify Music Investment Summit", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Pago", link:"https://www.garysguide.com/events/cv5nucp/Amplify-Music-Investment-Summit" },
+  { id:327, date:"2026-05-11", end:"2026-05-12", name:"Bohemian AI Salon: #AIWeekNY", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/cc16taiu" },
+  { id:328, date:"2026-05-11", end:"2026-05-11", name:"Food Entrepreneurs Connection w/ GorillaBrave", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Pago", link:"https://www.garysguide.com/events/7jvdoc9/Food-Entrepreneurs-Connection-w-GorillaBrave" },
+  { id:329, date:"2026-05-11", end:"2026-05-11", name:"NY Tech Meetup - Disability Tech Edition", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/nei0943/NY-Tech-Meetup-Disability-Tech-Edition" },
+  { id:330, date:"2026-05-11", end:"2026-05-11", name:"Bohemian AI Salon", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/39bultn/Bohemian-AI-Salon" },
+  { id:331, date:"2026-05-12", end:"2026-05-13", name:"TECHSPO Boston 2026", city:"Boston", state:"MA", region:"Boston", category:"Startup / General", series:null, cost:"Pago", link:"https://techspoboston.com/" },
+  { id:332, date:"2026-05-12", end:"2026-05-14", name:"SaaStr Annual 2026", city:"San Mateo", state:"CA", region:"SF Bay Area", category:"SaaS / B2B", series:"SaaStr", cost:"Pago", link:"https://www.saastr.com/events/" },
+  { id:333, date:"2026-05-12", end:"2026-05-12", name:"SaaStr AI Summit", city:"San Mateo", state:"CA", region:"SF Bay Area", category:"SaaS / B2B", series:"SaaStr", cost:"Pago", link:"https://www.garysguide.com/events/m1q3bbo/SaaStr-AI-Summit" },
+  { id:334, date:"2026-05-12", end:"2026-05-12", name:"RWA Day NYC", city:"New York", state:"NY", region:"Northeast", category:"Blockchain / Web3", series:null, cost:"Gratuito", link:"https://lu.ma/rwa.day" },
+  { id:335, date:"2026-05-12", end:"2026-05-13", name:"Japan Society Innovation Series: Bridging US and Japan Innovation Ecosystems", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/ppo520mh" },
+  { id:336, date:"2026-05-12", end:"2026-05-12", name:"BioNJ Biopartnering Conference", city:"New York", state:"NY", region:"Northeast", category:"Healthtech", series:null, cost:"Pago", link:"https://www.garysguide.com/events/ufmlsno/BioNJ-Biopartnering-Conference" },
+  { id:337, date:"2026-05-12", end:"2026-05-12", name:"The New Wave Of AI In Healthcare", city:"New York", state:"NY", region:"Northeast", category:"Healthtech", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/3pkvqmu/The-New-Wave-Of-AI-In-Healthcare" },
+  { id:338, date:"2026-05-12", end:"2026-05-12", name:"Purpose Summit", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/te51md6/Purpose-Summit" },
+  { id:339, date:"2026-05-12", end:"2026-05-12", name:"Brooklyn Tech Expo", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Pago", link:"https://www.garysguide.com/events/5c5aw4v/Brooklyn-Tech-Expo" },
+  { id:340, date:"2026-05-12", end:"2026-05-12", name:"AI Engineers - All-In On AI", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/kbhnmml/AI-Engineers-All-In-On-AI" },
+  { id:341, date:"2026-05-13", end:"2026-05-13", name:"Data Center Investing and Planning May 13 - 14", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/l0inulj5" },
+  { id:342, date:"2026-05-13", end:"2026-05-14", name:"ALD NYC: THE FUTURE OF APPLIED AI IN FINANCE AND BANKING", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://lu.ma/ALDNYC26" },
+  { id:343, date:"2026-05-13", end:"2026-05-13", name:"Marketing at the Intersection of AI & Fashion with Daydream", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/9kc8x0ow" },
+  { id:344, date:"2026-05-13", end:"2026-05-14", name:"NYC Alt Cloud Meetup (May 2026)", city:"New York", state:"NY", region:"Northeast", category:"Enterprise / SaaS", series:null, cost:"Gratuito", link:"https://lu.ma/f8sr148e" },
+  { id:345, date:"2026-05-13", end:"2026-05-14", name:"ArtificialRuby.ai NYC: May", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/j71w5v66" },
+  { id:346, date:"2026-05-13", end:"2026-05-14", name:"Wealth Catalyst Summit NYC VIP party", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/jvezv509" },
+  { id:347, date:"2026-05-13", end:"2026-05-13", name:"Future Of Applied AI In Finance & Banking", city:"New York", state:"NY", region:"Northeast", category:"Fintech", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/gnqmegi/Future-Of-Applied-AI-In-Finance-Banking" },
+  { id:348, date:"2026-05-14", end:"2026-05-14", name:"Wall Street South FinTech Summit", city:"Miami", state:"FL", region:"Miami", category:"Fintech", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/8651lg8/Wall-Street-South-FinTech-Summit" },
+  { id:349, date:"2026-05-14", end:"2026-05-14", name:"Eater Dinner Series NYC", city:"New York", state:"NY", region:"NYC", category:"Gastronomía", series:"Camila NYC", cost:"Pago", link:"https://www.eater.com" },
+  { id:350, date:"2026-05-14", end:"2026-05-14", name:"Product Ops Summit", city:"New York", state:"NY", region:"NYC", category:"Networking", series:"Gary's Guide", cost:"Pago", link:"https://www.garysguide.com/events/4fzzi7i/Product-Ops-Summit" },
+  { id:351, date:"2026-05-14", end:"2026-05-14", name:"Data Center Summit Day 2 - Onsite Power Generation Technology Solutions", city:"New York", state:"NY", region:"Northeast", category:"Enterprise / SaaS", series:null, cost:"Gratuito", link:"https://lu.ma/9ouwc89o" },
+  { id:352, date:"2026-05-14", end:"2026-05-15", name:"Air Street NYC AI meetup", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/nycai" },
+  { id:353, date:"2026-05-14", end:"2026-05-14", name:"#AIWeekNY Barsys Happy Hour", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/cmzz70wv" },
+  { id:354, date:"2026-05-14", end:"2026-05-15", name:"May 2026 Video Tech NYC Meetup", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/cj7lex8g" },
+  { id:355, date:"2026-05-14", end:"2026-05-15", name:"DET NYC #2 Meetup", city:"New York", state:"NY", region:"Northeast", category:"Networking", series:null, cost:"Gratuito", link:"https://lu.ma/aqxn7jea" },
+  { id:356, date:"2026-05-14", end:"2026-05-14", name:"PMAI AI Demo - Founders Ask", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/4e0oty8/PMAI-AI-Demo-Founders-Ask" },
+  { id:357, date:"2026-05-15", end:"2026-05-15", name:"NYC Coffee Club – Early-Stage B2B Founders & Funders", city:"New York", state:"NY", region:"NYC", category:"SaaS / B2B", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/n657y5e/NYC-Coffee-Club-Early-Stage-B2B-Founders-Funders" },
+  { id:358, date:"2026-05-15", end:"2026-05-15", name:"Nucleate New York Presents: Activator Demo Day 2026", city:"New York", state:"NY", region:"Northeast", category:"Healthtech", series:null, cost:"Gratuito", link:"https://lu.ma/p4x22alw" },
+  { id:359, date:"2026-05-15", end:"2026-05-15", name:"Learn to Vibe Code with Lovable & AI Snack Club", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/a26cwetr" },
+  { id:360, date:"2026-05-15", end:"2026-05-15", name:"Hacking Founder & CEO Mindsets w/ AI Tools", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/re4y25q5" },
+  { id:361, date:"2026-05-15", end:"2026-05-15", name:"NYC Coffee Club - Early-Stage B2B Founders & Funders", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/n657y5e/NYC-Coffee-Club-Early-Stage-B2B-Founders-Funders" },
+  { id:362, date:"2026-05-17", end:"2026-05-17", name:"Ladies Who Launch Summit 2026", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/md87oexo" },
+  { id:363, date:"2026-05-18", end:"2026-05-18", name:"Techex 2026", city:"San Jose", state:"CA", region:"SF Bay Area", category:"Startup / General", series:null, cost:"Pago", link:"https://www.garysguide.com/events/8f6s9f6/Techex-2026" },
+  { id:364, date:"2026-05-19", end:"2026-05-19", name:"Gen Z NYC Founder & Creator Mixer", city:"New York", state:"NY", region:"Northeast", category:"Startup / Founders", series:null, cost:"Gratuito", link:"https://lu.ma/an5asi4l" },
+  { id:365, date:"2026-05-19", end:"2026-05-20", name:"Modern Investor Summit: New York", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/q29x7t6c" },
+  { id:366, date:"2026-05-20", end:"2026-05-21", name:"Trust, Tech, and the Bottom Line: CFOs at the Frontline of AI Risk", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/m9kc6yvt" },
+  { id:367, date:"2026-05-21", end:"2026-05-21", name:"Black Ore AI Tax Summit", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/s06467wf" },
+  { id:368, date:"2026-05-21", end:"2026-05-21", name:"Pepper NYC - Healthcare Data - Meetup 26Q2", city:"New York", state:"NY", region:"Northeast", category:"Healthtech", series:null, cost:"Gratuito", link:"https://lu.ma/elz1rpyo" },
+  { id:369, date:"2026-05-26", end:"2026-05-31", name:"Tech Week Boston 2026 (a16z)", city:"Boston", state:"MA", region:"Boston", category:"Startup / General", series:"Tech Week Boston", cost:"Mixto", link:"https://www.tech-week.com/boston" },
+  { id:370, date:"2026-05-26", end:"2026-05-27", name:"Marketers - Building with AI", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/8xidyow1" },
+  { id:371, date:"2026-05-28", end:"2026-05-28", name:"Niural AI Summit (NYC Tech Week side event)", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:"NYC Tech Week", cost:"Ver web", link:"https://lu.ma/mggz3md1" },
+  { id:372, date:"2026-05-28", end:"2026-05-28", name:"AI Engineers – Devs & Drinks NYC", city:"New York", state:"NY", region:"NYC", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/r7skk0c/AI-Engineers-Devs-Drinks" },
+  { id:373, date:"2026-05-28", end:"2026-05-28", name:"The Chief Strategy Officer AI Summit", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/e7404zl2" },
+  { id:374, date:"2026-05-28", end:"2026-05-28", name:"Niural AI Summit", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://lu.ma/mggz3md1" },
+  { id:375, date:"2026-05-28", end:"2026-05-28", name:"Pitch Day - May 28, 2026", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/yjbmxhlf" },
+  { id:376, date:"2026-05-28", end:"2026-05-28", name:"2026 Chloe Capital Founder Fellowship Showcase", city:"New York", state:"NY", region:"Northeast", category:"VC / Inversores", series:null, cost:"Gratuito", link:"https://lu.ma/cevp0nvj" },
+  { id:377, date:"2026-05-28", end:"2026-05-28", name:"AI Engineers - Devs & Drinks", city:"New York", state:"NY", region:"Northeast", category:"AI / ML", series:null, cost:"Gratuito", link:"https://www.garysguide.com/events/ebg6be3/AI-Engineers-Devs-Drinks" },
+  { id:378, date:"2026-05-31", end:"2026-05-31", name:"Side Event: staaake Reverse Network Opening Power Walk at New York AI/Tech Conference", city:"New York", state:"NY", region:"NYC", category:"Networking", series:"NY Tech Week", cost:"Gratuito", link:"https://lu.ma/q345qiay" },
+  { id:379, date:"2026-06-01", end:"2026-06-07", name:"NYC Tech Week 2026 (a16z)", city:"New York", state:"NY", region:"NYC", category:"Startup / General", series:"NYC Tech Week", cost:"Mixto", link:"https://www.tech-week.com/" },
+];
 
-  // ── Nuevas (next.nyc + The Knowledge Shop) ──
-  { id:64, date:"2026-04-14", end:"2026-04-17", name:"Miami VC Open Office Hours",                                             city:"Miami",         state:"FL", region:"Miami",         category:"VC / Inversores",   series:"nextNYC",          cost:"Gratuito", link:"https://www.next.nyc/events/miami-open-office-hours-april-2026" },
-  { id:65, date:"2026-04-15", end:"2026-04-15", name:"Pre-Series A Offsite",                                                   city:"Brooklyn",      state:"NY", region:"NYC",           category:"VC / Inversores",   series:"nextNYC",          cost:"Gratuito", link:"https://www.next.nyc/events/pre-series-a-offsite-april-2026" },
-  { id:66, date:"2026-04-15", end:"2026-04-15", name:"Founder Coffee Meet",                                                    city:"New York",      state:"NY", region:"NYC",           category:"Networking",        series:"The Knowledge Shop",cost:"Gratuito", link:"https://lu.ma/b5q2vx9f" },
-  { id:67, date:"2026-04-15", end:"2026-04-15", name:"Happy Hour: Founders who Become Friends",                                city:"New York",      state:"NY", region:"NYC",           category:"Networking",        series:"The Knowledge Shop",cost:"Gratuito", link:"https://lu.ma/scuutxjo" },
-  { id:68, date:"2026-04-24", end:"2026-04-24", name:"Brits in Tech – Coffee Meet",                                           city:"New York",      state:"NY", region:"NYC",           category:"Networking",        series:"The Knowledge Shop",cost:"Gratuito", link:"https://lu.ma/mb45ofwm" },
-  { id:69, date:"2026-05-13", end:"2026-05-13", name:"Founder Coffee Meet",                                                    city:"New York",      state:"NY", region:"NYC",           category:"Networking",        series:"The Knowledge Shop",cost:"Gratuito", link:"https://lu.ma/vku93la0" },
-  { id:70, date:"2026-05-20", end:"2026-05-20", name:"Brits in Tech – Rooftop Happy Hour",                                    city:"New York",      state:"NY", region:"NYC",           category:"Networking",        series:"The Knowledge Shop",cost:"Gratuito", link:"https://lu.ma/qg7ll42d" },
-  { id:71, date:"2026-05-29", end:"2026-05-29", name:"Brits in Tech – Coffee Meet",                                           city:"New York",      state:"NY", region:"NYC",           category:"Networking",        series:"The Knowledge Shop",cost:"Gratuito", link:"https://lu.ma/6s1mdkih" },
-
-  // ── Philly & DC ──────────────────────────────────────────────────────────
-  { id:72,  date:"2026-04-15", end:"2026-04-15", name:"Health2Tech DC, April 15, 2026",                                        city:"Washington",    state:"DC", region:"DC",            category:"BioTech / Health",   series:null,                   cost:"Gratuito", link:"https://lu.ma/hjf6r9ad" },
-  { id:73,  date:"2026-04-16", end:"2026-04-16", name:"Data & Drinks – Biotechs: Insights and Lessons Learned",               city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"BioTech / Health",   series:null,                   cost:"Gratuito", link:"https://lu.ma/m5slywup" },
-  { id:74,  date:"2026-04-16", end:"2026-04-16", name:"Founder Fridays Philadelphia: Pitch Competition",                       city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Pitch / Demo Day",   series:null,                   cost:"Gratuito", link:"https://lu.ma/drikw9q0" },
-  { id:75,  date:"2026-04-16", end:"2026-04-16", name:"Monthly Innovation Exchange: Humane Data",                              city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Tech / Innovación",  series:null,                   cost:"Gratuito", link:"https://lu.ma/7zppjce5" },
-  { id:76,  date:"2026-04-16", end:"2026-04-16", name:"African Incubator Value Creation (AIVC) Series",                       city:"Washington",    state:"DC", region:"DC",            category:"Startup / Tech",     series:null,                   cost:"Gratuito", link:"https://lu.ma/kn9c9ucv" },
-  { id:77,  date:"2026-04-16", end:"2026-04-16", name:"Big Idea CONNECTpreneur Forum – Spring 2026",                          city:"Washington",    state:"DC", region:"DC",            category:"Tech / Innovación",  series:null,                   cost:"Gratuito", link:"https://connectpreneur.org" },
-  { id:78,  date:"2026-04-16", end:"2026-04-16", name:"Career Fair: Georgetown Technology & National Security Conference",     city:"Washington",    state:"DC", region:"DC",            category:"Deep Tech / Defense", series:null,                  cost:"Gratuito", link:"https://lu.ma/z37mxg60" },
-  { id:79,  date:"2026-04-16", end:"2026-04-16", name:"Content in the Age of AI",                                             city:"Washington",    state:"DC", region:"DC",            category:"AI / ML",            series:null,                   cost:"Gratuito", link:"https://lu.ma/fizcrw87" },
-  { id:80,  date:"2026-04-16", end:"2026-04-16", name:"Fireside with Chairman Brendan Carr (FCC)",                            city:"Washington",    state:"DC", region:"DC",            category:"Tech / Innovación",  series:null,                   cost:"Gratuito", link:"https://lu.ma/ja7ml96p" },
-  { id:81,  date:"2026-04-16", end:"2026-04-16", name:"Future Tech DC 2026 – Trust, Privacy & AI (George Mason University)",  city:"Washington",    state:"DC", region:"DC",            category:"AI / ML",            series:null,                   cost:"Gratuito", link:"https://isaca-gwdc.org/event/future-tech-dc-2026/" },
-  { id:82,  date:"2026-04-16", end:"2026-04-16", name:"UK Industrial Strategy in Action – British Embassy Washington DC",     city:"Washington",    state:"DC", region:"DC",            category:"Tech / Innovación",  series:null,                   cost:"Gratuito", link:"https://lu.ma/yljtddzm" },
-  { id:83,  date:"2026-04-16", end:"2026-04-16", name:"VIP Reception: Georgetown Technology & National Security Conference",  city:"Washington",    state:"DC", region:"DC",            category:"Deep Tech / Defense", series:null,                  cost:"Gratuito", link:"https://lu.ma/8w9rgn7y" },
-  { id:84,  date:"2026-04-18", end:"2026-04-18", name:"Baltimore Climate Tech Meetup – DC Climate Week",                     city:"Washington",    state:"DC", region:"DC",            category:"Climate Tech",        series:"DC Climate Week",      cost:"Gratuito", link:"https://lu.ma/hrww71cg" },
-  { id:85,  date:"2026-04-18", end:"2026-04-18", name:"Outdoor Discussion Walk: AI and the Future of Work / Jobs",           city:"Washington",    state:"DC", region:"DC",            category:"AI / ML",            series:null,                   cost:"Gratuito", link:"https://lu.ma/49xrugfx" },
-  { id:86,  date:"2026-04-18", end:"2026-04-18", name:"Startup Bazaar UMD: 2026",                                             city:"Washington",    state:"DC", region:"DC",            category:"Pitch / Demo Day",   series:null,                   cost:"Gratuito", link:"https://lu.ma/6v32h80s" },
-  { id:87,  date:"2026-04-18", end:"2026-04-18", name:"TechWalk – Washington DC",                                             city:"Washington",    state:"DC", region:"DC",            category:"Tech / Innovación",  series:null,                   cost:"Gratuito", link:"https://lu.ma/983fxybb" },
-  { id:88,  date:"2026-04-19", end:"2026-04-19", name:"AI on the Mall: Environmental Decision-Making",                       city:"Washington",    state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/01vx4djm" },
-  { id:89,  date:"2026-04-20", end:"2026-04-20", name:"Critical Minerals and the Future of Secure Supply Chains",            city:"Washington",    state:"DC", region:"DC",            category:"Deep Tech / Defense", series:null,                  cost:"Gratuito", link:"https://lu.ma/nqfh6ffu" },
-  { id:90,  date:"2026-04-20", end:"2026-04-20", name:"Finding Common Ground Roundtable: Sustainability & Govt Affairs",     city:"Washington",    state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/2yp9ovp3" },
-  { id:91,  date:"2026-04-20", end:"2026-04-20", name:"Hack Club #HouseOfCode Student Kickoff",                              city:"Washington",    state:"DC", region:"DC",            category:"Startup / Tech",     series:null,                   cost:"Gratuito", link:"https://lu.ma/CAC-Kickoff" },
-  { id:92,  date:"2026-04-20", end:"2026-04-20", name:"Startup Bazaar @ DC Climate Week",                                    city:"Washington",    state:"DC", region:"DC",            category:"Pitch / Demo Day",   series:"DC Climate Week",      cost:"Gratuito", link:"https://lu.ma/i5i0e3t7" },
-  { id:93,  date:"2026-04-21", end:"2026-04-21", name:"Climate Innovation Studio: Accelerate Decarbonization",              city:"Washington",    state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/b3ivmi5q" },
-  { id:94,  date:"2026-04-21", end:"2026-04-21", name:"Climate Innovator Lightning Pitches",                                 city:"Washington",    state:"DC", region:"DC",            category:"Pitch / Demo Day",   series:null,                   cost:"Gratuito", link:"https://lu.ma/yrwkpu84" },
-  { id:95,  date:"2026-04-21", end:"2026-04-21", name:"Climate VC Breakfast",                                                city:"Washington",    state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/20frib38" },
-  { id:96,  date:"2026-04-21", end:"2026-04-21", name:"Daily Caller Live: American Innovation & Manufacturing Renaissance",  city:"Washington",    state:"DC", region:"DC",            category:"Deep Tech / Defense", series:null,                  cost:"Gratuito", link:"https://lu.ma/c42q52sl" },
-  { id:97,  date:"2026-04-21", end:"2026-04-21", name:"Fashion and the Climate Crisis: Policy and Innovation",              city:"Washington",    state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/1ns7cqsj" },
-  { id:98,  date:"2026-04-21", end:"2026-04-21", name:"Grants, Growth & Getting Acquired: Climate Tech Founders Playbook",  city:"Washington",    state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/87drsiuu" },
-  { id:99,  date:"2026-04-21", end:"2026-04-21", name:"MEIA Demo Day",                                                       city:"Washington",    state:"DC", region:"DC",            category:"Pitch / Demo Day",   series:null,                   cost:"Gratuito", link:"https://lu.ma/tox0c6un" },
-  { id:100, date:"2026-04-21", end:"2026-04-21", name:"Maryland Climate Tech Capital Stack",                                  city:"Washington",    state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/jtl210my" },
-  { id:101, date:"2026-04-21", end:"2026-04-21", name:"Sensorium ARC: Conversing with the Ocean Through AI Agents",         city:"Washington",    state:"DC", region:"DC",            category:"AI / ML",            series:null,                   cost:"Gratuito", link:"https://lu.ma/xgqktfbt" },
-  { id:102, date:"2026-04-21", end:"2026-04-21", name:"Startups Advancing Sustainability In The Built Environment",          city:"Washington",    state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/4b0cuspi" },
-  { id:103, date:"2026-04-21", end:"2026-04-21", name:"Women in Cleantech and Sustainability Chapter Launch – DC Climate Week", city:"Washington", state:"DC", region:"DC",           category:"Climate Tech",        series:"DC Climate Week",      cost:"Gratuito", link:"https://lu.ma/56la5hy0" },
-  { id:104, date:"2026-04-21", end:"2026-04-21", name:"Workshop: AI Tools to Manage Consumer Energy Usage",                 city:"Washington",    state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/003x7wb2" },
-  { id:105, date:"2026-04-22", end:"2026-04-22", name:"AI & Climate Health: From Tradeoffs to Transformations",             city:"Washington",    state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/rg2oq2i5" },
-  { id:106, date:"2026-04-22", end:"2026-04-22", name:"How to Win the Climate Fight Locally + Data Centers Solutions Salon", city:"Washington",   state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/ok8lnkcb" },
-  { id:107, date:"2026-04-22", end:"2026-04-22", name:"Lunch and Learn: Faith and AI Policy – Spiritual Voices in Governance", city:"Washington", state:"DC", region:"DC",            category:"AI / ML",            series:null,                   cost:"Gratuito", link:"https://lu.ma/z6hb9q4o" },
-  { id:108, date:"2026-04-22", end:"2026-04-22", name:"NAACOS Spring '26 Networking Dinner",                                 city:"Washington",    state:"DC", region:"DC",            category:"BioTech / Health",   series:null,                   cost:"Gratuito", link:"https://lu.ma/iet96o7s" },
-  { id:109, date:"2026-04-23", end:"2026-04-23", name:"VC Village – Spring Edition",                                         city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Tech / Innovación",  series:null,                   cost:"Gratuito", link:"https://lu.ma/fc1juow1" },
-  { id:110, date:"2026-04-23", end:"2026-04-23", name:"WUEC Demo Day",                                                       city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Pitch / Demo Day",   series:null,                   cost:"Gratuito", link:"https://lu.ma/0lx0vgo5" },
-  { id:111, date:"2026-04-23", end:"2026-04-23", name:"BTW Pre-Event: Tech At The Harbor",                                   city:"Washington",    state:"DC", region:"DC",            category:"Tech / Innovación",  series:"BTW",                  cost:"Gratuito", link:"https://lu.ma/8nr4g62o" },
-  { id:112, date:"2026-04-23", end:"2026-04-23", name:"Built to Last: The Capital and Companies Behind Climate Hard Tech",   city:"Washington",    state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/y7ak63b8" },
-  { id:113, date:"2026-04-23", end:"2026-04-23", name:"Energy Transition Progress Report: 2026 Sustainable Energy Factbook", city:"Washington",   state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/wv4mof9y" },
-  { id:114, date:"2026-04-23", end:"2026-04-23", name:"Networking for Climate Action – DC Climate Week",                    city:"Washington",    state:"DC", region:"DC",            category:"Climate Tech",        series:"DC Climate Week",      cost:"Gratuito", link:"https://lu.ma/m13n3065" },
-  { id:115, date:"2026-04-23", end:"2026-04-23", name:"Your First Climate Investment: Lunch for New Angels & Emerging LPs", city:"Washington",   state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/36v9evku" },
-  { id:116, date:"2026-04-24", end:"2026-04-24", name:"Georgetown University Poster Symposium: Environment & Sustainability", city:"Washington",  state:"DC", region:"DC",            category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/ku496q8z" },
-  { id:117, date:"2026-04-24", end:"2026-04-24", name:"c0mpiled-10/DC: AI for Government",                                  city:"Washington",    state:"DC", region:"DC",            category:"AI / ML",            series:null,                   cost:"Gratuito", link:"https://lu.ma/bmabw4qr" },
-  { id:118, date:"2026-04-25", end:"2026-04-25", name:"Cocktails & Community",                                               city:"Washington",    state:"DC", region:"DC",            category:"Networking",         series:null,                   cost:"Gratuito", link:"https://lu.ma/r57c0odc" },
-  { id:119, date:"2026-04-25", end:"2026-04-25", name:"DCA – Startups & AI Walks – Climate Week Edition",                   city:"Washington",    state:"DC", region:"DC",            category:"Climate Tech",        series:"DC Climate Week",      cost:"Gratuito", link:"https://lu.ma/d58wsyzq" },
-  { id:120, date:"2026-04-25", end:"2026-04-25", name:"Pathways & Power Moves: STEM Panel & Networking Event",              city:"Washington",    state:"DC", region:"DC",            category:"Diversity & Tech",   series:null,                   cost:"Gratuito", link:"https://lu.ma/PowerMoves" },
-  { id:121, date:"2026-04-25", end:"2026-04-25", name:"Women's Health Innovation Forum",                                    city:"Washington",    state:"DC", region:"DC",            category:"BioTech / Health",   series:null,                   cost:"Gratuito", link:"https://lu.ma/slovgsp2" },
-  { id:122, date:"2026-04-28", end:"2026-04-28", name:"Financial Services in the Age of AI (w/ The AI Collective)",         city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Fintech / VC",       series:null,                   cost:"Gratuito", link:"https://lu.ma/aic-ph-4-9" },
-  { id:123, date:"2026-04-28", end:"2026-04-28", name:"Coffee with Ken x DMV Deep Tech Week",                               city:"Washington",    state:"DC", region:"DC",            category:"Startup / Tech",     series:"DMV Deep Tech Week",   cost:"Gratuito", link:"https://lu.ma/75pkakpt" },
-  { id:124, date:"2026-04-28", end:"2026-04-28", name:"Defense Tech DC 014",                                                 city:"Washington",    state:"DC", region:"DC",            category:"Deep Tech / Defense", series:null,                  cost:"Gratuito", link:"https://lu.ma/ph0thsql" },
-  { id:125, date:"2026-04-28", end:"2026-04-28", name:"Roundtable: AI Agents & the Future of Payments",                     city:"Washington",    state:"DC", region:"DC",            category:"Fintech / VC",       series:null,                   cost:"Gratuito", link:"https://lu.ma/r56j79tt" },
-  { id:126, date:"2026-04-29", end:"2026-04-29", name:"New Applications for Blockchain in Energy + Environment",            city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Climate Tech",        series:null,                   cost:"Gratuito", link:"https://lu.ma/lja4lehs" },
-  { id:127, date:"2026-04-30", end:"2026-04-30", name:"#BaltimoreTech Happy Hour!",                                         city:"Washington",    state:"DC", region:"DC",            category:"Networking",         series:null,                   cost:"Gratuito", link:"https://lu.ma/x5e58b8p" },
-  { id:128, date:"2026-05-01", end:"2026-05-01", name:"Baltimore Health Tech Startup Symposium (NSF I-Corps Hub Mid-Atlantic)", city:"Washington", state:"DC", region:"DC",           category:"BioTech / Health",   series:null,                   cost:"Gratuito", link:"https://lu.ma/38rw5hgn" },
-  { id:129, date:"2026-05-02", end:"2026-05-02", name:"Girlies in Tech Dinner – Washington DC Edition",                     city:"Washington",    state:"DC", region:"DC",            category:"Diversity & Tech",   series:null,                   cost:"Gratuito", link:"https://lu.ma/9ydbjacv" },
-  { id:130, date:"2026-05-04", end:"2026-05-04", name:"Building Communities Through Play",                                   city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Tech / Innovación",  series:"Philly Tech Week",     cost:"Gratuito", link:"https://nerdstreet.com/events/ptw-2026-building-communities-through-play-2026-05-05" },
-  { id:131, date:"2026-05-04", end:"2026-05-04", name:"IP to Impact 2026",                                                   city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Tech / Innovación",  series:"Philly Tech Week",     cost:"Gratuito", link:"https://lu.ma/g2ppfvv3" },
-  { id:132, date:"2026-05-04", end:"2026-05-04", name:"MidAtlantic Dreamin' 2026",                                           city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Tech / Innovación",  series:"Philly Tech Week",     cost:"Gratuito", link:"https://events.ticketleap.com/tickets/midatlanticdreamin/midatlantic-dreamin-2026" },
-  { id:133, date:"2026-05-04", end:"2026-05-04", name:"The Immigrant Innovation Engine",                                     city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Diversity & Tech",   series:"Philly Tech Week",     cost:"Gratuito", link:"https://OIA-PTW-26.eventbrite.com" },
-  { id:134, date:"2026-05-05", end:"2026-05-05", name:"AT in Action – Technology Demonstration",                             city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Tech / Innovación",  series:"Philly Tech Week",     cost:"Gratuito", link:"https://www.eventbrite.com/e/at-in-action-technology-demonstration-tickets-1985577999246" },
-  { id:135, date:"2026-05-05", end:"2026-05-05", name:"Happy Hour: How Is AI Affecting Your SEO?",                          city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"AI / ML",            series:"Philly Tech Week",     cost:"Gratuito", link:"https://lu.ma/vh2e83wg" },
-  { id:136, date:"2026-05-05", end:"2026-05-05", name:"How Is AI Affecting Your SEO? (Workshop)",                           city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"AI / ML",            series:"Philly Tech Week",     cost:"Gratuito", link:"https://www.eventbrite.com/e/how-is-ai-affecting-your-seo-tickets-1984769724675" },
-  { id:137, date:"2026-05-05", end:"2026-05-05", name:"Philadelphia Independent Film Festival (PIFF)",                      city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Tech / Innovación",  series:null,                   cost:"Gratuito", link:"https://filmfreeway.com/piffFilms" },
-  { id:138, date:"2026-05-05", end:"2026-05-05", name:"Startup Sprint: Investor Speed Networking & Pitch Competition",      city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Pitch / Demo Day",   series:"Philly Tech Week",     cost:"Gratuito", link:"https://philapact.growthzoneapp.com/ap/Events/Register/OOFN6aBCaCqCD" },
-  { id:139, date:"2026-05-05", end:"2026-05-05", name:"The Role of AI in the Great Wealth Transfer",                        city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Fintech / VC",       series:"Philly Tech Week",     cost:"Gratuito", link:"https://siahlabs.com/ptw2026" },
-  { id:140, date:"2026-05-05", end:"2026-05-05", name:"Too Much Talking, Not Enough Doing",                                 city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Tech / Innovación",  series:"Philly Tech Week",     cost:"Gratuito", link:"https://watch.getcontrast.io/register/fourfront-ptw" },
-  { id:141, date:"2026-05-06", end:"2026-05-06", name:"1PHL Startup Summit",                                                 city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Startup / Tech",     series:"Philly Tech Week",     cost:"Gratuito", link:"https://lu.ma/startupsummit" },
-  { id:142, date:"2026-05-06", end:"2026-05-06", name:"Improv for Job Seekers and Networkers",                              city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Networking",         series:"Philly Tech Week",     cost:"Gratuito", link:"https://docs.google.com/forms/d/e/1FAIpQLSde0wwCSxpF-_dR3FHEInYFvlPAGrOEK9kSfvwzuFZP8rRbEw/viewform" },
-  { id:143, date:"2026-05-06", end:"2026-05-06", name:"Lounge Hour – Women who AI",                                         city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"AI / ML",            series:"Philly Tech Week",     cost:"Gratuito", link:"https://lu.ma/a1cpdnki" },
-  { id:144, date:"2026-05-06", end:"2026-05-06", name:"North Broad AR Walking Tour App",                                    city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Startup / Tech",     series:null,                   cost:"Gratuito", link:"https://www.eventbrite.com/e/north-broad-ar-walking-tour-app-tickets-1982476000083" },
-  { id:145, date:"2026-05-06", end:"2026-05-06", name:"OIT PHL – Philly Tech Week Happy Hour!",                            city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Startup / Tech",     series:"Philly Tech Week",     cost:"Gratuito", link:"https://www.eventbrite.com/e/oit-phl-philly-tech-week-happy-hour-tickets-1984336475816" },
-  { id:146, date:"2026-05-06", end:"2026-05-06", name:"Philly Tech Week Meetup",                                            city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Startup / Tech",     series:"Philly Tech Week",     cost:"Gratuito", link:"https://www.meetup.com/dc_215/events/313765455/" },
-  { id:147, date:"2026-05-06", end:"2026-05-06", name:"Technical.ly Builders Conference 2026",                              city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Startup / Tech",     series:"Philly Tech Week",     cost:"Gratuito", link:"https://www.eventbrite.com/e/technically-builders-conference-2026-tickets-1859321884809" },
-  { id:148, date:"2026-05-06", end:"2026-05-06", name:"The Ground Floor: PTW Rooftop Happy Hour",                          city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Networking",         series:"Philly Tech Week",     cost:"Gratuito", link:"https://lu.ma/maymargs" },
-  { id:149, date:"2026-05-07", end:"2026-05-07", name:"AI x Bio Philly 2026",                                               city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"BioTech / Health",   series:"Philly Tech Week",     cost:"Gratuito", link:"https://lu.ma/4r86x0z8" },
-  { id:150, date:"2026-05-07", end:"2026-05-07", name:"Afro STEAM Fair: Youth-Centered Science, Technology & Arts",        city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Climate Tech",        series:"Philly Tech Week",     cost:"Gratuito", link:"https://www.eventbrite.com/e/afro-steam-fair-tickets-1982078563339" },
-  { id:151, date:"2026-05-07", end:"2026-05-07", name:"Design the Future: Learn to Vibe Code",                             city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Startup / Tech",     series:"Philly Tech Week",     cost:"Gratuito", link:"https://eventbrite.com/e/1985848207446/" },
-  { id:152, date:"2026-05-07", end:"2026-05-07", name:"Hack the Narrative – How Can AI Add Value in Creative Process?",   city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"AI / ML",            series:null,                   cost:"Gratuito", link:"https://www.eventbrite.com/e/hack-the-narrative-tickets-1983624984727" },
-  { id:153, date:"2026-05-07", end:"2026-05-07", name:"Mira Game: From Idea to Pitch in 2–3 Hours",                       city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Pitch / Demo Day",   series:"Philly Tech Week",     cost:"Gratuito", link:"https://cxm.gdna.io/mira-game-ptw2026" },
-  { id:154, date:"2026-05-07", end:"2026-05-07", name:"Philly Tech Week – Global Pulse of AI in Healthcare",               city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"AI / ML",            series:"Philly Tech Week",     cost:"Gratuito", link:"https://wacphila.org/event/philly-tech-week-the-global-pulse-of-ai-in-healthcare/" },
-  { id:155, date:"2026-05-07", end:"2026-05-07", name:"RE: WEALTH – Reclaiming Wealth, Ownership & Participation in Tech", city:"Philadelphia", state:"PA", region:"Philadelphia",   category:"Fintech / VC",       series:null,                   cost:"Gratuito", link:"https://lu.ma/d5tvzf40" },
-  { id:156, date:"2026-05-07", end:"2026-05-07", name:"The Moonlighters Club Showcase",                                     city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Tech / Innovación",  series:"Philly Tech Week",     cost:"Gratuito", link:"https://lu.ma/fojfkx5x" },
-  { id:157, date:"2026-05-07", end:"2026-05-07", name:"ViT Greater Philadelphia: 1-Year Milestone at Philly Tech Week",   city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Startup / Tech",     series:"Philly Tech Week",     cost:"Gratuito", link:"https://www.eventbrite.com/e/vit-greater-philadelphia-1-year-milestone-tickets-1983467999179" },
-  { id:158, date:"2026-05-08", end:"2026-05-08", name:"AI for the Rest of Us: Build Your Personal AI Operating System",   city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"AI / ML",            series:null,                   cost:"Gratuito", link:"https://www.eventbrite.com/e/1985754439985" },
-  { id:159, date:"2026-05-08", end:"2026-05-08", name:"M365 Philly – May 8, 2026",                                         city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Startup / Tech",     series:"Philly Tech Week",     cost:"Gratuito", link:"https://www.eventbrite.com/e/m365-philly-may-8-2026-tickets-1981977699653" },
-  { id:160, date:"2026-05-08", end:"2026-05-08", name:"Meet Me in the Middle: AI Edition",                                 city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"AI / ML",            series:"Philly Tech Week",     cost:"Gratuito", link:"https://www.wildcatworkshop.org/welcome/ai" },
-  { id:161, date:"2026-05-08", end:"2026-05-08", name:"PTW2026 Closing Party",                                              city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Tech / Innovación",  series:"Philly Tech Week",     cost:"Gratuito", link:"https://lu.ma/ptw26party" },
-  { id:162, date:"2026-05-09", end:"2026-05-09", name:"Sip & Yap + Vibes (PTW Wrap-Up)",                                   city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Networking",         series:"Philly Tech Week",     cost:"Gratuito", link:"https://linktr.ee/SocialsRubeskadoobs" },
-  { id:163, date:"2026-05-10", end:"2026-05-10", name:"Outdoor Discussion Walk: The Path to Governing AI",                 city:"Washington",    state:"DC", region:"DC",            category:"AI / ML",            series:null,                   cost:"Gratuito", link:"https://lu.ma/zxbabuw5" },
-  { id:164, date:"2026-05-12", end:"2026-05-12", name:"Hacks/Hackers AI x Journalism Summit 2026",                         city:"Washington",    state:"DC", region:"DC",            category:"AI / ML",            series:null,                   cost:"Gratuito", link:"https://lu.ma/hh-aijournalismsummit-2026" },
-  { id:165, date:"2026-05-13", end:"2026-05-13", name:"Biotech, Borders, and Security: Reshoring U.S. Manufacturing",     city:"Washington",    state:"DC", region:"DC",            category:"BioTech / Health",   series:null,                   cost:"Gratuito", link:"https://lu.ma/3q2hib3p" },
-  { id:166, date:"2026-05-14", end:"2026-05-14", name:"The Unfair Advantage: AI for Non-Technical Entrepreneurs",          city:"Washington",    state:"DC", region:"DC",            category:"AI / ML",            series:null,                   cost:"Gratuito", link:"https://lu.ma/e69twbxs" },
-  { id:167, date:"2026-05-17", end:"2026-05-17", name:"Inaugural Fundraiser – Philly Tech Community",                      city:"Philadelphia",  state:"PA", region:"Philadelphia",   category:"Fintech / VC",       series:null,                   cost:"Gratuito", link:"https://lu.ma/sdbs3m4q" },
-  { id:168, date:"2026-05-28", end:"2026-05-28", name:"TMV: Army Navy Country Club Networking Happy Hour",                 city:"Washington",    state:"DC", region:"DC",            category:"Networking",         series:null,                   cost:"Gratuito", link:"https://lu.ma/osow6q1i" },
-
-  // ── NYC Lifestyle & Culture Apr–May 2026 ─────────────────────────────────
-  { id:169, date:"2026-04-29", end:"2026-04-30", name:"Salesforce Agentforce World Tour NYC",    city:"New York", state:"NY", region:"NYC", category:"Tech",     series:null, cost:"Ver web", link:"https://www.javitscenter.com/calendar/" },
-  { id:170, date:"2026-04-01", end:"2026-06-30", name:"NY Tech + Media Meetup",                  city:"New York", state:"NY", region:"NYC", category:"Tech",     series:null, cost:"Ver web", link:"https://www.meetup.com" },
-  { id:171, date:"2026-04-01", end:"2026-06-30", name:"AI & Startups Networking NYC",            city:"New York", state:"NY", region:"NYC", category:"Tech",     series:null, cost:"Ver web", link:"https://www.meetup.com" },
-  { id:172, date:"2026-04-01", end:"2026-06-30", name:"Deep Tech Happy Hour NYC",                city:"New York", state:"NY", region:"NYC", category:"Tech",     series:null, cost:"Ver web", link:"https://www.meetup.com" },
-  { id:173, date:"2026-04-01", end:"2026-06-30", name:"NYC Product Managers Meetup",             city:"New York", state:"NY", region:"NYC", category:"Tech",     series:null, cost:"Ver web", link:"https://www.meetup.com" },
-  { id:174, date:"2026-04-01", end:"2026-05-31", name:"Fintech Week NYC (side events)",          city:"New York", state:"NY", region:"NYC", category:"Tech",     series:null, cost:"Ver web", link:"https://www.fintechweek.com" },
-  { id:175, date:"2026-04-01", end:"2026-05-31", name:"Columbia Venture Events",                 city:"New York", state:"NY", region:"NYC", category:"Tech",     series:null, cost:"Ver web", link:"https://entrepreneurship.columbia.edu" },
-  { id:176, date:"2026-04-01", end:"2026-05-31", name:"NYU Startup Events",                      city:"New York", state:"NY", region:"NYC", category:"Tech",     series:null, cost:"Ver web", link:"https://entrepreneur.nyu.edu" },
-  { id:177, date:"2026-04-01", end:"2026-05-31", name:"Whitney Biennial",                        city:"New York", state:"NY", region:"NYC", category:"Art",      series:null, cost:"Ver web", link:"https://whitney.org" },
-  { id:178, date:"2026-04-01", end:"2026-05-31", name:"MET Raphael Exhibit",                     city:"New York", state:"NY", region:"NYC", category:"Art",      series:null, cost:"Ver web", link:"https://www.metmuseum.org" },
-  { id:179, date:"2026-04-18", end:"2026-04-18", name:"MoMA PS1 Block Party",                    city:"New York", state:"NY", region:"NYC", category:"Art",      series:null, cost:"Ver web", link:"https://momaps1.org" },
-  { id:180, date:"2026-04-16", end:"2026-04-19", name:"Brooklyn Art Fest",                       city:"New York", state:"NY", region:"NYC", category:"Art",      series:null, cost:"Ver web", link:"https://www.eventbrite.com" },
-  { id:181, date:"2026-04-01", end:"2026-05-31", name:"Guggenheim Exhibitions",                  city:"New York", state:"NY", region:"NYC", category:"Art",      series:null, cost:"Ver web", link:"https://www.guggenheim.org" },
-  { id:182, date:"2026-04-22", end:"2026-04-26", name:"Downtown NYC JazzFest",                   city:"New York", state:"NY", region:"NYC", category:"Music",    series:null, cost:"Ver web", link:"https://www.eventbrite.com" },
-  { id:183, date:"2026-04-01", end:"2026-06-30", name:"Smorgasburg",                             city:"New York", state:"NY", region:"NYC", category:"Food",     series:null, cost:"Ver web", link:"https://www.smorgasburg.com" },
-  { id:184, date:"2026-04-01", end:"2026-05-31", name:"Midnight Market NYC",                     city:"New York", state:"NY", region:"NYC", category:"Food",     series:null, cost:"Ver web", link:"https://www.midnightmarketjc.com" },
-  { id:185, date:"2026-04-25", end:"2026-04-25", name:"NYC Beer Wine Fest",                      city:"New York", state:"NY", region:"NYC", category:"Food",     series:null, cost:"Ver web", link:"https://www.eventbrite.com" },
-  { id:186, date:"2026-04-18", end:"2026-04-18", name:"Alta Joda Latin Festival",                city:"New York", state:"NY", region:"NYC", category:"Music",    series:null, cost:"Ver web", link:"https://www.eventbrite.com" },
-  { id:187, date:"2026-04-01", end:"2026-04-30", name:"Holi Rooftop Party",                     city:"New York", state:"NY", region:"NYC", category:"Party",    series:null, cost:"Ver web", link:"https://www.eventbrite.com" },
-  { id:188, date:"2026-05-01", end:"2026-05-31", name:"Rooftop Opening Parties",                 city:"New York", state:"NY", region:"NYC", category:"Party",    series:null, cost:"Ver web", link:"https://www.timeout.com/newyork" },
-  { id:189, date:"2026-04-01", end:"2026-05-31", name:"Candlelight Concerts",                    city:"New York", state:"NY", region:"NYC", category:"Music",    series:null, cost:"Ver web", link:"https://feverup.com" },
-  { id:190, date:"2026-04-01", end:"2026-05-31", name:"Macys Flower Show",                       city:"New York", state:"NY", region:"NYC", category:"Fashion",  series:null, cost:"Ver web", link:"https://www.macys.com" },
-  { id:191, date:"2026-04-01", end:"2026-05-31", name:"Sample Sales NYC",                        city:"New York", state:"NY", region:"NYC", category:"Shopping", series:null, cost:"Ver web", link:"https://www.chicmi.com" },
-  { id:192, date:"2026-04-30", end:"2026-05-04", name:"Cult Gaia Sample Sale",                   city:"New York", state:"NY", region:"NYC", category:"Fashion",  series:null, cost:"Ver web", link:"https://www.chicmi.com" },
-  { id:193, date:"2026-04-01", end:"2026-06-30", name:"Brooklyn Flea Market",                    city:"New York", state:"NY", region:"NYC", category:"Shopping", series:null, cost:"Ver web", link:"https://brooklynflea.com" },
-  { id:194, date:"2026-04-01", end:"2026-05-31", name:"Artists & Fleas",                         city:"New York", state:"NY", region:"NYC", category:"Shopping", series:null, cost:"Ver web", link:"https://artistsandfleas.com" },
-  { id:195, date:"2026-05-14", end:"2026-05-14", name:"Eater Dinner Series",                     city:"New York", state:"NY", region:"NYC", category:"Food",     series:null, cost:"Ver web", link:"https://www.eater.com" },
-  { id:196, date:"2026-04-01", end:"2026-04-30", name:"Food Truck Festivals",                    city:"New York", state:"NY", region:"NYC", category:"Food",     series:null, cost:"Ver web", link:"https://www.eventbrite.com" },
-  { id:197, date:"2026-04-27", end:"2026-04-27", name:"Taste of Madison",                        city:"New York", state:"NY", region:"NYC", category:"Food",     series:null, cost:"Ver web", link:"https://www.eventbrite.com" },
-  { id:198, date:"2026-04-19", end:"2026-04-19", name:"Food Stroll NYC",                         city:"New York", state:"NY", region:"NYC", category:"Food",     series:null, cost:"Ver web", link:"https://www.eventbrite.com" },
-  { id:199, date:"2026-04-01", end:"2026-05-31", name:"Hamilton",                                city:"New York", state:"NY", region:"NYC", category:"Broadway", series:null, cost:"Ver web", link:"https://www.newyorktheatreguide.com" },
-  { id:200, date:"2026-04-01", end:"2026-05-31", name:"The Lion King",                           city:"New York", state:"NY", region:"NYC", category:"Broadway", series:null, cost:"Ver web", link:"https://www.newyorktheatreguide.com" },
-  { id:201, date:"2026-04-01", end:"2026-05-31", name:"Moulin Rouge",                            city:"New York", state:"NY", region:"NYC", category:"Broadway", series:null, cost:"Ver web", link:"https://www.newyorktheatreguide.com" },
-  { id:202, date:"2026-04-01", end:"2026-05-31", name:"Wicked",                                  city:"New York", state:"NY", region:"NYC", category:"Broadway", series:null, cost:"Ver web", link:"https://www.newyorktheatreguide.com" },
-  { id:203, date:"2026-04-01", end:"2026-05-31", name:"Hadestown",                               city:"New York", state:"NY", region:"NYC", category:"Broadway", series:null, cost:"Ver web", link:"https://www.newyorktheatreguide.com" },
-  { id:204, date:"2026-04-01", end:"2026-05-31", name:"NY Yankees Games",                        city:"New York", state:"NY", region:"NYC", category:"Sports",   series:null, cost:"Ver web", link:"https://www.mlb.com" },
-  { id:205, date:"2026-04-01", end:"2026-05-31", name:"NY Mets Games",                           city:"New York", state:"NY", region:"NYC", category:"Sports",   series:null, cost:"Ver web", link:"https://www.mlb.com" },
-  { id:206, date:"2026-04-01", end:"2026-05-31", name:"Central Park Runs",                       city:"New York", state:"NY", region:"NYC", category:"Sports",   series:null, cost:"Ver web", link:"https://www.nyrr.org" },
-  { id:207, date:"2026-05-01", end:"2026-05-31", name:"Brooklyn Run Series",                     city:"New York", state:"NY", region:"NYC", category:"Sports",   series:null, cost:"Ver web", link:"https://www.nyrr.org" },
-  { id:208, date:"2026-04-01", end:"2026-06-30", name:"Hanami Nights",                           city:"New York", state:"NY", region:"NYC", category:"Outdoor",  series:null, cost:"Ver web", link:"https://www.bbg.org" },
-  { id:209, date:"2026-04-19", end:"2026-04-19", name:"Earth Day Festival",                      city:"New York", state:"NY", region:"NYC", category:"Outdoor",  series:null, cost:"Ver web", link:"https://www.earthdayinitiative.org" },
-  { id:210, date:"2026-04-01", end:"2026-05-31", name:"Central Park Events",                     city:"New York", state:"NY", region:"NYC", category:"Outdoor",  series:null, cost:"Ver web", link:"https://www.centralparknyc.org" },
-  { id:211, date:"2026-04-01", end:"2026-05-31", name:"NYC Walking Tours",                       city:"New York", state:"NY", region:"NYC", category:"Outdoor",  series:null, cost:"Ver web", link:"https://www.getyourguide.com" },
-  { id:212, date:"2026-04-16", end:"2026-04-16", name:"HUMP Film Festival",                      city:"New York", state:"NY", region:"NYC", category:"Film",     series:null, cost:"Ver web", link:"https://www.eventbrite.com" },
-  { id:213, date:"2026-04-01", end:"2026-05-31", name:"Trivia Nights NYC",                       city:"New York", state:"NY", region:"NYC", category:"Social",   series:null, cost:"Ver web", link:"https://www.eventbrite.com" },
-  { id:214, date:"2026-04-01", end:"2026-05-31", name:"Science Comedy Shows",                    city:"New York", state:"NY", region:"NYC", category:"Comedy",   series:null, cost:"Ver web", link:"https://www.caveat.nyc" },
-  { id:215, date:"2026-04-01", end:"2026-05-31", name:"Photography Meetups",                     city:"New York", state:"NY", region:"NYC", category:"Social",   series:null, cost:"Ver web", link:"https://www.meetup.com" },
-  { id:216, date:"2026-04-01", end:"2026-05-31", name:"Creative Workshops",                      city:"New York", state:"NY", region:"NYC", category:"Art",      series:null, cost:"Ver web", link:"https://www.eventbrite.com" },
-  { id:217, date:"2026-04-01", end:"2026-05-31", name:"Museum Mile Events",                      city:"New York", state:"NY", region:"NYC", category:"Art",      series:null, cost:"Ver web", link:"https://www.nycgo.com" },
-  { id:218, date:"2026-04-01", end:"2026-05-31", name:"NYC Events Calendar",                     city:"New York", state:"NY", region:"NYC", category:"General",  series:null, cost:"Ver web", link:"https://www.timeout.com/newyork/events-calendar" },
+// ════════════════════════════════════════════
+// NYC LIFESTYLE (separate section)
+// ════════════════════════════════════════════
+const NYC_EXTRA = [
+  { id:1,  date:"2026-04-29", end:"2026-04-30", name:"Salesforce Agentforce World Tour NYC",    city:"New York", state:"NY", region:"NYC", category:"Tech",     series:null, cost:"Ver web", link:"https://www.javitscenter.com/calendar/" },
+  { id:2,  date:"2026-04-01", end:"2026-06-30", name:"NY Tech + Media Meetup",                  city:"New York", state:"NY", region:"NYC", category:"Tech",     series:"Recurring", cost:"Ver web", link:"https://www.meetup.com/ny-tech-media/" },
+  { id:3,  date:"2026-04-01", end:"2026-06-30", name:"AI & Startups Networking NYC",            city:"New York", state:"NY", region:"NYC", category:"Tech",     series:"Recurring", cost:"Ver web", link:"https://www.meetup.com/ai-startups-nyc/" },
+  { id:4,  date:"2026-04-01", end:"2026-06-30", name:"Deep Tech Happy Hour NYC",                city:"New York", state:"NY", region:"NYC", category:"Tech",     series:"Recurring", cost:"Ver web", link:"https://www.meetup.com/deep-tech-nyc/" },
+  { id:5,  date:"2026-04-01", end:"2026-06-30", name:"NYC Product Managers Meetup",             city:"New York", state:"NY", region:"NYC", category:"Tech",     series:"Recurring", cost:"Ver web", link:"https://www.meetup.com/nycproductmanagement/" },
+  { id:6,  date:"2026-04-01", end:"2026-05-31", name:"Fintech Week NYC (side events)",          city:"New York", state:"NY", region:"NYC", category:"Tech",     series:null, cost:"Ver web", link:"https://www.fintechweek.com" },
+  { id:7,  date:"2026-04-01", end:"2026-05-31", name:"Columbia Venture Events",                 city:"New York", state:"NY", region:"NYC", category:"Tech",     series:null, cost:"Ver web", link:"https://entrepreneurship.columbia.edu" },
+  { id:8,  date:"2026-04-01", end:"2026-05-31", name:"NYU Startup Events",                      city:"New York", state:"NY", region:"NYC", category:"Tech",     series:null, cost:"Ver web", link:"https://entrepreneur.nyu.edu" },
+  { id:9,  date:"2026-04-01", end:"2026-05-31", name:"Whitney Biennial",                        city:"New York", state:"NY", region:"NYC", category:"Art",      series:null, cost:"Ver web", link:"https://whitney.org/exhibitions/2026-biennial/" },
+  { id:10, date:"2026-04-01", end:"2026-05-31", name:"MET Raphael Exhibit",                     city:"New York", state:"NY", region:"NYC", category:"Art",      series:null, cost:"Ver web", link:"https://www.metmuseum.org/exhibitions" },
+  { id:11, date:"2026-04-18", end:"2026-04-18", name:"MoMA PS1 Block Party",                    city:"New York", state:"NY", region:"NYC", category:"Art",      series:null, cost:"Ver web", link:"https://www.moma.org/calendar/" },
+  { id:12, date:"2026-04-16", end:"2026-04-19", name:"Brooklyn Art Fest",                       city:"New York", state:"NY", region:"NYC", category:"Art",      series:null, cost:"Ver web", link:"https://www.eventbrite.com/d/ny--new-york/brooklyn-art-festival/" },
+  { id:13, date:"2026-04-01", end:"2026-05-31", name:"Guggenheim Exhibitions",                  city:"New York", state:"NY", region:"NYC", category:"Art",      series:null, cost:"Ver web", link:"https://www.guggenheim.org/exhibitions" },
+  { id:14, date:"2026-04-22", end:"2026-04-26", name:"Downtown NYC JazzFest",                   city:"New York", state:"NY", region:"NYC", category:"Music",    series:null, cost:"Ver web", link:"https://www.eventbrite.com/d/ny--new-york/nyc-jazz-festival/" },
+  { id:15, date:"2026-04-01", end:"2026-06-30", name:"Smorgasburg",                             city:"New York", state:"NY", region:"NYC", category:"Food",     series:"Recurring", cost:"Ver web", link:"https://www.smorgasburg.com" },
+  { id:16, date:"2026-04-01", end:"2026-05-31", name:"Midnight Market NYC",                     city:"New York", state:"NY", region:"NYC", category:"Food",     series:null, cost:"Ver web", link:"https://www.midnightmarketjc.com" },
+  { id:17, date:"2026-04-25", end:"2026-04-25", name:"NYC Beer Wine Fest",                      city:"New York", state:"NY", region:"NYC", category:"Food",     series:null, cost:"Ver web", link:"https://www.eventbrite.com/e/nyc-beer-wine-fest-2026/" },
+  { id:18, date:"2026-04-18", end:"2026-04-18", name:"Alta Joda Latin Festival",                city:"New York", state:"NY", region:"NYC", category:"Music",    series:null, cost:"Ver web", link:"https://www.eventbrite.com/d/ny--new-york/alta-joda/" },
+  { id:19, date:"2026-04-01", end:"2026-04-30", name:"Holi Rooftop Party",                     city:"New York", state:"NY", region:"NYC", category:"Party",    series:null, cost:"Ver web", link:"https://www.eventbrite.com/d/ny--new-york/holi-rooftop/" },
+  { id:20, date:"2026-05-01", end:"2026-05-31", name:"Rooftop Opening Parties",                 city:"New York", state:"NY", region:"NYC", category:"Party",    series:null, cost:"Ver web", link:"https://www.timeout.com/newyork/nightlife/best-rooftop-bars-in-nyc" },
+  { id:21, date:"2026-04-01", end:"2026-05-31", name:"Candlelight Concerts",                    city:"New York", state:"NY", region:"NYC", category:"Music",    series:"Recurring", cost:"Ver web", link:"https://feverup.com/en/new-york/candlelight" },
+  { id:22, date:"2026-04-01", end:"2026-05-31", name:"Macys Flower Show",                       city:"New York", state:"NY", region:"NYC", category:"Fashion",  series:null, cost:"Ver web", link:"https://www.macys.com/social/flower-show" },
+  { id:23, date:"2026-04-01", end:"2026-05-31", name:"Sample Sales NYC",                        city:"New York", state:"NY", region:"NYC", category:"Shopping", series:"Recurring", cost:"Ver web", link:"https://www.chicmi.com/new-york/" },
+  { id:24, date:"2026-04-30", end:"2026-05-04", name:"Cult Gaia Sample Sale",                   city:"New York", state:"NY", region:"NYC", category:"Fashion",  series:null, cost:"Ver web", link:"https://www.chicmi.com/new-york/" },
+  { id:25, date:"2026-04-01", end:"2026-06-30", name:"Brooklyn Flea Market",                    city:"New York", state:"NY", region:"NYC", category:"Shopping", series:"Recurring", cost:"Ver web", link:"https://brooklynflea.com" },
+  { id:26, date:"2026-04-01", end:"2026-05-31", name:"Artists & Fleas",                         city:"New York", state:"NY", region:"NYC", category:"Shopping", series:"Recurring", cost:"Ver web", link:"https://artistsandfleas.com" },
+  { id:27, date:"2026-05-14", end:"2026-05-14", name:"Eater Dinner Series",                     city:"New York", state:"NY", region:"NYC", category:"Food",     series:null, cost:"Ver web", link:"https://www.eater.com/events/new-york" },
+  { id:28, date:"2026-04-01", end:"2026-04-30", name:"Food Truck Festivals",                    city:"New York", state:"NY", region:"NYC", category:"Food",     series:"Recurring", cost:"Ver web", link:"https://www.eventbrite.com/d/ny--new-york/food-truck-festival/" },
+  { id:29, date:"2026-04-27", end:"2026-04-27", name:"Taste of Madison",                        city:"New York", state:"NY", region:"NYC", category:"Food",     series:null, cost:"Ver web", link:"https://www.eventbrite.com/d/ny--new-york/taste-of-madison/" },
+  { id:30, date:"2026-04-19", end:"2026-04-19", name:"Food Stroll NYC",                         city:"New York", state:"NY", region:"NYC", category:"Food",     series:null, cost:"Ver web", link:"https://www.eventbrite.com/d/ny--new-york/food-stroll/" },
+  { id:31, date:"2026-04-01", end:"2026-05-31", name:"Hamilton",                                city:"New York", state:"NY", region:"NYC", category:"Broadway", series:"Broadway", cost:"Pago",    link:"https://hamiltonmusical.com/new-york/" },
+  { id:32, date:"2026-04-01", end:"2026-05-31", name:"The Lion King",                           city:"New York", state:"NY", region:"NYC", category:"Broadway", series:"Broadway", cost:"Pago",    link:"https://www.lionking.com" },
+  { id:33, date:"2026-04-01", end:"2026-05-31", name:"Moulin Rouge",                            city:"New York", state:"NY", region:"NYC", category:"Broadway", series:"Broadway", cost:"Pago",    link:"https://moulinrougemusical.com" },
+  { id:34, date:"2026-04-01", end:"2026-05-31", name:"Wicked",                                  city:"New York", state:"NY", region:"NYC", category:"Broadway", series:"Broadway", cost:"Pago",    link:"https://wickedthemusical.com" },
+  { id:35, date:"2026-04-01", end:"2026-05-31", name:"Hadestown",                               city:"New York", state:"NY", region:"NYC", category:"Broadway", series:"Broadway", cost:"Pago",    link:"https://hadestown.com" },
+  { id:36, date:"2026-04-01", end:"2026-05-31", name:"NY Yankees Games",                        city:"New York", state:"NY", region:"NYC", category:"Sports",   series:"MLB 2026", cost:"Pago",    link:"https://www.mlb.com/yankees/schedule" },
+  { id:37, date:"2026-04-01", end:"2026-05-31", name:"NY Mets Games",                           city:"New York", state:"NY", region:"NYC", category:"Sports",   series:"MLB 2026", cost:"Pago",    link:"https://www.mlb.com/mets/schedule" },
+  { id:38, date:"2026-04-01", end:"2026-05-31", name:"Central Park Runs",                       city:"New York", state:"NY", region:"NYC", category:"Sports",   series:"Recurring", cost:"Ver web", link:"https://www.nyrr.org/run/search-for-races" },
+  { id:39, date:"2026-05-01", end:"2026-05-31", name:"Brooklyn Run Series",                     city:"New York", state:"NY", region:"NYC", category:"Sports",   series:"Recurring", cost:"Ver web", link:"https://www.nyrr.org/run/search-for-races" },
+  { id:40, date:"2026-04-01", end:"2026-06-30", name:"Hanami Nights",                           city:"New York", state:"NY", region:"NYC", category:"Outdoor",  series:null, cost:"Ver web", link:"https://www.bbg.org/visit/event/sakura_matsuri_2026" },
+  { id:41, date:"2026-04-19", end:"2026-04-19", name:"Earth Day Festival",                      city:"New York", state:"NY", region:"NYC", category:"Outdoor",  series:null, cost:"Ver web", link:"https://www.earthday.org/earth-day-2026/" },
+  { id:42, date:"2026-04-01", end:"2026-05-31", name:"Central Park Events",                     city:"New York", state:"NY", region:"NYC", category:"Outdoor",  series:"Recurring", cost:"Ver web", link:"https://www.centralparknyc.org/events" },
+  { id:43, date:"2026-04-01", end:"2026-05-31", name:"NYC Walking Tours",                       city:"New York", state:"NY", region:"NYC", category:"Outdoor",  series:"Recurring", cost:"Ver web", link:"https://www.getyourguide.com/new-york-city-l59/walking-tours-tc58/" },
+  { id:44, date:"2026-04-16", end:"2026-04-16", name:"HUMP Film Festival",                      city:"New York", state:"NY", region:"NYC", category:"Film",     series:null, cost:"Ver web", link:"https://www.eventbrite.com/d/ny--new-york/hump-film-festival/" },
+  { id:45, date:"2026-04-01", end:"2026-05-31", name:"Trivia Nights NYC",                       city:"New York", state:"NY", region:"NYC", category:"Social",   series:"Recurring", cost:"Ver web", link:"https://www.eventbrite.com/d/ny--new-york/trivia-night/" },
+  { id:46, date:"2026-04-01", end:"2026-05-31", name:"Science Comedy Shows",                    city:"New York", state:"NY", region:"NYC", category:"Comedy",   series:"Recurring", cost:"Ver web", link:"https://www.caveat.nyc/events" },
+  { id:47, date:"2026-04-01", end:"2026-05-31", name:"Photography Meetups",                     city:"New York", state:"NY", region:"NYC", category:"Social",   series:"Recurring", cost:"Ver web", link:"https://www.meetup.com/topics/photography/us/ny/new_york/" },
+  { id:48, date:"2026-04-01", end:"2026-05-31", name:"Creative Workshops",                      city:"New York", state:"NY", region:"NYC", category:"Art",      series:"Recurring", cost:"Ver web", link:"https://www.eventbrite.com/d/ny--new-york/creative-workshop/" },
+  { id:49, date:"2026-04-01", end:"2026-05-31", name:"Museum Mile Events",                      city:"New York", state:"NY", region:"NYC", category:"Art",      series:"Recurring", cost:"Ver web", link:"https://www.nycgo.com/articles/museum-mile-nyc/" },
+  { id:50, date:"2026-04-01", end:"2026-05-31", name:"NYC Events Calendar",                     city:"New York", state:"NY", region:"NYC", category:"General",  series:null, cost:"Ver web", link:"https://www.timeout.com/newyork/events-calendar" },
 ];
 
 // ════════════════════════════════════════════
@@ -1809,10 +2186,48 @@ function syncHeaderHeight() {
 }
 
 // ════════════════════════════════════════════
+// NYC EXTRA SECTION
+// ════════════════════════════════════════════
+function renderNYCSection() {
+  const grid = document.getElementById('nycGrid');
+  if (!grid) return;
+  grid.innerHTML = NYC_EXTRA.map(e => {
+    const c = CAT[e.category] || { color:'#fff', bg:'rgba(255,255,255,0.08)' };
+    const isRecurring = e.series === 'Recurring' || e.series === 'Broadway' || e.series === 'MLB 2026';
+    const dateLabel = e.date === '2026-04-01' && e.end === '2026-06-30' ? 'Apr – Jun'
+      : e.date === '2026-04-01' && e.end === '2026-05-31' ? 'Apr – May'
+      : e.date === '2026-04-01' && e.end === '2026-04-30' ? 'April'
+      : e.date === '2026-05-01' && e.end === '2026-05-31' ? 'May'
+      : e.date.slice(5).replace('-','/') + (e.end !== e.date ? ' – ' + e.end.slice(5).replace('-','/') : '');
+    return \`<div class="nyc-card">
+      <div class="nyc-card-name">\${e.name}</div>
+      <div class="nyc-card-meta">
+        <span class="nyc-card-cat" style="background:\${c.bg};color:\${c.color}">\${e.category}</span>
+        <span class="nyc-card-date">\${dateLabel}</span>
+        \${isRecurring ? '<span class="nyc-card-recurring">● RECURRING</span>' : ''}
+      </div>
+      <a class="nyc-card-link" href="\${e.link}" target="_blank" rel="noopener">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Check it out
+      </a>
+    </div>\`;
+  }).join('');
+
+  document.getElementById('nycCount').textContent = NYC_EXTRA.length + ' experiences';
+
+  document.getElementById('nycToggle').addEventListener('click', function() {
+    const open = this.getAttribute('aria-expanded') === 'true';
+    this.setAttribute('aria-expanded', String(!open));
+    document.getElementById('nycContent').classList.toggle('open', !open);
+  });
+}
+
+// ════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════
 renderLegend();
 renderAgenda();
+renderNYCSection();
 syncHeaderHeight();
 window.addEventListener('resize', syncHeaderHeight);
 </script>
