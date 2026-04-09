@@ -2199,18 +2199,18 @@ function renderNYCSection() {
       : e.date === '2026-04-01' && e.end === '2026-04-30' ? 'April'
       : e.date === '2026-05-01' && e.end === '2026-05-31' ? 'May'
       : e.date.slice(5).replace('-','/') + (e.end !== e.date ? ' – ' + e.end.slice(5).replace('-','/') : '');
-    return \`<div class="nyc-card">
-      <div class="nyc-card-name">\${e.name}</div>
+    return `<div class="nyc-card">
+      <div class="nyc-card-name">${e.name}</div>
       <div class="nyc-card-meta">
-        <span class="nyc-card-cat" style="background:\${c.bg};color:\${c.color}">\${e.category}</span>
-        <span class="nyc-card-date">\${dateLabel}</span>
-        \${isRecurring ? '<span class="nyc-card-recurring">● RECURRING</span>' : ''}
+        <span class="nyc-card-cat" style="background:${c.bg};color:${c.color}">${e.category}</span>
+        <span class="nyc-card-date">${dateLabel}</span>
+        ${isRecurring ? '<span class="nyc-card-recurring">● RECURRING</span>' : ''}
       </div>
-      <a class="nyc-card-link" href="\${e.link}" target="_blank" rel="noopener">
+      <a class="nyc-card-link" href="${e.link}" target="_blank" rel="noopener">
         <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         Check it out
       </a>
-    </div>\`;
+    </div>`;
   }).join('');
 
   document.getElementById('nycCount').textContent = NYC_EXTRA.length + ' experiences';
